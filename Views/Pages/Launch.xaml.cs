@@ -31,6 +31,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 try
                 {
+
                     animationSP.Clear();
                     foreach (var sp in sp_ani.Children)
                     {
@@ -74,28 +75,35 @@ namespace MultiGameLauncher.Views.Pages
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Settings());
+            win.BackButton.Width = 40;
         }
 
         private void Tile_Click_1(object sender, RoutedEventArgs e)
         {
-
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new About());
+            win.BackButton.Width = 40;
         }
 
         private void Tile_Click_2(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new About());
+            win.BackButton.Width = 40;
         }
 
         private void Tile_Click_3(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());
+            win.BackButton.Width = 40;
         }
 
         private void Tile_Click_4(object sender, RoutedEventArgs e)
         {
-
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new About());
+            win.BackButton.Width = 40;
         }
     }
 }

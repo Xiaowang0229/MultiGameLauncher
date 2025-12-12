@@ -30,9 +30,44 @@ namespace MultiGameLauncher
 
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
+            RootIcon.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
             RootFrame.Navigate(new Launch());
 
+        }
+
+       
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (RootFrame.Content is FrameworkElement newPage)
+            {
+                newPage.Margin = new Thickness(-2000, 0, 0, 0);
+
+                var animation = new ThicknessAnimation
+                {
+                    To = new Thickness(0, 0, 0, 10),
+                    Duration = TimeSpan.FromMilliseconds(500),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                };
+
+
+                var fadeIn = new DoubleAnimation
+                {
+                    From = 0,
+                    To = 1,
+                    Duration = TimeSpan.FromMilliseconds(600),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseIn }
+                };
+
+                newPage.BeginAnimation(OpacityProperty, fadeIn);
+                newPage.BeginAnimation(MarginProperty, animation);
+            }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            RootFrame.Navigate(new Launch());
+            BackButton.Width = 0;
+            
         }
     }
 }

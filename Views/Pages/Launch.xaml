@@ -74,7 +74,7 @@ HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="T
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="5,0,0,0" Tag="ani">
-                    <ui:Tile Title="导入游戏"
+                    <ui:Tile Title="管理游戏"
     Margin="0,0,6,0"
          Tag="ani"
     ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"

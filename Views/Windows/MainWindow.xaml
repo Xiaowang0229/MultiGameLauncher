@@ -9,9 +9,21 @@
         mc:Ignorable="d"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="RocketLauncher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen">
+        Title="RocketLauncher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True">
+    
+
+    <ui:MetroWindow.LeftWindowCommands>
+        <ui:WindowCommands>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="BackButton" FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" FontSize="22" Width="0" Click="BackButton_Click"/>
+                <Image x:Name="RootIcon" Margin="3,3,3,3"/>
+            </StackPanel>
+            
+        </ui:WindowCommands>
+    </ui:MetroWindow.LeftWindowCommands>
     <Frame x:Name="RootFrame"
-       NavigationUIVisibility="Hidden" >
+       NavigationUIVisibility="Hidden"
+            Navigated="RootFrame_Navigated" Margin="0,0,0,-10">
 
     </Frame>
 </ui:MetroWindow>
