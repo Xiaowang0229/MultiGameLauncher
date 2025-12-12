@@ -1,0 +1,15 @@
+﻿<Page x:Class="MultiGameLauncher.Views.Pages.About"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
+      mc:Ignorable="d" 
+
+      Title="About" Width="1200" Height="675">
+
+    <Grid>
+        <Label Content="关于" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+
+    </Grid>
+</Page>

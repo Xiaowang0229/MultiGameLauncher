@@ -1,0 +1,71 @@
+﻿<Page x:Class="MultiGameLauncher.Views.Pages.Manage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
+      mc:Ignorable="d" 
+      xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
+      Title="Manage" Width="1200" Height="675">
+
+    <Grid>
+        <Label Content="管理" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+
+        <StackPanel>
+            <StackPanel Tag="ani" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,74,10,23" Height="38">
+                <Label Content="选择管理对象：" FontSize="24"/>
+                <ui:DropDownButton Width="500" Margin="0,0,10,0"/>
+
+                <Button Content="  增加  " FontSize="20" FontFamily="Microsoft YaHei UI" Margin="0,0,10,0"/>
+                <Button Content="  删除  " FontSize="20" FontFamily="Microsoft YaHei UI"/>
+
+            </StackPanel>
+            <StackPanel Margin="10,0,10,10" x:Name="sp_ani">
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="程序名：" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBox HorizontalAlignment="Left" Height="37"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="18"/>
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="主标题文本：" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBox HorizontalAlignment="Left" Height="37"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="18"/>
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="副标题文本：" VerticalAlignment="Center" FontSize="24"/>
+                    <TextBox HorizontalAlignment="Left" Height="37"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="18"/>
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="背景图片（支持网络/本地）路径：" VerticalAlignment="Center" FontSize="24"/>
+                    <TextBox HorizontalAlignment="Left" Height="37"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="18"/>
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="启动路径：" VerticalAlignment="Center" FontSize="24"/>
+                    <Button Content="浏览…" Height="41"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" Margin="0,0,20,0"/>
+                    <Label Content="路径：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal">
+                    <TextBlock TextWrapping="Wrap" Text="启动参数：" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBox HorizontalAlignment="Left" Height="37" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="18"/>
+
+                </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="程序图标：" VerticalAlignment="Center" FontSize="24"/>
+                    <Button Content="浏览…" Height="41"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" Margin="0,0,20,0"/>
+                    <Button Content="从EXE中获取" Height="41"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" Margin="0,0,20,0"/>
+                    <Image Height="64" Width="64" Margin="0,0,10,0"/>
+                    <Label Content="路径：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+                    
+
+
+                </StackPanel>
+
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Page>

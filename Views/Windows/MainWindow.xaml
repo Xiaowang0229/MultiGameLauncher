@@ -1,0 +1,17 @@
+﻿<ui:MetroWindow x:Name="RootWindow" x:Class="MultiGameLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultiGameLauncher"
+                ResizeMode="CanMinimize"
+                
+        mc:Ignorable="d"
+        xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="RocketLauncher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen">
+    <Frame x:Name="RootFrame"
+       NavigationUIVisibility="Hidden" >
+
+    </Frame>
+</ui:MetroWindow>
