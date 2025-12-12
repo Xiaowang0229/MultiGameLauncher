@@ -50,8 +50,8 @@ namespace MultiGameLauncher.Views.Pages
                     var animation = new ThicknessAnimation
                     {
                         To = new Thickness(0, 0, 0, 10),
-                        Duration = TimeSpan.FromMilliseconds(500),
-                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                        Duration = TimeSpan.FromMilliseconds(700),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
                     };
 
                     foreach (var aniSP in animationSP)
@@ -81,7 +81,7 @@ namespace MultiGameLauncher.Views.Pages
         private void Tile_Click_1(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new About());
+            win.RootFrame.Navigate(new Personality());
             win.BackButton.Width = 40;
         }
 

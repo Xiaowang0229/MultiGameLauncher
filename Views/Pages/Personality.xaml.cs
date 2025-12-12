@@ -14,18 +14,13 @@ using System.Windows.Shapes;
 namespace MultiGameLauncher.Views.Pages
 {
     /// <summary>
-    /// About.xaml 的交互逻辑
+    /// Personality.xaml 的交互逻辑
     /// </summary>
-    public partial class About : Page
+    public partial class Personality : Page
     {
-        public About()
+        public Personality()
         {
             InitializeComponent();
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            RootImage.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationImage);
         }
     }
 }

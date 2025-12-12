@@ -11,12 +11,9 @@
       Title="Launch" Width="1200" Height="675">
 
     <Grid>
-        <!--background-->
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
         <Grid>
-            <!--title-->
-            <!--bar-->
             <Grid Background="#FF00C8FF" VerticalAlignment="Top" Height="95" Margin="0,580,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="&#xE895;" Height="64" Width="64" Margin="0,0,240,0" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="36"/>
@@ -28,7 +25,6 @@
 
 
             </Grid>
-            <!--title-->
             <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" TextWrapping="Wrap" Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Left" Margin="40,124,0,0" TextWrapping="Wrap" Text="副标题" VerticalAlignment="Top" FontSize="22"/>
             <ui:Tile Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="223" Margin="977,580,0,0">
@@ -48,15 +44,15 @@
          Height="40"
          Kind="Settings" />
                         </ui:Tile>
-                        <ui:Tile Title="Github"
+                        <ui:Tile Title="个性化"
           Tag="ani"
      Margin="0,0,0,0"
      ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-     Background="#FFB77027"
+     Background="#FFD474A4"
      HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Height="125" Width="125" Click="Tile_Click_1">
                             <iconPacks:PackIconModern Width="40"
      Height="40"
-     Kind="SocialGithubOctocatSolid" />
+     Kind="DrawBrush" />
                         </ui:Tile>
                     </StackPanel>
                     <StackPanel Margin="0,5,0,0" Tag="ani">
@@ -88,7 +84,7 @@ HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="T
          Tag="ani"
     Margin="0,0,0,0"
     ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-    Background="#FFA217C3"
+    Background="#FFCBA324"
     HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="250" Click="Tile_Click_4">
                         <Grid Width="240" Height="210">
                             <TextBlock HorizontalAlignment="Left" Height="41" TextWrapping="Wrap" Text="更新日志" VerticalAlignment="Top" Width="105" FontSize="20" FontWeight="Bold"/>

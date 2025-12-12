@@ -50,15 +50,9 @@ namespace MultiGameLauncher
                 };
 
 
-                var fadeIn = new DoubleAnimation
-                {
-                    From = 0,
-                    To = 1,
-                    Duration = TimeSpan.FromMilliseconds(600),
-                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseIn }
-                };
+                
 
-                newPage.BeginAnimation(OpacityProperty, fadeIn);
+
                 newPage.BeginAnimation(MarginProperty, animation);
             }
         }
