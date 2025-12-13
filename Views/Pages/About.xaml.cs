@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using MultiGameLauncher.Views.Windows;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -100,6 +103,36 @@ Process.Start(new ProcessStartInfo
                 FileName = "https://afdian.com/a/csharpfadian",
                 UseShellExecute = true
             });
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckProgress.Visibility = Visibility.Visible;
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
+                var content = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
+                if (content == Variables.Version)
+                {
+                    CheckProgress.Visibility = Visibility.Hidden;
+                    MessageBox.Show("当前版本已是最新版本", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    CheckProgress.Visibility = Visibility.Hidden;
+                    MetroWindow win = new UpdatePrepareWindow();
+                    win.ShowDialog();
+                    
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"检查更新时遇到错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
+            //MessageBox.Show(content);
+            
+
         }
     }
 }

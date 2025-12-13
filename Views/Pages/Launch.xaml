@@ -11,15 +11,61 @@
       Title="Launch" Width="1200" Height="675">
 
     <Grid>
+        <Grid.Resources>
+            <!-- 自定义 TabItem 样式 -->
+            <Style TargetType="TabItem">
+                <Setter Property="Padding" Value="0"/>
+                <!-- 避免默认Padding干扰 -->
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <!-- Rectangle 的 Width 绑定到 TabItem 的 ActualWidth -->
+                            <Rectangle RadiusX="10" 
+                               RadiusY="10" 
+                               Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Fill="{TemplateBinding Background}" />
+
+                            <!-- 可选：如果需要显示 Header 内容，可以加一个 ContentPresenter -->
+                            <!--
+                    <ContentPresenter Content="{TemplateBinding Header}" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                    -->
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <!-- 选中时：背景为主题色，宽度变为50 -->
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                        <Setter Property="Width" Value="50"/>
+                    </Trigger>
+
+                    <!-- 未选中时：背景为灰色，宽度恢复默认（或设一个值） -->
+                    <Trigger Property="IsSelected" Value="False">
+                        <Setter Property="Background" Value="Gray" />
+                        <Setter Property="Width" Value="20"/>
+                        <!-- 或者不设置，让它自动 -->
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-
+        <ui:MetroTabControl Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TabItem Header="Tab 1">
+            </TabItem>
+            <TabItem Header="Tab 2">
+            </TabItem>
+        </ui:MetroTabControl>
         <Grid>
-            <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" FlowDirection="RightToLeft">
-                <Button Content="&#xE895;" Height="64" Width="64" Margin="240,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="36"/>
-
-
-
-            </StackPanel>
+            <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" FlowDirection="RightToLeft"/>
 
 
 

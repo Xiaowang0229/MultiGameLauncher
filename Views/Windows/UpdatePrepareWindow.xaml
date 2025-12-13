@@ -1,0 +1,26 @@
+﻿<ui:MetroWindow x:Class="MultiGameLauncher.Views.Windows.UpdatePrepareWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultiGameLauncher.Views.Windows"
+        mc:Ignorable="d"
+                ResizeMode="NoResize"
+        xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="更新可用！" Height="540" Width="400" WindowStartupLocation="CenterScreen">
+    <StackPanel x:Name="sp_ani">
+        <StackPanel Tag="ani">
+            <TextBlock  TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Accent}" Text="更新可用" FontSize="36" FontWeight="Bold" Margin="10,10,0,10"/>
+        </StackPanel>
+        <StackPanel Tag="ani">
+            <GroupBox Height="363" Header="更新日志" Margin="10,0,10,10">
+                <TextBlock x:Name="UpdateInfo"/>
+            </GroupBox>
+        </StackPanel>
+        <StackPanel Tag="ani"  HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Content="过会更新" Width="119" Margin="0,0,10,0"/>
+            <Button Content="现在更新" Width="119" Margin="0,0,10,0"/>
+        </StackPanel>
+
+    </StackPanel>
+</ui:MetroWindow>
