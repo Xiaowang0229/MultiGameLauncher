@@ -7,7 +7,7 @@
         mc:Ignorable="d"
                 ResizeMode="NoResize"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="更新可用！" Height="540" Width="400" WindowStartupLocation="CenterScreen">
+        Title="更新可用！" Height="540" Width="400" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded">
     <StackPanel x:Name="sp_ani">
         <StackPanel Tag="ani">
             <TextBlock  TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Accent}" Text="更新可用" FontSize="36" FontWeight="Bold" Margin="10,10,0,10"/>
