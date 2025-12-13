@@ -11,15 +11,43 @@
 
     <StackPanel>
         <Label Content="关于" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
-        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-            <Image x:Name="RootImage" Width="128" Height="128" Margin="7,0,10,0"/>
-            <StackPanel>
-                <TextBlock  TextWrapping="Wrap" Text="Rocket Launcher" Margin="0,0,0,3" FontSize="36" FontWeight="Bold" />
-                <TextBlock  TextWrapping="Wrap" Text="统合式多游戏管理启动平台" FontSize="16" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock  TextWrapping="Wrap" Text="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" />
-                    <ui:Tile Title="检测更新" Height="40" Width="120" FontFamily="Microsoft YaHei UI" FontSize="16" />
+        <StackPanel x:Name="sp_ani">
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" Tag="ani">
+                <Image x:Name="RootImage" Width="128" Height="128" Margin="7,0,10,0"/>
+                <StackPanel Margin="30,0,0,0">
+                    <TextBlock  TextWrapping="Wrap" Text="Rocket Launcher" Margin="0,20,0,20" FontSize="36" FontWeight="Bold" />
+                    <TextBlock  TextWrapping="Wrap" Text="统合式多游戏管理启动平台 ©Hanxing Developer Group" FontSize="16" Foreground="#FF6C6C6C" />
+                    
                 </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                <TextBlock  TextWrapping="Wrap" Text="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0" />
+                <Button Content="检测更新" Height="40" Width="120" FontFamily="Microsoft YaHei UI" FontSize="16" />
+            </StackPanel>
+            <StackPanel Tag="ani" Orientation="Horizontal" Margin="10,0,0,10">
+                <TextBlock Text="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18">
+            <Hyperlink NavigateUri="http://www.example.com" RequestNavigate="OpenResourcesButton_RequestNavigate">
+                Click here to visit Example.com
+            </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
+                <TextBlock Text="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18">
+<Hyperlink NavigateUri="http://www.example.com" RequestNavigate="IssueReport_RequestNavigate">
+    Click here to visit Example.com
+</Hyperlink>
+                </TextBlock>
+
+            </StackPanel>
+            <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
+                <TextBlock Text="爱发电 打赏地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18">
+<Hyperlink NavigateUri="http://www.example.com" RequestNavigate="Afdian_RequestNavigate">
+    Click here to visit Example.com
+</Hyperlink>
+                </TextBlock>
             </StackPanel>
         </StackPanel>
     </StackPanel>

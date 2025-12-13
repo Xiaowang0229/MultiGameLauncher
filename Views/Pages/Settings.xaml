@@ -11,6 +11,8 @@
 
     <StackPanel>
         <Label Content="设置" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <StackPanel x:Name="sp_ani">
 
+        </StackPanel>
     </StackPanel>
 </Page>

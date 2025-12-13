@@ -9,6 +9,10 @@
 
     <StackPanel>
         <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
-
+        <StackPanel x:Name="sp_ani">
+            <StackPanel Orientation="Horizontal" Tag="ani">
+                <TextBlock Text="选择主题色" FontSize="14" Margin="10,10,0,0"/>
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </Page>

@@ -14,17 +14,17 @@
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
         <Grid>
-            <Grid Background="#FF00C8FF" VerticalAlignment="Top" Height="95" Margin="0,580,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="&#xE895;" Height="64" Width="64" Margin="0,0,240,0" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="36"/>
+            <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" FlowDirection="RightToLeft">
+                <Button Content="&#xE895;" Height="64" Width="64" Margin="240,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="36"/>
 
 
 
-                </StackPanel>
+            </StackPanel>
 
 
 
-            </Grid>
+
+
             <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" TextWrapping="Wrap" Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Left" Margin="40,124,0,0" TextWrapping="Wrap" Text="副标题" VerticalAlignment="Top" FontSize="22"/>
             <ui:Tile Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="223" Margin="977,580,0,0">
