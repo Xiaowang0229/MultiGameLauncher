@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlzEx.Theming;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -11,6 +12,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Color = System.Windows.Media.Color;
+
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -63,6 +66,37 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
+        }
+
+        private void ColorPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+            try
+            {
+                ThemeManager.Current.ChangeTheme(Application.Current, "Light."+Tools.GetColorName((Color)RootColor.SelectedValue));
+                //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show(ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+            if(Darkmode.IsOn)
+            {
+                ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+
+            }
+            else
+            {
+                ThemeManager.Current.ChangeTheme(Application.Current, "Light." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+
+            }
         }
     }
 }

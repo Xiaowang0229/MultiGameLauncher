@@ -1,11 +1,13 @@
-﻿global using Page = System.Windows.Controls.Page;
+﻿global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
-
+global using Page = System.Windows.Controls.Page;
 using MultiGameLauncher.Views.Pages;
 using Newtonsoft.Json;
 using System.IO;
+using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Color = System.Windows.Media.Color;
 
 
 namespace MultiGameLauncher
@@ -31,6 +33,26 @@ namespace MultiGameLauncher
                 bitmapImage.Freeze(); // 可选：跨线程使用时冻结对象
                 return bitmapImage;
             }
+        }
+
+        public static string GetColorName(Color color)
+        {
+            // 忽略 Alpha（透明度），因为命名颜色 Alpha 总是 255
+            foreach (PropertyInfo prop in typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static))
+            {
+                if (prop.PropertyType == typeof(Color))
+                {
+                    Color namedColor = (Color)prop.GetValue(null);
+                    if (namedColor.R == color.R &&
+                        namedColor.G == color.G &&
+                        namedColor.B == color.B &&
+                        namedColor.A == color.A) // 或忽略 A：namedColor.A == 255 && color.A == 255
+                    {
+                        return prop.Name;
+                    }
+                }
+            }
+            return color.ToString(); // 如果不是命名颜色，返回 #AARRGGBB
         }
     }
 
