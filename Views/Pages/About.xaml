@@ -21,22 +21,22 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock  TextWrapping="Wrap" Text="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0" />
+                <TextBlock x:Name="VersionBlock" TextWrapping="Wrap" Text="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0" />
                 <Button Content="检测更新" Height="40" Width="120" FontFamily="Microsoft YaHei UI" FontSize="16" />
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal" Margin="10,0,0,10">
                 <TextBlock Text="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,0"/>
                 <TextBlock FontSize="18">
-            <Hyperlink NavigateUri="http://www.example.com" RequestNavigate="OpenResourcesButton_RequestNavigate">
-                Click here to visit Example.com
+            <Hyperlink x:Name="Library"  Click="Library_Click" Cursor="Hand" >
+                https://github.com/Xiaowang0229/MultiGameLauncher
             </Hyperlink>
                 </TextBlock>
             </StackPanel>
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
                 <TextBlock Text="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
                 <TextBlock FontSize="18">
-<Hyperlink NavigateUri="http://www.example.com" RequestNavigate="IssueReport_RequestNavigate">
-    Click here to visit Example.com
+<Hyperlink x:Name="Issue"  Cursor="Hand" Click="Issue_Click">
+    https://github.com/Xiaowang0229/MultiGameLauncher/issues/new
 </Hyperlink>
                 </TextBlock>
 
@@ -44,8 +44,8 @@
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
                 <TextBlock Text="爱发电 打赏地址：" FontSize="18" Margin="10,0,0,0"/>
                 <TextBlock FontSize="18">
-<Hyperlink NavigateUri="http://www.example.com" RequestNavigate="Afdian_RequestNavigate">
-    Click here to visit Example.com
+<Hyperlink x:Name="Afdian"  Click="Afdian_Click">
+    https://afdian.com/a/csharpfadian
 </Hyperlink>
                 </TextBlock>
             </StackPanel>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,7 @@ namespace MultiGameLauncher.Views.Pages
         public About()
         {
             InitializeComponent();
+            VersionBlock.Text = "当前版本:" + Variables.Version;
             Loaded += (async (s, e) =>
             {
                 try
@@ -71,20 +73,33 @@ namespace MultiGameLauncher.Views.Pages
         }
 
 
-        private void IssueReport_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
 
+
+        private void Library_Click(object sender, RoutedEventArgs e)
+        {
+Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Xiaowang0229/MultiGameLauncher",
+                UseShellExecute = true
+            });
         }
 
-
-        private void Afdian_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void Issue_Click(object sender, RoutedEventArgs e)
         {
-
+Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Xiaowang0229/MultiGameLauncher/issues/new",
+                UseShellExecute = true
+            });
         }
 
-        private void OpenResourcesButton_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void Afdian_Click(object sender, RoutedEventArgs e)
         {
-
+Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://afdian.com/a/csharpfadian",
+                UseShellExecute = true
+            });
         }
     }
 }

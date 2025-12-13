@@ -12,7 +12,11 @@ using Color = System.Windows.Media.Color;
 
 namespace MultiGameLauncher
 {
-    class Tools
+    public class Variables
+    {
+        public static string Version = "Indev 251213";
+    }
+    public class Tools
     {
 
 
@@ -56,21 +60,10 @@ namespace MultiGameLauncher
         }
     }
 
-    public class Variables
-    {
-        public class Launches
-        {
-            public string Name { get; set; }
-            public string MainTitle { get; set; }
-            public string SubTitle { get; set; }
-            public string BackgroundImagepath { get; set; }
-            public string Launchpath { get; set; }
-
-        }
-    }
+    
 
 
-    public class JsonConfig
+    public class LaunchConfig
     {
         public class Index
         {
@@ -87,6 +80,29 @@ namespace MultiGameLauncher
             public string BackgroundImagepath { get; set; }
             public string Launchpath { get; set; }
 
+        }
+    }
+
+    public class Config
+    {
+        public class Personality
+        {
+            //颜色
+            public string ThemeColor { get; set; }
+
+            //主题
+            public string IsDarkModeEnable { get; set; }
+
+            //底图（除主页外）
+            public string DefaultBackgroundImagePath { get; set; }
+        }
+        public class Configs
+        {
+            //自动更新
+            public bool StartUpCheckUpdate { get; set; }
+
+            //开机自启
+            public bool AutoStartUp { get; set; }
         }
     }
 }

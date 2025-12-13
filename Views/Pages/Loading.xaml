@@ -1,0 +1,25 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
+      xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" x:Class="MultiGameLauncher.Views.Pages.Loading"
+      mc:Ignorable="d" 
+      Title="Loading" Width="1200" Height="675">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="sp_ani">
+            <StackPanel Tag="ani">
+                <ui:ProgressRing Height="100" Width="100"/>
+            </StackPanel>
+            <StackPanel Tag="ani">
+                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="正在启动%Game%，请稍候……" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" Margin="0,10,0,0"/>
+            </StackPanel>
+            
+        </StackPanel>
+        <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="223" Margin="977,580,0,0" Click="Tile_Click">
+            <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
+        </ui:Tile>
+    </Grid>
+</Page>
