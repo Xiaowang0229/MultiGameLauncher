@@ -8,35 +8,27 @@
       xmlns:pi="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
 
-      Title="Launch" Width="1200" Height="675">
+      Title="Launch" Width="1200" Height="675" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.Resources>
             <!-- 自定义 TabItem 样式 -->
             <Style TargetType="TabItem">
                 <Setter Property="Padding" Value="0"/>
-                <!-- 避免默认Padding干扰 -->
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
-                            <!-- Rectangle 的 Width 绑定到 TabItem 的 ActualWidth -->
+                            
                             <Rectangle RadiusX="10" 
                                RadiusY="10" 
                                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
                                Height="20"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Fill="{TemplateBinding Background}" />
-
-                            <!-- 可选：如果需要显示 Header 内容，可以加一个 ContentPresenter -->
-                            <!--
-                    <ContentPresenter Content="{TemplateBinding Header}" 
-                                      HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center"/>
-                    -->
+                               Fill="{TemplateBinding Background}" 
+                               ToolTip="{TemplateBinding Header}"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -66,8 +58,18 @@
         </ui:MetroTabControl>
         <Grid>
             <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
-                <Image Width="64" Height="64" x:Name="UserImage" Margin="10,10,10,10"/>
-                <Label FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
+                <Border Margin="10,10,10,10"
+                        Height="64"
+                        Width="64"
+                        BorderBrush="Black" 
+                        BorderThickness="3"  
+                        CornerRadius="0"
+                        ClipToBounds="True" Background="White"
+                        >
+                    <Image Width="64" Height="64" x:Name="UserHead" />
+                </Border>
+                
+                <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
             </StackPanel>
 
 
@@ -123,7 +125,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
-                    <StackPanel Tag="ani">
+                    <StackPanel Tag="ani" Margin="0,0,5,0">
                         <ui:Tile x:Name="ManageTile" Title="游戏管理"
                             ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             Background="{DynamicResource MahApps.Brushes.CheckmarkFill}"

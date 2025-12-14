@@ -21,21 +21,21 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock x:Name="VersionBlock" TextWrapping="Wrap" Text="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0" />
+                <Label x:Name="VersionBlock"  Content="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0" />
                 <Button x:Name="CheckupdateButton" Content="检测更新" Height="40" Width="120" FontFamily="Microsoft YaHei UI" FontSize="16" Click="Button_Click" Margin="0,0,10,0" />
                 <ui:ProgressRing x:Name="CheckProgress" Height="40" Width="40" Visibility="Hidden"/>
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock Text="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,0"/>
-                <TextBlock FontSize="18">
+                <Label Content="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18" VerticalAlignment="Center">
             <Hyperlink x:Name="Library"  Click="Library_Click" Cursor="Hand" >
                 https://github.com/Xiaowang0229/MultiGameLauncher
             </Hyperlink>
                 </TextBlock>
             </StackPanel>
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock Text="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
-                <TextBlock FontSize="18">
+                <Label Content="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18" VerticalAlignment="Center">
 <Hyperlink x:Name="Issue"  Cursor="Hand" Click="Issue_Click">
     https://github.com/Xiaowang0229/MultiGameLauncher/issues/new
 </Hyperlink>
@@ -43,21 +43,21 @@
 
             </StackPanel>
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock Text="爱发电 打赏地址：" FontSize="18" Margin="10,0,0,0"/>
-                <TextBlock FontSize="18">
+                <Label Content="爱发电 打赏地址：" FontSize="18" Margin="10,0,0,0"/>
+                <TextBlock FontSize="18" VerticalAlignment="Center">
                     <Hyperlink x:Name="Afdian"  Click="Afdian_Click">
                         https://afdian.com/a/csharpfadian
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
-                <TextBlock Text="本程序依据" FontSize="18" Margin="10,0,10,0"/>
-                <TextBlock FontSize="18">
+                <Label Content="本程序依据" FontSize="18" Margin="10,0,10,0"/>
+                <TextBlock FontSize="18" VerticalAlignment="Center">
                     <Hyperlink x:Name="Apache"  Click="Apache_Click">
                         Apache License V2.0
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock Text="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
+                <Label Content="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
             </StackPanel>
         </StackPanel>
     </StackPanel>

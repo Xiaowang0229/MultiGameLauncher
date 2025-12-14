@@ -1,20 +1,11 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
+using System.IO;
 
 
 namespace MultiGameLauncher.Views.Pages
@@ -107,6 +98,7 @@ namespace MultiGameLauncher.Views.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
+            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             UserName.Text = config.Username;
             if(config.ThemeMode == "Dark")
             {
@@ -135,8 +127,24 @@ namespace MultiGameLauncher.Views.Pages
             var result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                openFileDialog.FileName;
+                if (openFileDialog.FileName == Environment.CurrentDirectory + @"\Head.png")
+                {
+                    MessageBox.Show("不能选择同一张头像","错误",MessageBoxButton.OK,MessageBoxImage.Stop);
+                }
+                else if(openFileDialog.FileName!= Environment.CurrentDirectory + @"\Head.png")
+                {
+                    File.Delete(Environment.CurrentDirectory + @"\Head.png");
+                    File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
+                    MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Tools.Restart();
+                }
             }
+        }
+
+        private void UserName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            config.Username = UserName.Text;
+            Json.WriteJson(Variables.Configpath, config);
         }
     }
 }

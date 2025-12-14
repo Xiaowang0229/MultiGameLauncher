@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,11 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Launch : Page
     {
         private List<StackPanel> animationSP = new();
+        private MainConfig config;
         public Launch()
         {
             InitializeComponent();
-
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Loaded += (async (s, e) =>
             {
                 try
@@ -119,6 +121,12 @@ namespace MultiGameLauncher.Views.Pages
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            Welcome.Content = "欢迎，" + config.Username;
         }
     }
 }

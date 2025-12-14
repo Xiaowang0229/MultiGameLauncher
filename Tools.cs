@@ -1,12 +1,17 @@
 ﻿global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
+using ControlzEx.Theming;
 using HuaZi.Library.Json;
+using Microsoft.Win32;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using Color = System.Windows.Media.Color;
 
 
@@ -14,7 +19,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Indev 251214";
+        public readonly static string Version = "Indev 251214\n";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
     }
 
@@ -63,6 +68,111 @@ namespace MultiGameLauncher
             return color.ToString(); 
         }
 
+        public static bool ConvertToPngAndSave(byte[] imageBytes, string savePath)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+                throw new ArgumentException("byte[] 不能为空");
+
+            try
+            {
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                using (Image image = Image.FromStream(ms))
+                {
+                    image.Save(savePath, ImageFormat.Png);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("转换失败: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static BitmapImage LoadImageFromPath(string imagePath)
+        {
+            if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
+            {
+                return null;
+            }
+
+            try
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
+                bitmap.EndInit();
+                bitmap.Freeze(); 
+
+                return bitmap;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"加载图片失败: {imagePath}，错误: {ex.Message}");
+                return null;
+            }
+        }
+
+        public static bool AppsUseLightTheme()
+        {
+            const string RegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string ValueName = "AppsUseLightTheme";
+
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(RegistryPath))
+                {
+                    var value = key?.GetValue(ValueName);
+                    if (value is int intValue)
+                    {
+                        return intValue > 0; 
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
+
+            return true; 
+        }
+        public static void StartThemeMonitoring()
+        {
+
+            bool isLight = AppsUseLightTheme();
+            string theme = isLight ? "Light" : "Dark";
+            ThemeManager.Current.ChangeTheme(Application.Current, theme + "." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config.ThemeMode = theme;
+            Json.WriteJson(Variables.Configpath, config);
+            SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
+        }
+        public static void StopThemeMonitoring()
+        {
+            SystemEvents.UserPreferenceChanged -= OnUserPreferenceChanged;
+        }
+        private static void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        {
+            if (e.Category == UserPreferenceCategory.VisualStyle ||
+                e.Category == UserPreferenceCategory.Color ||
+                e.Category == UserPreferenceCategory.General)
+            {
+                OutputCurrentTheme();
+            }
+        }
+
+        private static void OutputCurrentTheme()
+        {
+            bool isLight = AppsUseLightTheme();
+            string theme = isLight ? "Light" : "Dark";
+            ThemeManager.Current.ChangeTheme(Application.Current, theme + "." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config.ThemeMode = theme;
+            Json.WriteJson(Variables.Configpath, config);
+        }
+
         public static void InitalizeConfig()
         {
             var config = new MainConfig
@@ -75,6 +185,7 @@ namespace MultiGameLauncher
                 ChangeThemeWithSystem = false
             };
             Json.WriteJson(Variables.Configpath,config);
+            ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
     }
 

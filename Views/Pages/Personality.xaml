@@ -18,7 +18,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
                         <Label Content="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBox x:Name="UserName" Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
+                        <TextBox x:Name="UserName" Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14" LostFocus="UserName_LostFocus"/>
                         <Button Width="100" Margin="10,0,0,0" Content="确定" Click="Button_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,0,10,10">

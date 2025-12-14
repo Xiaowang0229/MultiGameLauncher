@@ -1,6 +1,8 @@
 ﻿using HuaZi.Library.Json;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -83,11 +85,13 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.StartUpCheckUpdate = true;
                 Json.WriteJson(Variables.Configpath, config);
+                //MessageBox.Show("设置成功，重启程序后生效","提示",MessageBoxButton.OK,MessageBoxImage.Information);
             }
             else if (StartUpCheckUpdate.IsOn == false)
             {
                 config.StartUpCheckUpdate = false;
                 Json.WriteJson(Variables.Configpath, config);
+                //MessageBox.Show("设置成功，重启程序后生效", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             
         }
@@ -98,11 +102,13 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.ChangeThemeWithSystem = true;
                 Json.WriteJson(Variables.Configpath, config);
+                Tools.StartThemeMonitoring();
             }
             else if (ChangeThemeWithSystem.IsOn == false)
             {
                 config.ChangeThemeWithSystem = false;
                 Json.WriteJson(Variables.Configpath, config);
+                Tools.StopThemeMonitoring();
             }
         }
 
@@ -110,11 +116,17 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (AutoStartWithSystem.IsOn)
             {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+                key.SetValue("Rocket Launcher", Process.GetCurrentProcess().MainModule.FileName, RegistryValueKind.String); // 设置字符串类型的键值
+                key.Close();
                 config.AutoStartUp = true;
                 Json.WriteJson(Variables.Configpath, config);
             }
             else if (AutoStartWithSystem.IsOn == false)
             {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+                key.DeleteValue("Rocket Launcher"); // 设置字符串类型的键值
+                key.Close();
                 config.AutoStartUp = false;
                 Json.WriteJson(Variables.Configpath, config);
             }

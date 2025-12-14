@@ -29,7 +29,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             InitializeComponent();
             IsCheckUpdate = isCheckUpdate;
-            VersionBlock.Text = "当前版本:" + Variables.Version;
+            VersionBlock.Content = "\n当前版本:" + Variables.Version;
             Loaded += (async (s, e) =>
             {
                 try
