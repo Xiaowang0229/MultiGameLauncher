@@ -7,19 +7,23 @@
         mc:Ignorable="d"
                 ResizeMode="NoResize"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="更新可用！" Height="540" Width="400" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded">
+        Title="更新可用！" Height="570" Width="400" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded">
     <StackPanel x:Name="sp_ani">
         <StackPanel Tag="ani">
-            <TextBlock  TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Accent}" Text="更新可用" FontSize="36" FontWeight="Bold" Margin="10,10,0,10"/>
+            <TextBlock  TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Accent}" Text="更新可用" FontSize="36" FontWeight="Bold" Margin="10,10,0,5"/>
+        </StackPanel>
+        <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,9">
+            <TextBlock x:Name="CurrentVersion" FontFamily="Microsoft Yahei ui" Text="当前版本：" Margin="10,0,30,0"/>
+            <TextBlock x:Name="LatestVersion" FontFamily="Microsoft Yahei ui" Text="最新版本："/>
         </StackPanel>
         <StackPanel Tag="ani">
             <GroupBox Height="363" Header="更新日志" Margin="10,0,10,10">
-                <TextBlock x:Name="UpdateInfo"/>
+                <TextBlock x:Name="UpdateLog"/>
             </GroupBox>
         </StackPanel>
         <StackPanel Tag="ani"  HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="过会更新" Width="119" Margin="0,0,10,0"/>
-            <Button Content="现在更新" Width="119" Margin="0,0,10,0"/>
+            <Button Content="过会更新" Width="119" Margin="0,0,10,0" Click="Button_Click"/>
+            <Button Content="现在更新" Width="119" Margin="0,0,10,0" Click="Button_Click_1"/>
         </StackPanel>
 
     </StackPanel>

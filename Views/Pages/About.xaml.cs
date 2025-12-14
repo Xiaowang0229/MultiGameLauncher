@@ -120,8 +120,16 @@ Process.Start(new ProcessStartInfo
                 }
                 else
                 {
+                    
+                    
+                    using var log = new HttpClient();
+                    log.DefaultRequestHeaders.Add("User-Agent", "C# console program");
+                    var Onlinelog = await log.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLog");
+                    using var link = new HttpClient();
+                    client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
+                    var OnlineLink = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLink");
                     CheckProgress.Visibility = Visibility.Hidden;
-                    MetroWindow win = new UpdatePrepareWindow();
+                    MetroWindow win = new UpdatePrepareWindow(Variables.Version,content,Onlinelog,OnlineLink);
                     win.ShowDialog();
                     
                 }
@@ -129,6 +137,7 @@ Process.Start(new ProcessStartInfo
             catch(Exception ex)
             {
                 MessageBox.Show($"检查更新时遇到错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
+                CheckProgress.Visibility = Visibility.Hidden;
             }
             //MessageBox.Show(content);
             

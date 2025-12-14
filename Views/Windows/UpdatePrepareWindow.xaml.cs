@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -21,10 +22,18 @@ namespace MultiGameLauncher.Views.Windows
     public partial class UpdatePrepareWindow : MetroWindow
     {
         private List<StackPanel> animationSP = new();
-        public UpdatePrepareWindow()
+        private string OnlineVersion {get;set;}
+        private string OnlineLog { get; set; }
+        private string OnlineLink { get; set; }
+        private string LocalVersion { get; set; }
+        public UpdatePrepareWindow(string localVersion, string onlineVersion, string onlineLog, string onlineLink)
         {
 
             InitializeComponent();
+            LocalVersion = localVersion;
+            OnlineLink = onlineLink;
+            OnlineVersion = onlineVersion;
+            OnlineLog = onlineLog;
             Loaded += (async (s, e) =>
             {
                 try
@@ -71,15 +80,27 @@ namespace MultiGameLauncher.Views.Windows
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            using var version = new HttpClient();
-            version.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-            var OnlineVersion = await version.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
-            using var log = new HttpClient();
-            log.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-            var Onlinelog = await log.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-            var OnlineLink = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
+            CurrentVersion.Text = "当前版本：" + LocalVersion;
+            LatestVersion.Text = "最新版本：" + OnlineVersion;
+            UpdateLog.Text = OnlineLog;
+
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = Environment.CurrentDirectory + @"\Update\UpdateAPI.exe",
+                Arguments = OnlineLink+" "+ Process.GetCurrentProcess().MainModule.FileName,
+                UseShellExecute = true
+            });
+        }
+    
     }
 }
