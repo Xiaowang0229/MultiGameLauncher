@@ -1,8 +1,8 @@
 ﻿global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
-using MultiGameLauncher.Views.Pages;
-using Newtonsoft.Json;
+using HuaZi.Library.Json;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Media;
@@ -12,17 +12,22 @@ using Color = System.Windows.Media.Color;
 
 namespace MultiGameLauncher
 {
-    public class Variables
+    public class Variables //变量集
     {
-        public static string Version = "Indev 251213";
+        public readonly static string Version = "Indev 251214";
+        public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
     }
-    public class Tools
+
+    
+    public class Tools //工具集
     {
-
-
-
         public static ImageSource ApplicationLogo;
         //读图片函数
+        public static void Restart()
+        {
+            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+            Environment.Exit(0);
+        }
         public static ImageSource ConvertByteArrayToImageSource(byte[] imageBytes)
         {
             if (imageBytes == null || imageBytes.Length == 0) return null;
@@ -31,17 +36,16 @@ namespace MultiGameLauncher
             {
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad; // 确保立即加载数据
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
-                bitmapImage.Freeze(); // 可选：跨线程使用时冻结对象
+                bitmapImage.Freeze();
                 return bitmapImage;
             }
         }
 
         public static string GetColorName(Color color)
         {
-            // 忽略 Alpha（透明度），因为命名颜色 Alpha 总是 255
             foreach (PropertyInfo prop in typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static))
             {
                 if (prop.PropertyType == typeof(Color))
@@ -50,20 +54,31 @@ namespace MultiGameLauncher
                     if (namedColor.R == color.R &&
                         namedColor.G == color.G &&
                         namedColor.B == color.B &&
-                        namedColor.A == color.A) // 或忽略 A：namedColor.A == 255 && color.A == 255
+                        namedColor.A == color.A) 
                     {
                         return prop.Name;
                     }
                 }
             }
-            return color.ToString(); // 如果不是命名颜色，返回 #AARRGGBB
+            return color.ToString(); 
+        }
+
+        public static void InitalizeConfig()
+        {
+            var config = new MainConfig
+            {
+                Username = "Administrator",
+                ThemeColor = "Blue",
+                ThemeMode = "Light",
+                AutoStartUp = false,
+                StartUpCheckUpdate = true,
+                ChangeThemeWithSystem = false
+            };
+            Json.WriteJson(Variables.Configpath,config);
         }
     }
 
-    
-
-
-    public class LaunchConfig
+    public class LaunchConfig //游戏配置项
     {
         public class Index
         {
@@ -83,34 +98,28 @@ namespace MultiGameLauncher
         }
     }
 
-    public class Config
+    public class MainConfig //主体配置项
     {
-        public class User
-        {
-            //用户名
-            public string Username { get; set; }
+        //用户名
+        public string Username { get; set; }
 
-            //此处不再写头像位置，因为启用头像时已经复制
-            //public string UserImage { get; set; }
-        }
-        public class Personality
-        {
-            //颜色
-            public string ThemeColor { get; set; }
+        //此处不再写头像位置，因为使能头像时已经复制
+        //public string UserImage { get; set; }
 
-            //主题
-            public string ProgramTheme { get; set; }
+        //主题(颜色)
+        public string ThemeColor { get; set; }
 
-            //此处不再写底图（除主页外）的位置，因为启用它时已经复制
-            //public string DefaultBackgroundImagePath { get; set; }
-        }
-        public class Configs
-        {
-            //自动更新
-            public bool StartUpCheckUpdate { get; set; }
+        //主题(深浅)
+        public string ThemeMode { get; set; }
 
-            //开机自启
-            public bool AutoStartUp { get; set; }
-        }
+        //自动更新
+        public bool StartUpCheckUpdate { get; set; }
+
+        //开机自启
+        public bool AutoStartUp { get; set; }
+
+        //主题跟随系统
+        public bool ChangeThemeWithSystem { get; set; }
     }
+
 }

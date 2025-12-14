@@ -1,4 +1,6 @@
 ﻿using ControlzEx.Theming;
+using HuaZi.Library.Json;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,9 +25,11 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Personality : Page
     {
         private List<StackPanel> animationSP = new();
+        private MainConfig config;
         public Personality()
         {
             InitializeComponent();
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Loaded += (async (s, e) =>
             {
                 try
@@ -74,13 +78,12 @@ namespace MultiGameLauncher.Views.Pages
             //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
             try
             {
-                ThemeManager.Current.ChangeTheme(Application.Current, "Light."+Tools.GetColorName((Color)RootColor.SelectedValue));
+                ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme +"."+ Tools.GetColorName((Color)RootColor.SelectedValue));
                 //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+                config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
+                Json.WriteJson(Variables.Configpath,config);
             }
-            catch(Exception ex)
-            {
-
-            }
+            catch(Exception){ }
 
         }
 
@@ -90,18 +93,50 @@ namespace MultiGameLauncher.Views.Pages
             if(Darkmode.IsOn)
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
-
+                config.ThemeMode = "Dark";
+                Json.WriteJson(Variables.Configpath, config);
             }
             else
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Light." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
-
+                config.ThemeMode = "Light";
+                Json.WriteJson(Variables.Configpath, config);
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
+            //UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
+            UserName.Text = config.Username;
+            if(config.ThemeMode == "Dark")
+            {
+                Darkmode.IsOn = true;
+            }
+        }
+
+        private void ChooseBackground_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            config.Username = UserName.Text;
+            Json.WriteJson(Variables.Configpath, config);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog()
+            {
+                Filter = "头像图片 (.png)|*.png"
+            };
+            var result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                openFileDialog.FileName;
+            }
         }
     }
 }

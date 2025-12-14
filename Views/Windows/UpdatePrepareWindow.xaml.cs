@@ -100,6 +100,7 @@ namespace MultiGameLauncher.Views.Windows
                 Arguments = OnlineLink+" "+ Process.GetCurrentProcess().MainModule.FileName,
                 UseShellExecute = true
             });
+            Application.Current.Shutdown();
         }
     
     }

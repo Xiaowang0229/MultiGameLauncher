@@ -17,19 +17,19 @@
                 </StackPanel>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
-                        <TextBlock Text="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBox Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
-                        <Button Width="100" Margin="10,0,0,0" Content="确定"/>
+                        <Label Content="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBox x:Name="UserName" Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
+                        <Button Width="100" Margin="10,0,0,0" Content="确定" Click="Button_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
-                        <TextBlock Text="头像：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <Button Width="100" Margin="10,0,0,0" Content="浏览…"/>
+                        <Label Content="头像：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Button Width="100" Margin="10,0,0,0" Content="浏览…" Click="Button_Click_1"/>
                     </StackPanel>
 
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani">
-                <TextBlock Text="选择主题色:" FontSize="16" Margin="10,5,10,0"/>
+                <Label Content="选择主题色:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ColorPalette SelectionChanged="ColorPalette_SelectionChanged" x:Name="RootColor" Height="59" Width="396" Header="请选择：" FontSize="14" >
                     <Color>Brown</Color>
                     <Color>Red</Color>
@@ -51,12 +51,8 @@
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
-                <TextBlock Text="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
+                <Label Content="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Tag="ani">
-                <TextBlock Text="选择默认背景图:" FontSize="16" Margin="10,5,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button Content="浏览……" Width="150" FontSize="16" FontFamily="Microsoft YaHei UI"/>
             </StackPanel>
         </StackPanel>
     </StackPanel>

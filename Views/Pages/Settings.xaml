@@ -7,26 +7,26 @@
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" x:Class="MultiGameLauncher.Views.Pages.Settings"
       mc:Ignorable="d" 
       Width="1200" Height="675"
-      Title="Settings">
+      Title="Settings" Loaded="Page_Loaded">
 
     <StackPanel>
         <Label Content="设置" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani"  Margin="10,0,0,0">
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <TextBlock FontSize="16" Text="启动时检测更新：" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <ui:ToggleSwitch/>
+                <Label FontSize="16" Content="启动时检测更新：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="StartUpCheckUpdate" Toggled="StartUpCheckUpdate_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <TextBlock FontSize="16" Text="随系统切换主题：" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <ui:ToggleSwitch/>
+                <Label FontSize="16" Content="随系统切换主题：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="ChangeThemeWithSystem" Toggled="ChangeThemeWithSystem_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <TextBlock FontSize="16" Text="程序开机自启动：" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <ui:ToggleSwitch/>
+                <Label FontSize="16" Content="程序开机自启动：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="AutoStartWithSystem" Toggled="AutoStartWithSystem_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <TextBlock FontSize="16" Text="重置所有配置项：" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <Button Width="120" FontFamily="Microsoft Yahei UI" Content="重置所有配置项" Foreground="#FFE61E1E"/>
+                <Label FontSize="16" Content="重置所有配置项：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <Button Width="120" FontFamily="Microsoft Yahei UI" Content="重置所有配置项" Foreground="#FFE61E1E" Click="Button_Click"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani">
 
