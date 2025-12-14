@@ -45,10 +45,19 @@
             <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
                 <TextBlock Text="爱发电 打赏地址：" FontSize="18" Margin="10,0,0,0"/>
                 <TextBlock FontSize="18">
-<Hyperlink x:Name="Afdian"  Click="Afdian_Click">
-    https://afdian.com/a/csharpfadian
-</Hyperlink>
+                    <Hyperlink x:Name="Afdian"  Click="Afdian_Click">
+                        https://afdian.com/a/csharpfadian
+                    </Hyperlink>
                 </TextBlock>
+            </StackPanel>
+            <StackPanel Tag="ani"  Orientation="Horizontal" Margin="10,0,0,10">
+                <TextBlock Text="本程序依据" FontSize="18" Margin="10,0,10,0"/>
+                <TextBlock FontSize="18">
+                    <Hyperlink x:Name="Apache"  Click="Apache_Click">
+                        Apache License V2.0
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
             </StackPanel>
         </StackPanel>
     </StackPanel>

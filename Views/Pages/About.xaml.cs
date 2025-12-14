@@ -188,5 +188,14 @@ Process.Start(new ProcessStartInfo
             
 
         }
+
+        private void Apache_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://raw.githubusercontent.com/Xiaowang0229/MultiGameLauncher/refs/heads/master/LICENSE",
+                UseShellExecute = true
+            });
+        }
     }
 }
