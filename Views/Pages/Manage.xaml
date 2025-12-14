@@ -23,42 +23,43 @@
             </StackPanel>
             <StackPanel Margin="10,0,10,10" x:Name="sp_ani">
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="程序名：" FontSize="16" VerticalAlignment="Center"/>
+                    <Label  Content="程序名：" FontSize="16" VerticalAlignment="Center"/>
                     <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="16"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="主标题文本：" FontSize="16" VerticalAlignment="Center"/>
+                    <Label  Content="主标题文本：" FontSize="16" VerticalAlignment="Center"/>
                     <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="16"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="副标题文本：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="副标题文本：" VerticalAlignment="Center" FontSize="16"/>
                     <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="16"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="背景图片（支持网络/本地）路径：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="背景图片（支持网络/本地）路径：" VerticalAlignment="Center" FontSize="16"/>
                     <TextBox  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="551" FontFamily="Microsoft YaHei UI" FontSize="16" Margin="0,0,5,0"/>
                     <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="启动路径：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="启动路径：" VerticalAlignment="Center" FontSize="16"/>
                     <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"/>
                     <Label Content="路径：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
 
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal">
-                    <TextBlock TextWrapping="Wrap" Text="启动参数：" FontSize="16" VerticalAlignment="Center"/>
+                    <Label Content="启动参数：" FontSize="16" VerticalAlignment="Center"/>
                     <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="681" FontFamily="Microsoft YaHei UI" FontSize="16"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="程序图标：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="程序图标：" VerticalAlignment="Center" FontSize="16"/>
                     <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0" Height="31"/>
                     <Button Content="从EXE中获取" Height="31"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"/>
+                    <Label Content="预览：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                     <Image Height="64" Width="64" Margin="0,0,10,0"/>
                     <Label Content="路径：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
 
@@ -66,7 +67,7 @@
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="程序版本：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="程序版本：" VerticalAlignment="Center" FontSize="16"/>
                     <Button Content="手动输入"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"/>
                     <Button Content="从EXE中获取"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"/>
                     <Label Content="当前版本：" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
@@ -76,7 +77,7 @@
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock TextWrapping="Wrap" Text="字体配置：" VerticalAlignment="Center" FontSize="16"/>
+                    <Label Content="字体配置：" VerticalAlignment="Center" FontSize="16"/>
                     <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"/>
 
 
