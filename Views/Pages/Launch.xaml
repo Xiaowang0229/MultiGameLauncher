@@ -12,7 +12,7 @@
 
     <Grid>
         <Grid.Resources>
-            <!-- 自定义 TabItem 样式 -->
+            <!-- 胶囊式 TabItem 样式，带平滑切换动画（无需任何 Trigger） -->
             <Style TargetType="TabItem">
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -20,33 +20,66 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
-                            
-                            <Rectangle RadiusX="10" 
-                               RadiusY="10" 
-                               Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
-                               Height="20"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Fill="{TemplateBinding Background}" 
-                               ToolTip="{TemplateBinding Header}"/>
+                            <Border x:Name="Capsule"
+                                Width="20"
+                                Height="20"
+                                CornerRadius="10"
+                                Background="Gray"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                ToolTip="{TemplateBinding Header}">
+
+                                <!-- 关键：VisualStateManager 直接放在 Border 上 -->
+                                <VisualStateManager.VisualStateGroups>
+                                    <!-- WPF TabItem 内置识别这个组名 -->
+                                    <VisualStateGroup x:Name="SelectionStates">
+
+                                        <!-- 未选中状态（默认） -->
+                                        <VisualState x:Name="Unselected">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             To="20"
+                                                             Duration="0:0:0.3">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="#FF808080" 
+                                                    Duration="0:0:0.3">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <!-- 选中状态 -->
+                                        <VisualState x:Name="Selected">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             To="50"
+                                                             Duration="0:0:0.3">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="{DynamicResource MahApps.Colors.Accent}"
+                                                            Duration="0:0:0.3">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-
-                <Style.Triggers>
-                    <!-- 选中时：背景为主题色，宽度变为50 -->
-                    <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                        <Setter Property="Width" Value="50"/>
-                    </Trigger>
-
-                    <!-- 未选中时：背景为灰色，宽度恢复默认（或设一个值） -->
-                    <Trigger Property="IsSelected" Value="False">
-                        <Setter Property="Background" Value="Gray" />
-                        <Setter Property="Width" Value="20"/>
-                        <!-- 或者不设置，让它自动 -->
-                    </Trigger>
-                </Style.Triggers>
             </Style>
         </Grid.Resources>
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
