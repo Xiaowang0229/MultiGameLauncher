@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
       mc:Ignorable="d" 
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
-      Title="Personality" Width="1200" Height="675">
+      Title="Personality" Width="1200" Height="675" Loaded="Page_Loaded">
 
     <StackPanel>
         <Label Content="用户" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
@@ -24,6 +24,10 @@
                     <StackPanel Orientation="Horizontal" Margin="10,0,10,10" Tag="ani">
                         <TextBlock Text="密码设置：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <Button Width="100" Margin="10,0,0,0" Content="设置密码"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
+                        <TextBlock Text="头像：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Button Width="100" Margin="10,0,0,0" Content="浏览…"/>
                     </StackPanel>
 
                 </StackPanel>

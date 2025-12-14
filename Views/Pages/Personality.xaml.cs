@@ -98,5 +98,10 @@ namespace MultiGameLauncher.Views.Pages
 
             }
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
+        }
     }
 }
