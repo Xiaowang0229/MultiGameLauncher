@@ -85,16 +85,24 @@ namespace MultiGameLauncher
 
     public class Config
     {
+        public class User
+        {
+            //用户名
+            public string Username { get; set; }
+
+            //此处不再写头像位置，因为启用头像时已经复制
+            //public string UserImage { get; set; }
+        }
         public class Personality
         {
             //颜色
             public string ThemeColor { get; set; }
 
             //主题
-            public string IsDarkModeEnable { get; set; }
+            public string ProgramTheme { get; set; }
 
-            //底图（除主页外）
-            public string DefaultBackgroundImagePath { get; set; }
+            //此处不再写底图（除主页外）的位置，因为启用它时已经复制
+            //public string DefaultBackgroundImagePath { get; set; }
         }
         public class Configs
         {
