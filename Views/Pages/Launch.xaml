@@ -73,70 +73,78 @@
 
             <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" TextWrapping="Wrap" Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Left" Margin="40,124,0,0" TextWrapping="Wrap" Text="副标题" VerticalAlignment="Top" FontSize="22"/>
-            <ui:Tile Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="223" Margin="977,580,0,0" Click="Tile_Click_5">
-                <iconPacks:PackIconModern Width="40" Height="40" Kind="ControlPlay" />
+            <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
+                <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
             </ui:Tile>
-            <StackPanel Orientation="Horizontal" Margin="0,318,422,98"  x:Name="sp_ani">
-                <StackPanel Margin="0,0,5,0">
+            <ui:Tile x:Name="LaunchTile" Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="LaunchTile_Click">
+                <StackPanel>
+                    <iconPacks:PackIconModern Width="40" Height="40" Kind="ControlPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="当前游戏："/>
+                </StackPanel>
+            </ui:Tile>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,280,298,95"  x:Name="sp_ani">
+                <StackPanel Margin="5,0,0,0">
 
-                    <StackPanel  Orientation="Horizontal" Tag="ani">
-                        <ui:Tile Title="设置"
-          Tag="ani"
-     Margin="10,0,5,0"
-     ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-     Background="Teal"
-     HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Height="125" Width="125" Click="Tile_Click">
+                    <StackPanel  Orientation="Horizontal" Tag="ani" Margin="0,0,0,0">
+                        <ui:Tile x:Name="SettingsTile" Title="设置"
+                            Margin="3,3,0,0"
+                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Background="{DynamicResource MahApps.Brushes.DataGrid.Selection.BorderBrush}"
+                            HorizontalTitleAlignment="Right" Click="SettingsTile_Click">
                             <iconPacks:PackIconModern Width="40"
-         Height="40"
-         Kind="Settings" />
+                                Height="40"
+                                Kind="Settings" />
                         </ui:Tile>
-                        <ui:Tile Title="个性化"
-          Tag="ani"
-     Margin="0,0,0,0"
-     ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-     Background="#FFD474A4"
-     HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Height="125" Width="125" Click="Tile_Click_1">
+                        <ui:Tile x:Name="UserTile" Title="用户"
+                            Margin="10,3,3,0"
+                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Background="{DynamicResource MahApps.Brushes.SystemControlRevealFocusVisual}"
+                            HorizontalTitleAlignment="Right" Click="UserTile_Click">
                             <iconPacks:PackIconModern Width="40"
-     Height="40"
-     Kind="DrawBrush" />
+                                Height="40"
+                                Kind="User" />
                         </ui:Tile>
                     </StackPanel>
-                    <StackPanel Margin="0,5,0,0" Tag="ani">
-                        <ui:Tile Title="关于"
-          Tag="ani"
-Margin="10,0,0,5"
-ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-Background="Gray"
-HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Width="255" Height="120" Click="Tile_Click_2">
+                    <StackPanel Margin="0,10,0,0" Tag="ani">
+                        <ui:Tile x:Name="AboutTile" Title="关于"
+                            Margin="3,0,3,3"
+                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                            HorizontalTitleAlignment="Right" Width="290" Click="AboutTile_Click">
                             <iconPacks:PackIconModern Width="40"
-               Height="40"
-               Kind="InformationCircle" />
+                                Height="40"
+                                Kind="InformationCircle" />
                         </ui:Tile>
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="5,0,0,0" Tag="ani">
-                    <ui:Tile Title="管理游戏"
-    Margin="0,0,6,0"
-         Tag="ani"
-    ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-    Background="#FFC31717"
-    HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="250" Click="Tile_Click_3">
-                        <iconPacks:PackIconModern Width="40"
-        Height="40"
-        Kind="List" />
-                    </ui:Tile>
-                    <ui:Tile Title="检查更新"
-         Tag="ani"
-    Margin="0,0,0,0"
-    ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-    Background="#FFCBA324"
-    HorizontalTitleAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="250" Click="Tile_Click_4">
-                        <Grid Width="240" Height="210">
-                            <TextBlock HorizontalAlignment="Left" Height="41" TextWrapping="Wrap" Text="更新日志" VerticalAlignment="Top" Width="105" FontSize="20" FontWeight="Bold"/>
-
-                        </Grid>
-                    </ui:Tile>
+                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                    <StackPanel Tag="ani">
+                        <ui:Tile x:Name="ManageTile" Title="游戏管理"
+                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Background="{DynamicResource MahApps.Brushes.CheckmarkFill}"
+                            HorizontalTitleAlignment="Right" Height="290" Width="290" Click="ManageTile_Click">
+                            <iconPacks:PackIconModern Width="80"
+                                Height="80"
+                                Kind="ListAdd" />
+                        </ui:Tile>
+                    </StackPanel>
+                    <StackPanel Tag="ani">
+                        <ui:Tile x:Name="UpdateTile" Title="更新"
+                            Margin="3"
+                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Background="{DynamicResource MahApps.Brushes.Highlight}"
+                            HorizontalTitleAlignment="Right" Height="290" Width="290" Click="UpdateTile_Click">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="209" Width="230">
+                                <TextBlock Text="版本日志：" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock/>
+                            </StackPanel>
+                        </ui:Tile>
+                    </StackPanel>
+                    
+                    
+                    
                 </StackPanel>
 
             </StackPanel>

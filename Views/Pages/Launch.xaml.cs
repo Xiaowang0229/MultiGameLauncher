@@ -44,7 +44,7 @@ namespace MultiGameLauncher.Views.Pages
 
                     foreach (var spp in animationSP)
                     {
-                        spp.Margin = new Thickness(0, 0, 0, 10);
+                        spp.Margin = new Thickness(0, 0, 0, -2010);
                     }
 
                     var animation = new ThicknessAnimation
@@ -71,45 +71,53 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        private void Tile_Click(object sender, RoutedEventArgs e)
+        
+
+        
+
+        private void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Settings());
             win.BackButton.Width = 40;
         }
 
-        private void Tile_Click_1(object sender, RoutedEventArgs e)
+        private void UserTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Personality());
             win.BackButton.Width = 40;
         }
 
-        private void Tile_Click_2(object sender, RoutedEventArgs e)
+        private void AboutTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new About());
             win.BackButton.Width = 40;
         }
 
-        private void Tile_Click_3(object sender, RoutedEventArgs e)
+        private void ManageTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());
             win.BackButton.Width = 40;
         }
 
-        private void Tile_Click_4(object sender, RoutedEventArgs e)
+        private void UpdateTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new About());
+            win.RootFrame.Navigate(new About(true));
             win.BackButton.Width = 40;
         }
 
-        private void Tile_Click_5(object sender, RoutedEventArgs e)
+        private void LaunchTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Loading("1"));
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

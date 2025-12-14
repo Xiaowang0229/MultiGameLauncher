@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="RocketLauncher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True">
+        Title="Rocket Launcher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True">
     
 
     <ui:MetroWindow.LeftWindowCommands>

@@ -9,8 +9,25 @@
       Title="Personality" Width="1200" Height="675">
 
     <StackPanel>
-        <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="用户" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani">
+            <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
+                <StackPanel Tag="ani">
+                    <Image Height="128" Width="128" x:Name="UserHead"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
+                        <TextBlock Text="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBox Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
+                        <Button Width="100" Margin="10,0,0,0" Content="确定"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,10" Tag="ani">
+                        <TextBlock Text="密码设置：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Button Width="100" Margin="10,0,0,0" Content="设置密码"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani">
                 <TextBlock Text="选择主题色:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ColorPalette SelectionChanged="ColorPalette_SelectionChanged" x:Name="RootColor" Height="59" Width="396" Header="请选择：" FontSize="14" >
@@ -32,6 +49,7 @@
 
                 </ui:ColorPalette>
             </StackPanel>
+            
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
                 <TextBlock Text="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy"/>

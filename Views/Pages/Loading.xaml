@@ -14,12 +14,17 @@
                 <ui:ProgressRing Height="100" Width="100"/>
             </StackPanel>
             <StackPanel Tag="ani">
-                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="正在启动%Game%，请稍候……" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock x:Name="InfoBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="正在启动%Game%，请稍候……" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" Margin="0,10,0,0"/>
             </StackPanel>
             
         </StackPanel>
-        <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="223" Margin="977,580,0,0" Click="Tile_Click">
+        <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Tile_Click">
             <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
         </ui:Tile>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10">
+            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Tip" Text="小贴士：启动的速度取决于电脑性能，程序大小等多种因素哦" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        </StackPanel>
     </Grid>
 </Page>

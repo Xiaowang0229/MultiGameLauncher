@@ -23,6 +23,7 @@ namespace MultiGameLauncher.Views.Pages
         public Loading(string Gamepath)
         {
             InitializeComponent();
+            InfoBlock.Text = $"正在启动 {Gamepath} 请稍候……";
             Loaded += (async (s, e) =>
             {
                 try
@@ -64,6 +65,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
+
         }
 
         private void Tile_Click(object sender, RoutedEventArgs e)
