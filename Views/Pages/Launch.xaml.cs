@@ -46,20 +46,20 @@ namespace MultiGameLauncher.Views.Pages
 
                     foreach (var spp in animationSP)
                     {
-                        spp.Margin = new Thickness(0, 0, 0, -2010);
+                        spp.Margin = new Thickness(0, -2000, 0, 10);
                     }
 
                     var animation = new ThicknessAnimation
                     {
                         To = new Thickness(0, 0, 0, 10),
-                        Duration = TimeSpan.FromMilliseconds(700),
+                        Duration = TimeSpan.FromMilliseconds(500),
                         EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
                     };
 
                     foreach (var aniSP in animationSP)
                     {
                         aniSP.BeginAnimation(MarginProperty, animation);
-                        await Task.Delay(100);
+                        await Task.Delay(20);
                     }
                 }
                 catch (InvalidOperationException) { }
