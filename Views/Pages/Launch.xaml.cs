@@ -46,7 +46,7 @@ namespace MultiGameLauncher.Views.Pages
 
                     foreach (var spp in animationSP)
                     {
-                        spp.Margin = new Thickness(0, -2000, 0, 10);
+                        spp.Margin = new Thickness(-2000, 0,0, 10);
                     }
 
                     var animation = new ThicknessAnimation
@@ -127,6 +127,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             Welcome.Content = "欢迎，" + config.Username;
+            LogText.Text = Variables.VersionLog;
         }
     }
 }

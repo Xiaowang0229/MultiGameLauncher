@@ -75,6 +75,7 @@ namespace MultiGameLauncher.Views.Pages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             RootImage.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationImage);
+            UpdateLog.Text = Variables.VersionLog;
             if(IsCheckUpdate)
             {
                 CheckupdateButton.IsEnabled = false;
@@ -194,6 +195,24 @@ Process.Start(new ProcessStartInfo
             Process.Start(new ProcessStartInfo
             {
                 FileName = "https://raw.githubusercontent.com/Xiaowang0229/MultiGameLauncher/refs/heads/master/LICENSE",
+                UseShellExecute = true
+            });
+        }
+
+        private void MahMetro_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/MahApps/MahApps.Metro",
+                UseShellExecute = true
+            });
+        }
+
+        private void MahLicense_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://raw.githubusercontent.com/MahApps/MahApps.Metro/refs/heads/develop/LICENSE",
                 UseShellExecute = true
             });
         }

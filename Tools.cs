@@ -21,6 +21,7 @@ namespace MultiGameLauncher
     {
         public readonly static string Version = "Indev 251214\n";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
+        public readonly static string VersionLog = $"[{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n-1.xxx\r\n-2.xxx\r\n-3.xxx";
     }
 
     
