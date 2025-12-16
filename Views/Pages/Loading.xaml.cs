@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,9 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Loading : Page
     {
         private List<StackPanel> animationSP = new();
+        private string Gamepath;
+        private string Gamename;
+        private string Showname;
         public Loading(string Gamepath)
         {
             InitializeComponent();
@@ -69,6 +73,21 @@ namespace MultiGameLauncher.Views.Pages
         }
 
         private void Tile_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "taskkill.exe",
+                    Arguments = "-f -im {}",
+                    UseShellExecute = true
+                });
+            }
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Launch());
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Launch());

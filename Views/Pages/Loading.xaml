@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" x:Class="MultiGameLauncher.Views.Pages.Loading"
       mc:Ignorable="d" 
-      Title="Loading" Width="1200" Height="675">
+      Title="Loading" Width="1200" Height="675" Unloaded="Page_Unloaded">
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="sp_ani">
