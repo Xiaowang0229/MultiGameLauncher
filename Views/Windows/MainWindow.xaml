@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiGameLauncher"
                 ResizeMode="CanMinimize"
-                
+                FontFamily="Microsoft Yahei UI"
         mc:Ignorable="d"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"

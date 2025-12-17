@@ -1,0 +1,15 @@
+﻿<ui:MetroWindow x:Class="MultiGameLauncher.Views.Windows.InputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultiGameLauncher.Views.Windows"
+        mc:Ignorable="d"
+        xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="输入窗口" Height="200" Width="450" FontFamily="Microsoft Yahei UI">
+    <StackPanel>
+        <TextBlock Text="请输入{InputName}" Margin="10,10,10,0" FontSize="18" FontWeight="Bold"/>
+        <TextBox Margin="10,30,10,10" FontFamily="Microsoft Yahei UI" FontSize="18"/>
+        <Button Content="确定" Margin="0,30,0,0"/>
+    </StackPanel>
+</ui:MetroWindow>

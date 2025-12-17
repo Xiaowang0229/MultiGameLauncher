@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HuaZi.Library.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,11 +21,12 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Manage : Page
     {
         private List<StackPanel> animationSP = new();
+        MainConfig config = new MainConfig();
 
         public Manage()
         {
             InitializeComponent();
-
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Loaded += (async (s, e) =>
             {
                 try
@@ -65,6 +67,21 @@ namespace MultiGameLauncher.Views.Pages
 
                 
             });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

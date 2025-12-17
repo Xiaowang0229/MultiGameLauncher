@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiGameLauncher.Views.Windows"
-        mc:Ignorable="d"
+        mc:Ignorable="d" FontFamily="Microsoft Yahei UI"
                 ResizeMode="NoResize"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         Title="更新可用！" Height="570" Width="400" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded">
