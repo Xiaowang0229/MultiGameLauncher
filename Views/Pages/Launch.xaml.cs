@@ -3,6 +3,7 @@ using MahApps.Metro.Controls;
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -115,7 +116,14 @@ namespace MultiGameLauncher.Views.Pages
         private void LaunchTile_Click(object sender, RoutedEventArgs e)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Loading("1"));
+            win.RootFrame.Navigate(new Loading
+            {
+                GamePath = "1",
+                GameName = System.IO.Path.GetFileName("1"),
+                ShowName = "1",
+                Arguments = "1",
+            });
+
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)

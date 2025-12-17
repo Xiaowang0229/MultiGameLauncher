@@ -45,6 +45,7 @@
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,0,0,10">
                     <Label Content="背景图片（支持网络/本地）路径：" VerticalAlignment="Center" FontSize="16"/>
+                    <Button Content="浏览"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,10,0"/>
                     <TextBox  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="439" FontFamily="Microsoft YaHei UI" FontSize="16" Margin="0,0,5,0"/>
                     <Button Content="确定"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14"/>
 

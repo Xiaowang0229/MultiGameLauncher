@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using static MultiGameLauncher.LaunchConfig;
 using Color = System.Windows.Media.Color;
 
 
@@ -27,6 +28,12 @@ namespace MultiGameLauncher
     
     public class Tools //工具集
     {
+        public static Process Process = new();
+
+
+
+
+
         public static ImageSource ApplicationLogo;
         //读图片函数
         public static void Restart()
@@ -190,24 +197,18 @@ namespace MultiGameLauncher
         }
     }
 
-    public class LaunchConfig //游戏配置项
+    
+    public class LaunchConfig
     {
-        public class Index
-        {
-            //[JsonProperty("1")]
-            public Dictionary<string, Launches> launches { get; set; }
+        public string ShowName { get; set; }
+        public string MainTitle { get; set; }
+        public System.Windows.Media.FontFamily MaintitleFontName { get; set; }
+        public System.Windows.Media.Brush MainTitleFontColor { get; set; }
+        public string SubTitle { get; set; }
+        public string BackgroundImagepath { get; set; }
+        public string Launchpath { get; set; }
+        public string Arguments { get; set; }
 
-        }
-
-        public class Launches
-        {
-            public string Name { get; set; }
-            public string MainTitle { get; set; }
-            public string SubTitle { get; set; }
-            public string BackgroundImagepath { get; set; }
-            public string Launchpath { get; set; }
-
-        }
     }
 
     public class MainConfig //主体配置项
@@ -232,6 +233,9 @@ namespace MultiGameLauncher
 
         //主题跟随系统
         public bool ChangeThemeWithSystem { get; set; }
+
+        //游戏配置项，勿动
+        public List<LaunchConfig> GameInfos { get; set; }
     }
 
 }

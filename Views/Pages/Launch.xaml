@@ -99,7 +99,7 @@
                         CornerRadius="0"
                         ClipToBounds="True" Background="White"
                         >
-                    <Image Width="64" Height="64" x:Name="UserHead" />
+                    <Image Width="64" Height="64" x:Name="UserHead" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 
                 <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>

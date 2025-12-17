@@ -2,6 +2,7 @@
 using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Windows;
+using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
@@ -16,14 +17,15 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            if (!File.Exists(Variables.Configpath))
+            {
+                Tools.InitalizeConfig();
+            }
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             //读取逻辑
             Tools.ApplicationLogo = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
 
-            if(!File.Exists(Variables.Configpath))
-            {
-                Tools.InitalizeConfig();
-            }
+            
 
             ThemeManager.Current.ChangeTheme(Current,config.ThemeMode+"."+config.ThemeColor);
 
@@ -38,6 +40,17 @@ namespace MultiGameLauncher
             //主加载逻辑
             Window win = new MainWindow();
             win.Show();
+
+
+
+
+
+
+
+
+
+
+
 
             //后加载逻辑
             if (config.StartUpCheckUpdate)

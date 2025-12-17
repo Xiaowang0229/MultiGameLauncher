@@ -21,17 +21,20 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Loading : Page
     {
         private List<StackPanel> animationSP = new();
-        private string Gamepath;
-        private string Gamename;
-        private string Showname;
-        public Loading(string Gamepath)
+        public string GamePath { get; set; }
+        public string GameName { get; set; }
+        public string ShowName { get; set; }
+        public string Arguments { get; set; }
+        public Loading()
         {
             InitializeComponent();
-            InfoBlock.Text = $"正在启动 {Gamepath} 请稍候……";
+            InfoBlock.Text = $"正在启动 {GamePath} 请稍候……";
+
             Loaded += (async (s, e) =>
             {
                 try
                 {
+
 
                     animationSP.Clear();
                     foreach (var sp in sp_ani.Children)
@@ -72,16 +75,15 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        private void Tile_Click(object sender, RoutedEventArgs e)
+        private void Tile_Click(object sender, RoutedEventArgs e)//Stop
         {
             try
             {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "taskkill.exe",
-                    Arguments = "-f -im {}",
-                    UseShellExecute = true
-                });
+                Tools.Process.Kill();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"结束游戏时发生错误：{ex.Message}","错误",MessageBoxButton.OK,MessageBoxImage.Error);
             }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Launch());
@@ -89,6 +91,27 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Launch());
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)//StartUp
+        {
+            try
+            {
+                Tools.Process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = GamePath,
+                    Arguments = $"{Arguments}",
+                    UseShellExecute = true
+                };
+                Tools.Process.Start();
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"启动游戏时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Launch());
         }
