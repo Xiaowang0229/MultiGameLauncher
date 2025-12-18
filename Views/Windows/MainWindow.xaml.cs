@@ -38,6 +38,10 @@ namespace MultiGameLauncher
        
         private void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
+
+            
+
+
             if (RootFrame.Content is FrameworkElement newPage)
             {
                 newPage.Margin = new Thickness(-2000, 0, 0, 0);
@@ -62,6 +66,11 @@ namespace MultiGameLauncher
             RootFrame.Navigate(new Launch());
             BackButton.Width = 0;
             
+        }
+
+        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+
         }
     }
 }

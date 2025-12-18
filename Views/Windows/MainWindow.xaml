@@ -23,7 +23,7 @@
     </ui:MetroWindow.LeftWindowCommands>
     <Frame x:Name="RootFrame"
        NavigationUIVisibility="Hidden"
-            Navigated="RootFrame_Navigated" Margin="0,0,0,-10">
+            Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating">
 
     </Frame>
 </ui:MetroWindow>
