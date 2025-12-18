@@ -71,6 +71,45 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
+            RootChganger.SelectionChanged += (async(s, e) =>
+            {
+                try
+                {
+
+                    animationSP.Clear();
+                    foreach (var sp in sp_ani.Children)
+                    {
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
+                    }
+
+                    foreach (var spp in animationSP)
+                    {
+                        spp.Margin = new Thickness(-2000, 0, 0, 10);
+                    }
+
+                    var animation = new ThicknessAnimation
+                    {
+                        To = new Thickness(0, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                    };
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        aniSP.BeginAnimation(MarginProperty, animation);
+                        await Task.Delay(20);
+                    }
+                }
+                catch (InvalidOperationException) { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            });
 
         }
 
@@ -136,6 +175,53 @@ namespace MultiGameLauncher.Views.Pages
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             Welcome.Content = "欢迎，" + config.Username;
             LogText.Text = Variables.VersionLog;
+        }
+
+        private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private async void TabItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+
+                animationSP.Clear();
+                foreach (var sp in sp_ani.Children)
+                {
+                    if (((StackPanel)sp).Tag != null)
+                        if (((StackPanel)sp).Tag.ToString() == "ani")
+                        {
+                            animationSP.Add((StackPanel)sp);
+                        }
+                }
+
+                foreach (var spp in animationSP)
+                {
+                    spp.Margin = new Thickness(-2000, 0, 0, 10);
+                }
+
+                var animation = new ThicknessAnimation
+                {
+                    To = new Thickness(0, 0, 0, 10),
+                    Duration = TimeSpan.FromMilliseconds(500),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                };
+
+                foreach (var aniSP in animationSP)
+                {
+                    aniSP.BeginAnimation(MarginProperty, null);
+                    aniSP.BeginAnimation(MarginProperty, animation);
+
+                    await Task.Delay(20);
+                }
+            }
+            
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

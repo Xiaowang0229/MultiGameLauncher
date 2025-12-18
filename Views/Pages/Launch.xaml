@@ -21,6 +21,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
                             <Border x:Name="Capsule"
+                                    
                                 Width="20"
                                 Height="20"
                                 CornerRadius="10"
@@ -83,12 +84,15 @@
             </Style>
         </Grid.Resources>
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <ui:MetroTabControl Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+
+        <ui:MetroTabControl x:Name="RootChganger" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
             <TabItem Header="Tab 1">
             </TabItem>
             <TabItem Header="Tab 2">
             </TabItem>
         </ui:MetroTabControl>
+        
         <Grid>
             <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
                 <Border Margin="10,10,10,10"
