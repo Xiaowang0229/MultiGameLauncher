@@ -17,7 +17,7 @@ namespace MultiGameLauncher
     
     public partial class MainWindow : MetroWindow
     {
-        private FrameworkElement _previousPage;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -41,11 +41,11 @@ namespace MultiGameLauncher
        
         private async void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            
+
             //Animation
             //await Task.Delay(1000);
-            if (RootFrame.Content is FrameworkElement newPage)
-            {
+            var newPage = (FrameworkElement)RootFrame.Content;
+            
                 newPage.BeginAnimation(MarginProperty, null);
 
                 newPage.Margin = new Thickness(-2000, 0, 0, -10);
@@ -61,7 +61,19 @@ namespace MultiGameLauncher
 
 
                 newPage.BeginAnimation(MarginProperty, slideIn);
-            }
+            /*if (e.Content is FrameworkElement newPage)
+            {
+                newPage.BeginAnimation(FrameworkElement.MarginProperty, null);
+                newPage.Margin = new Thickness(3000, 0, 0, 0);
+
+                var slideIn = (Storyboard)FindResource("SlideInStoryboard");
+                slideIn.Begin(newPage, true);
+
+                OldPage = newPage;
+
+                _pendingNewPage = null; // 清空临时变量
+            }*/
+
 
 
         }
@@ -69,35 +81,63 @@ namespace MultiGameLauncher
             
          
 
+        
+
+        private async void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+
+            /*if(RootFrame.Content != null)
+            {
+                 var oldPage = (FrameworkElement)RootFrame.Content;
+
+                 oldPage.BeginAnimation(MarginProperty, null);
+
+
+
+
+
+                 var slideOut = new ThicknessAnimation
+                 {
+                     From = new Thickness(0,0,0,0),
+                     To = new Thickness(2000, 0, 0, 10),
+                     Duration = TimeSpan.FromMilliseconds(500),
+                     EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                 };
+
+
+                 oldPage.BeginAnimation(MarginProperty, slideOut);
+                 //await Task.Delay(1000);
+            }*/
+            /*if (RootFrame.Content is FrameworkElement oldPage && oldPage != null)
+            {
+                oldPage.BeginAnimation(FrameworkElement.MarginProperty, null);
+                oldPage.Margin = new Thickness(0);
+
+                var slideOut = (Storyboard)FindResource("SlideOutStoryboard");
+                slideOut.Begin(oldPage, true);
+
+                e.Cancel = true;
+
+                await Task.Delay(550);
+
+                oldPage.Visibility = Visibility.Collapsed;
+                OldPage = null;
+
+                // 【关键】直接用 e.Content（就是你 Navigate 时传入的新页面实例）
+                if (e.Content is FrameworkElement newPage)
+                {
+                    // 手动设置新页面
+                    RootFrame.Content = newPage;
+                }
+            }*/
+
+
+        }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             RootFrame.Navigate(new Launch());
             BackButton.Width = 0;
             
-        }
-
-        private async void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-
-            var oldPage = (FrameworkElement)RootFrame.Content;
-            
-                oldPage.BeginAnimation(MarginProperty, null);
-
-                oldPage.Margin = new Thickness(0, 0, 0, -10);
-
-
-
-                var slideOut = new ThicknessAnimation
-                {
-                    To = new Thickness(-2000, 0, 0, 10),
-                    Duration = TimeSpan.FromMilliseconds(500),
-                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
-                };
-
-
-                oldPage.BeginAnimation(MarginProperty, slideOut);
-            
-
         }
     }
 }

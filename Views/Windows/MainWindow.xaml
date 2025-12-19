@@ -11,6 +11,31 @@
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="Rocket Launcher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True">
+
+    <Window.Resources>
+        <Storyboard x:Key="SlideOutStoryboard">
+            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                    From="0,0,0,0"
+                    To="-2000,0,0,0"
+                    Duration="0:0:0.5">
+                <ThicknessAnimation.EasingFunction>
+                    <PowerEase Power="5" EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+
+        <!-- 新页面滑入动画（从右滑入） -->
+        <Storyboard x:Key="SlideInStoryboard">
+            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                    From="-2000,0,0,0"
+                    To="0,0,0,0"
+                    Duration="0:0:0.5">
+                <ThicknessAnimation.EasingFunction>
+                    <PowerEase Power="5" EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+    </Window.Resources>
     
 
     <ui:MetroWindow.LeftWindowCommands>
@@ -23,8 +48,9 @@
         </ui:WindowCommands>
     </ui:MetroWindow.LeftWindowCommands>
     <Frame x:Name="RootFrame"
-       NavigationUIVisibility="Hidden"
-            Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating">
+   NavigationUIVisibility="Hidden"
+        Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating">
 
     </Frame>
+
 </ui:MetroWindow>
