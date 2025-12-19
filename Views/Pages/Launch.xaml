@@ -92,7 +92,7 @@
             <TabItem Header="Tab 2">
             </TabItem>
         </ui:MetroTabControl>
-        
+
         <Grid>
             <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
                 <Border Margin="10,10,10,10"
@@ -103,9 +103,9 @@
                         CornerRadius="0"
                         ClipToBounds="True" Background="White"
                         >
-                    <Image Width="64" Height="64" x:Name="UserHead" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Width="64" Height="64" x:Name="UserHead" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonDown="UserHead_MouseLeftButtonDown" />
                 </Border>
-                
+
                 <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
             </StackPanel>
 
@@ -113,8 +113,7 @@
 
 
 
-            <Label HorizontalAlignment="Left" Margin="40,40,0,0"  Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold"/>
-            <Label HorizontalAlignment="Left" Margin="40,124,0,0"  Content="副标题" VerticalAlignment="Top" FontSize="22"/>
+
             <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
                 <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
             </ui:Tile>
@@ -124,74 +123,85 @@
                     <TextBlock Text="当前游戏："/>
                 </StackPanel>
             </ui:Tile>
-            
-            <StackPanel Orientation="Horizontal" Margin="0,319,418,95"  x:Name="sp_ani">
-                <StackPanel Margin="5,0,0,0" Tag="ani">
+            <StackPanel x:Name="sp_ani">
+                <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
+                    <Label   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="79"/>
 
-                    <StackPanel  Orientation="Horizontal"  Margin="0,0,0,0">
-                        <ui:Tile x:Name="SettingsTile" Title="设置"
-                            Margin="3,3,0,0"
-                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Background="{DynamicResource MahApps.Brushes.DataGrid.Selection.BorderBrush}"
-                            HorizontalTitleAlignment="Right" Click="SettingsTile_Click" Width="120" Height="120">
-                            <iconPacks:PackIconModern Width="40"
-                                Height="40"
-                                Kind="Settings" />
-                        </ui:Tile>
-                        <ui:Tile x:Name="UserTile" Title="用户"
-                            Margin="10,3,3,0"
-                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Background="{DynamicResource MahApps.Brushes.SystemControlRevealFocusVisual}"
-                            HorizontalTitleAlignment="Right" Click="UserTile_Click" Width="120" Height="120">
-                            <iconPacks:PackIconModern Width="40"
-                                Height="40"
-                                Kind="User" />
-                        </ui:Tile>
-                    </StackPanel>
-                    <StackPanel Margin="0,10,0,0">
-                        <ui:Tile x:Name="AboutTile" Title="关于"
-                            Margin="3,0,3,3"
-                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
-                            HorizontalTitleAlignment="Right" Width="250" Click="AboutTile_Click" Height="120">
-                            <iconPacks:PackIconModern Width="40"
-                                Height="40"
-                                Kind="InformationCircle" />
-                        </ui:Tile>
-                    </StackPanel>
                 </StackPanel>
+                <StackPanel Tag="ani" Orientation="Horizontal" >
+                    <Label HorizontalAlignment="Left"  Content="副标题" VerticalAlignment="Top" FontSize="22" Margin="40,0,0,0" Height="38" />
+                </StackPanel>
+                <StackPanel Margin="0,140,0,0">
 
-                
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  Tag="ani">
+
+                    <StackPanel Margin="5,0,0,0" Tag="ani">
+
+                        <StackPanel  Orientation="Horizontal"  Margin="0,0,0,0">
+                            <ui:Tile x:Name="SettingsTile" Title="设置"
+                Margin="3,3,0,0"
+                ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                Background="{DynamicResource MahApps.Brushes.DataGrid.Selection.BorderBrush}"
+                HorizontalTitleAlignment="Right" Click="SettingsTile_Click" Width="120" Height="120">
+                                <iconPacks:PackIconModern Width="40"
+                    Height="40"
+                    Kind="Settings" />
+                            </ui:Tile>
+                            <ui:Tile x:Name="UserTile" Title="用户"
+                Margin="10,3,3,0"
+                ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                Background="{DynamicResource MahApps.Brushes.SystemControlRevealFocusVisual}"
+                HorizontalTitleAlignment="Right" Click="UserTile_Click" Width="120" Height="120">
+                                <iconPacks:PackIconModern Width="40"
+                    Height="40"
+                    Kind="User" />
+                            </ui:Tile>
+                        </StackPanel>
+                        <StackPanel Margin="0,10,0,0">
+                            <ui:Tile x:Name="AboutTile" Title="关于"
+                Margin="3,0,3,3"
+                ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                HorizontalTitleAlignment="Right" Width="250" Click="AboutTile_Click" Height="120">
+                                <iconPacks:PackIconModern Width="40"
+                    Height="40"
+                    Kind="InformationCircle" />
+                            </ui:Tile>
+                        </StackPanel>
+                    </StackPanel>
+
+
                     <StackPanel Tag="ani" Margin="5,0,5,0">
                         <ui:Tile x:Name="ManageTile" Title="游戏管理"
-                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Background="{DynamicResource MahApps.Brushes.CheckmarkFill}"
-                            HorizontalTitleAlignment="Right" Height="250" Width="250" Click="ManageTile_Click">
+                ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                Background="{DynamicResource MahApps.Brushes.CheckmarkFill}"
+                HorizontalTitleAlignment="Right" Height="250" Width="250" Click="ManageTile_Click">
                             <iconPacks:PackIconModern Width="80"
-                                Height="80"
-                                Kind="ListAdd" />
+                    Height="80"
+                    Kind="ListAdd" />
                         </ui:Tile>
                     </StackPanel>
-                
+
                     <StackPanel Tag="ani">
                         <ui:Tile x:Name="UpdateTile" Title="更新"
-                            Margin="3"
-                            ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Background="{DynamicResource MahApps.Brushes.Highlight}"
-                            HorizontalTitleAlignment="Right" Height="250" Width="250" Click="UpdateTile_Click">
+                Margin="3"
+                ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                Background="{DynamicResource MahApps.Brushes.Highlight}"
+                HorizontalTitleAlignment="Right" Height="250" Width="250" Click="UpdateTile_Click">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="209" Width="230">
                                 <TextBlock Text="版本日志：" FontSize="20" FontWeight="Bold"/>
                                 <TextBlock x:Name="LogText" Height="167" Width="220"/>
                             </StackPanel>
                         </ui:Tile>
                     </StackPanel>
-                    
-                    
-                    
+
+
+
+                </StackPanel>
+
             </StackPanel>
 
-
-            <!--bar-->
         </Grid>
     </Grid>
 </Page>

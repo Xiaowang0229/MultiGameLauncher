@@ -59,7 +59,8 @@
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" FlowDirection="RightToLeft">
-                    <Button Content="保存"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" HorizontalAlignment="Right" Margin="10,50,0,0"/>
+                    <Button Content="取消"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" HorizontalAlignment="Right" Margin="10,50,0,0" Visibility="Hidden"/>
+                    <Button Content="保存"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" HorizontalAlignment="Right" Margin="10,50,0,0" Visibility="Hidden"/>
                 </StackPanel>
                 
             </StackPanel>

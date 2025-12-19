@@ -71,45 +71,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
-            RootChganger.SelectionChanged += (async(s, e) =>
-            {
-                try
-                {
-
-                    animationSP.Clear();
-                    foreach (var sp in sp_ani.Children)
-                    {
-                        if (((StackPanel)sp).Tag != null)
-                            if (((StackPanel)sp).Tag.ToString() == "ani")
-                            {
-                                animationSP.Add((StackPanel)sp);
-                            }
-                    }
-
-                    foreach (var spp in animationSP)
-                    {
-                        spp.Margin = new Thickness(-2000, 0, 0, 10);
-                    }
-
-                    var animation = new ThicknessAnimation
-                    {
-                        To = new Thickness(0, 0, 0, 10),
-                        Duration = TimeSpan.FromMilliseconds(500),
-                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
-                    };
-
-                    foreach (var aniSP in animationSP)
-                    {
-                        aniSP.BeginAnimation(MarginProperty, animation);
-                        await Task.Delay(20);
-                    }
-                }
-                catch (InvalidOperationException) { }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            });
+           
 
         }
 
@@ -179,14 +141,8 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-        }
-
-        private async void TabItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
             try
             {
-
                 animationSP.Clear();
                 foreach (var sp in sp_ani.Children)
                 {
@@ -199,10 +155,44 @@ namespace MultiGameLauncher.Views.Pages
 
                 foreach (var spp in animationSP)
                 {
+                    spp.Margin = new Thickness(0, 0, 0, 10);
+                }
+
+
+                var animationout = new ThicknessAnimation
+                {
+                    To = new Thickness(-2000, 0, 0, 10),
+                    Duration = TimeSpan.FromMilliseconds(500),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                };
+
+                foreach (var aniSP in animationSP)
+                {
+                    aniSP.BeginAnimation(MarginProperty, null);
+                    aniSP.BeginAnimation(MarginProperty, animationout);
+                    await Task.Delay(20);
+                }
+
+                await Task.Delay(TimeSpan.FromMilliseconds(250));
+
+                foreach (var spp in animationSP)
+                {
                     spp.Margin = new Thickness(-2000, 0, 0, 10);
                 }
 
-                var animation = new ThicknessAnimation
+                animationSP.Clear();
+                foreach (var sp in sp_ani.Children)
+                {
+                    if (((StackPanel)sp).Tag != null)
+                        if (((StackPanel)sp).Tag.ToString() == "ani")
+                        {
+                            animationSP.Add((StackPanel)sp);
+                        }
+                }
+
+                
+
+                var animationin = new ThicknessAnimation
                 {
                     To = new Thickness(0, 0, 0, 10),
                     Duration = TimeSpan.FromMilliseconds(500),
@@ -212,16 +202,22 @@ namespace MultiGameLauncher.Views.Pages
                 foreach (var aniSP in animationSP)
                 {
                     aniSP.BeginAnimation(MarginProperty, null);
-                    aniSP.BeginAnimation(MarginProperty, animation);
-
+                    aniSP.BeginAnimation(MarginProperty, animationin);
                     await Task.Delay(20);
                 }
             }
-            
+            catch (InvalidOperationException) { }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Personality());
+            win.BackButton.Width = 40;
         }
     }
 }
