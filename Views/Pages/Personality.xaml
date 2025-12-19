@@ -11,9 +11,9 @@
     <StackPanel>
         <Label Content="用户" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani">
-            <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
+            <StackPanel Margin="10,10,10,10" Tag="ani" HorizontalAlignment="Left" >
                 <StackPanel Tag="ani">
-                    <Image Height="128" Width="128" x:Name="UserHead"/>
+                    <Image Height="256" Width="256" x:Name="UserHead"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
@@ -28,7 +28,7 @@
 
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Tag="ani">
+            <StackPanel Orientation="Horizontal"  Tag="ani">
                 <Label Content="选择主题色:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ColorPalette SelectionChanged="ColorPalette_SelectionChanged" x:Name="RootColor" Height="59" Width="396" Header="请选择：" FontSize="14" >
                     <Color>Brown</Color>
@@ -50,7 +50,7 @@
                 </ui:ColorPalette>
             </StackPanel>
             
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
+            <StackPanel Orientation="Horizontal"  Margin="0,0,0,10" Tag="ani">
                 <Label Content="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy"/>
             </StackPanel>

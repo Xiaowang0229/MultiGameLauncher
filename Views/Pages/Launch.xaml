@@ -125,7 +125,7 @@
             </ui:Tile>
             <StackPanel x:Name="sp_ani">
                 <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
-                    <Label   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="79"/>
+                    <Label   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" >
@@ -148,7 +148,7 @@
                     Height="40"
                     Kind="Settings" />
                             </ui:Tile>
-                            <ui:Tile x:Name="UserTile" Title="用户"
+                            <ui:Tile x:Name="UserTile" Title="个性化"
                 Margin="10,3,3,0"
                 ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                 Background="{DynamicResource MahApps.Brushes.SystemControlRevealFocusVisual}"
