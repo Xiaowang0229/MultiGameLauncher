@@ -1,4 +1,4 @@
-﻿<ui:MetroWindow x:Class="MultiGameLauncher.Views.Windows.OOBEWindow"
+﻿<ui:MetroWindow x:Name="RootWindow" x:Class="MultiGameLauncher.Views.Windows.OOBEWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +8,6 @@
         xmlns:local="clr-namespace:MultiGameLauncher.Views.Windows"
                 WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="程序初始化" Height="690.84" Width="1200" FontFamily="Microsoft Yahei UI">
+        Title="程序初始化" Height="690.84" Width="1200" FontFamily="Microsoft Yahei UI" Loaded="RootWindow_Loaded" Closing="RootWindow_Closing">
     <Frame   NavigationUIVisibility="Hidden" x:Name="RootFrame" Source="\Views\Pages\OOBE\OOBEStart.xaml" Navigated="RootFrame_Navigated" PreviewKeyDown="RootFrame_PreviewKeyDown"/>
 </ui:MetroWindow>

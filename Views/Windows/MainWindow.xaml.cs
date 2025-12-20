@@ -143,6 +143,10 @@ namespace MultiGameLauncher
 
         private void RootFrame_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if (e.OriginalSource is System.Windows.Controls.Primitives.TextBoxBase)
+            {
+                return;
+            }
             if (e.Key == Key.Back ||
             (e.Key == Key.Left && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) ||
             (e.Key == Key.Right && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)))

@@ -189,7 +189,7 @@ namespace MultiGameLauncher
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
                 ChangeThemeWithSystem = false,
-                GameInfos = { }
+                GameInfos = new List<LaunchConfig>()
             };
             Json.WriteJson(Variables.Configpath,config);
             ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
@@ -204,7 +204,7 @@ namespace MultiGameLauncher
         public System.Windows.Media.FontFamily MaintitleFontName { get; set; }
         public System.Windows.Media.Brush MainTitleFontColor { get; set; }
         public string SubTitle { get; set; }
-        public string BackgroundImagepath { get; set; }
+        public bool? BackgroundImagestatus { get; set; }
         public string Launchpath { get; set; }
         public string Arguments { get; set; }
 

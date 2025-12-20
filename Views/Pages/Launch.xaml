@@ -84,9 +84,14 @@
             </Style>
         </Grid.Resources>
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <MediaElement x:Name="BackgroundVideo"
+            LoadedBehavior="Play"
+                      Stretch="UniformToFill"
+                      IsMuted="True"
+                      UnloadedBehavior="Close"
+                      MediaEnded="BackgroundVideo_MediaEnded" />
 
-
-        <ui:MetroTabControl x:Name="RootChganger" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
+            <ui:MetroTabControl x:Name="RootChganger" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
             <TabItem Header="Tab 1">
             </TabItem>
             <TabItem Header="Tab 2">

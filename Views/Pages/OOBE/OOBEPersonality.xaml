@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages.OOBE"
       mc:Ignorable="d" 
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
-      Title="OOBEPersonality" Width="1200" Height="675">
+      Title="OOBEPersonality" Width="1200" Height="675" Loaded="Page_Loaded">
 
     <Grid>
         <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
@@ -35,10 +35,24 @@
 
                 </ui:ColorPalette>
             </StackPanel>
-            <StackPanel  Tag="ani">
-                <Label  Margin="10,10,10,0" Content="用户名称:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <TextBox  HorizontalAlignment="Left" x:Name="UserName" Width="300" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14" ui:TextBoxHelper.ClearTextButton="True" />
+            <StackPanel   Tag="ani" Orientation="Horizontal">
+                <StackPanel>
+                    <Label  Margin="10,10,10,0" Content="用户名称:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox  HorizontalAlignment="Left" x:Name="UserName" Width="300" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14" ui:TextBoxHelper.ClearTextButton="True" />
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="头像：" FontSize="16" HorizontalAlignment="Center" Margin="0,5,0,0" />
+                    <Button Width="100" Margin="10,3,0,0" Content="浏览…" Click="Button_Click_1"/>
+                </StackPanel>
+                <StackPanel>
+                    <Image Height="64" Width="64" x:Name="UserHead"/>
+                </StackPanel>
             </StackPanel>
+            <StackPanel Tag="ani">
+                <Label Content="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
+                <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy" Margin="10,0,0,0"/>
+            </StackPanel>
+
             <StackPanel Tag="ani" FlowDirection="RightToLeft">
                 <Button Width="150" Margin="30,300,10,0" Content="确定" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Click="Button_Click"/>
             </StackPanel>

@@ -228,5 +228,11 @@ namespace MultiGameLauncher.Views.Pages
             win.RootFrame.Navigate(new Personality());
             win.BackButton.Width = 40;
         }
+
+        private void BackgroundVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            BackgroundVideo.Position = TimeSpan.Zero;
+            BackgroundVideo.Play();
+        }
     }
 }

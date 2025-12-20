@@ -3,7 +3,9 @@ using HuaZi.Library.Json;
 using MultiGameLauncher.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -88,6 +90,37 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             
         }
 
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            UserHead.Source = null;
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog()
+            {
+
+                Title = "选择文件",
+                Filter = "头像图片(*.png)|*.png",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+
+            };
+            var result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                if (openFileDialog.FileName == Environment.CurrentDirectory + @"\Head.png")
+                {
+                    MessageBox.Show("不能选择同一张头像", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
+                }
+                else if (openFileDialog.FileName != Environment.CurrentDirectory + @"\Head.png")
+                {
+                    File.Delete(Environment.CurrentDirectory + @"\Head.png");
+                    File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
+                    await Task.Delay(300);
+                    UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+                    
+                    
+                }
+            }
+        }
+
         private void ColorPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -98,6 +131,27 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 Json.WriteJson(Variables.Configpath, config);
             }
             catch (Exception) { }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Darkmode.IsOn)
+            {
+                ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+                config.ThemeMode = "Dark";
+                Json.WriteJson(Variables.Configpath, config);
+            }
+            else
+            {
+                ThemeManager.Current.ChangeTheme(Application.Current, "Light." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+                config.ThemeMode = "Light";
+                Json.WriteJson(Variables.Configpath, config);
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using HuaZi.Library.Json;
 using Microsoft.Win32;
+using MultiGameLauncher.Views.Windows;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace MultiGameLauncher.Views.Pages.OOBE
 {
@@ -22,11 +24,11 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             newconfig = new LaunchConfig
             {
                 Arguments = "",
-                BackgroundImagepath = null,
+                BackgroundImagestatus = null,
                 Launchpath = null,
                 MainTitle = null,
-                MainTitleFontColor = null,
-                MaintitleFontName = null,
+                MainTitleFontColor = Brushes.Black,
+                MaintitleFontName = new System.Windows.Media.FontFamily("Microsoft YaHei UI"),
                 ShowName = null,
                 SubTitle = ""
             };
@@ -72,17 +74,17 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, EventArgs e)
         {
             newconfig.ShowName = ProgramNameBlock.Text;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, EventArgs e)
         {
             newconfig.MainTitle = MainTitleBox.Text;
         }
 
-        private void Font_Click(object sender, RoutedEventArgs e)
+        private void Font_Click(object sender, EventArgs e)
         {
             var fontdialog = new System.Windows.Forms.FontDialog();
             using (ColorDialog colorDialog = new ColorDialog())
@@ -99,37 +101,44 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                     colorDialog.Color.R,
                     colorDialog.Color.G,
                     colorDialog.Color.B));
+                        MessageBox.Show(
+                            "字体设置成功！",
+                            "提示",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information
+                        );
+                        
                 }
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void Button_Click_2(object sender, EventArgs e)
         {
             newconfig.SubTitle = SubTitleBox.Text;
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_Click_3(object sender, EventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "选择文件",
-                Filter = "背景图文件(*.png)|*.png",
+                Filter = "背景文件(*.png;*.mp4)|*.png;*.mp4",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 Multiselect = false
             };
             if(dialog.ShowDialog() == true)
             {
+                newconfig.BackgroundImagestatus = true;
+                File.Copy(dialog.FileName, Environment.CurrentDirectory+@"\Background"+Path.GetExtension(dialog.FileName));
+                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
                 
-                BackGroundBlock.Text = dialog.FileName;
+                
             }
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            newconfig.BackgroundImagepath = BackGroundBlock.Text;
-        }
+        
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Button_Click_5(object sender, EventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -142,27 +151,32 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
 
                 newconfig.Launchpath = dialog.FileName;
-                MessageBox.Show($"设置成功，路径为{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
             }
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private void Button_Click_6(object sender, EventArgs e)
         {
             newconfig.Arguments = ArgumentsBlock.Text;
         }
 
-        private void Button_Click_7(object sender, RoutedEventArgs e)
+        private void Button_Click_7(object sender, EventArgs e)
         {
-            if(newconfig.BackgroundImagepath!= null && newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
+            if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
             {
                 config.GameInfos.Add(newconfig);
                 config.OOBEStatus = true;
                 Json.WriteJson(Variables.Configpath, config);
+                
+                var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                win.Close();
             }
             else
             {
-                MessageBox.Show("请将所有项填写完整（不含副标题和参数以及字体），并按下右侧确定键，以便正常写入Json文件进行程序启动！","警告",MessageBoxButton.OK,MessageBoxImage.Warning);
+                MessageBox.Show("请将启动路径，程序名称和主标题填写完整，以便正常写入Json文件进行程序启动！","警告",MessageBoxButton.OK,MessageBoxImage.Warning);
             }
         }
+
+        
     }
 }

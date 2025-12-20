@@ -9,7 +9,7 @@
       Title="Personality" Width="1200" Height="675" Loaded="Page_Loaded">
 
     <StackPanel>
-        <Label Content="用户" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani">
             <StackPanel Margin="10,10,10,10" Tag="ani" HorizontalAlignment="Left" >
                 <StackPanel Tag="ani">

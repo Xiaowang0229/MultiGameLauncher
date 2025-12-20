@@ -1,6 +1,8 @@
 ﻿using HuaZi.Library.Json;
+using MultiGameLauncher.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging.Effects;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,6 +84,21 @@ namespace MultiGameLauncher.Views.Pages
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Launch());
+            win.BackButton.Width = 0;
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var createwin = new OOBEWindow(true);
+            createwin.Show();
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.Close();
         }
     }
 }

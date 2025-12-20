@@ -1,5 +1,8 @@
-﻿using MahApps.Metro.Controls;
+﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
+using MultiGameLauncher.Views.Pages.OOBE;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -10,9 +13,13 @@ namespace MultiGameLauncher.Views.Windows
     /// </summary>
     public partial class OOBEWindow : MetroWindow
     {
-        public OOBEWindow()
+        private bool IsCreateNewGame;
+        private MainConfig config;
+        public OOBEWindow(bool iscreatenewgame = false)
         {
             InitializeComponent();
+            IsCreateNewGame = iscreatenewgame;
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
         }
 
         private void RootFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -38,11 +45,33 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootFrame_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if (e.OriginalSource is System.Windows.Controls.Primitives.TextBoxBase)
+            {
+                return;
+            }
             if (e.Key == Key.Back ||
             (e.Key == Key.Left && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) ||
             (e.Key == Key.Right && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)))
             {
                 e.Handled = true;  // 标记事件已处理，阻止默认导航
+            }
+        }
+
+        private void RootWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
+            if(IsCreateNewGame)
+            {
+                RootFrame.Navigate(new OOBEImport());
+            }
+        }
+
+        private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (IsCreateNewGame || config.OOBEStatus == true)
+            {
+                var win = new MainWindow();
+                win.Show();
             }
         }
     }
