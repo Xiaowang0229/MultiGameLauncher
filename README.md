@@ -1,4 +1,12 @@
-﻿# 寒星科技开发组 版本号命名规范（Versioning Specification）
+﻿# Rocket Launcher File Repository
+
+-本仓库用于储存Rocket Launcher项目的源代码
+
+# 公告栏
+
+-无
+
+# 寒星科技开发组 版本号命名规范（Versioning Specification）
 
 ## 一、整体结构
 
