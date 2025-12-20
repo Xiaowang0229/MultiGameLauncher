@@ -5,16 +5,12 @@ using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using Microsoft.Win32;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using static MultiGameLauncher.LaunchConfig;
 using Color = System.Windows.Media.Color;
 
 
@@ -24,7 +20,7 @@ namespace MultiGameLauncher
     {
         public readonly static string Version = "Beta 0.101.8.1\n";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
-        public readonly static string VersionLog = $"#[{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n-1.xxx\r\n-2.xxx\r\n-3.xxx";
+        public readonly static string VersionLog = $"### [{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n\r\n-1.xxx\r\n\r\n-2.xxx\r\n\r\n-3.xxx";
     }
 
     

@@ -82,10 +82,8 @@ namespace MultiGameLauncher
 
                     }
                 }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show($"检查更新时遇到错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
-                }
+                catch { }
+                
             }
 
         }

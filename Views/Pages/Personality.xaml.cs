@@ -126,10 +126,15 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            var openFileDialog = new OpenFileDialog()
+            
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog()
             {
-                Filter = "头像图片 (.png)|*.png"
+                
+                Title = "选择文件",
+                Filter = "头像图片(*.png)|*.png",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+
             };
             var result = openFileDialog.ShowDialog();
             if (result == true)

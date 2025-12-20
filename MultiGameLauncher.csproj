@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <UseWindowsForms>False</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <NoWarn>CS8618;CS8603;CS8602;CS8605</NoWarn>
   </PropertyGroup>

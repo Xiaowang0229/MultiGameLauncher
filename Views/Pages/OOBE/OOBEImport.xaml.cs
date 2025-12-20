@@ -1,17 +1,9 @@
 ﻿using HuaZi.Library.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace MultiGameLauncher.Views.Pages.OOBE
 {
@@ -22,10 +14,22 @@ namespace MultiGameLauncher.Views.Pages.OOBE
     {
         private List<StackPanel> animationSP = new();
         private MainConfig config;
+        private LaunchConfig newconfig;
         public OOBEImport()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            newconfig = new LaunchConfig
+            {
+                Arguments = "",
+                BackgroundImagepath = null,
+                Launchpath = null,
+                MainTitle = null,
+                MainTitleFontColor = null,
+                MaintitleFontName = null,
+                ShowName = null,
+                SubTitle = ""
+            };
             Loaded += (async (s, e) =>
             {
                 try
@@ -66,6 +70,99 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
 
             });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            newconfig.ShowName = ProgramNameBlock.Text;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            newconfig.MainTitle = MainTitleBox.Text;
+        }
+
+        private void Font_Click(object sender, RoutedEventArgs e)
+        {
+            var fontdialog = new System.Windows.Forms.FontDialog();
+            using (ColorDialog colorDialog = new ColorDialog())
+
+            if (fontdialog.ShowDialog() == DialogResult.OK)
+            {
+                    
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name); ;
+                    newconfig.MainTitleFontColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(
+                    colorDialog.Color.A,
+                    colorDialog.Color.R,
+                    colorDialog.Color.G,
+                    colorDialog.Color.B));
+                }
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            newconfig.SubTitle = SubTitleBox.Text;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "背景图文件(*.png)|*.png",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
+            if(dialog.ShowDialog() == true)
+            {
+                
+                BackGroundBlock.Text = dialog.FileName;
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            newconfig.BackgroundImagepath = BackGroundBlock.Text;
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "可执行文件(*.exe)|*.exe",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
+            if (dialog.ShowDialog() == true)
+            {
+
+                newconfig.Launchpath = dialog.FileName;
+                MessageBox.Show($"设置成功，路径为{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+            }
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            newconfig.Arguments = ArgumentsBlock.Text;
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            if(newconfig.BackgroundImagepath!= null && newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
+            {
+                config.GameInfos.Add(newconfig);
+                config.OOBEStatus = true;
+                Json.WriteJson(Variables.Configpath, config);
+            }
+            else
+            {
+                MessageBox.Show("请将所有项填写完整（不含副标题和参数以及字体），并按下右侧确定键，以便正常写入Json文件进行程序启动！","警告",MessageBoxButton.OK,MessageBoxImage.Warning);
+            }
         }
     }
 }
