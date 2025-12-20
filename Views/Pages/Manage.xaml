@@ -13,9 +13,9 @@
         <Label Content="管理" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
 
         <StackPanel>
-            <StackPanel Tag="ani" Orientation="Horizontal" Margin="10,74,10,0" Height="41">
+            <StackPanel  Orientation="Horizontal" Margin="10,74,10,0" Height="41">
                 <Label Content="选择管理对象：" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
-                <ui:DropDownButton Width="508" Height="36" Margin="0,0,10,0"/>
+                <ui:DropDownButton x:Name="RootDropper" Width="508" Height="36" Margin="0,0,10,0"/>
 
                 <Button Content="  添加  " FontSize="18" FontFamily="Microsoft YaHei UI" Margin="0,0,10,0" Width="120" Height="36" Click="Button_Click_2" />
                 <Button Content="  删除  " FontSize="18" FontFamily="Microsoft YaHei UI" Width="120" Height="36"/>

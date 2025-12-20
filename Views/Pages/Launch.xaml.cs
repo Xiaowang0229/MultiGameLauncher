@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -130,11 +131,19 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            for(int i = 0;i<config.GameInfos.Count;i++)
+            {
+                var menuitem = new TabItem();
+                menuitem.ToolTip = config.GameInfos[i].ShowName;
+                menuitem.MouseLeftButtonDown += RootTabItemSelectionChanged;
+                RootTabControl.Items.Add(menuitem);
+            }
+
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             Welcome.Content = "欢迎，" + config.Username;
             var pipeline = new MarkdownPipelineBuilder()
@@ -146,6 +155,11 @@ namespace MultiGameLauncher.Views.Pages
 
             // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
             LogText.Document = document;
+        }
+
+        private void RootTabItemSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)

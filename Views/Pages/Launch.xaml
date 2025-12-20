@@ -91,11 +91,8 @@
                       UnloadedBehavior="Close"
                       MediaEnded="BackgroundVideo_MediaEnded" />
 
-            <ui:MetroTabControl x:Name="RootChganger" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
-            <TabItem Header="Tab 1">
-            </TabItem>
-            <TabItem Header="Tab 2">
-            </TabItem>
+            <ui:MetroTabControl x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
+            
         </ui:MetroTabControl>
 
         <Grid>

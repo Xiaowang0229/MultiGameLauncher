@@ -78,7 +78,54 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            for (int i = 0; i < config.GameInfos.Count; i++)
+            {
+                var menuitem = new System.Windows.Controls.MenuItem();
+                menuitem.Header = config.GameInfos[i].ShowName +" (" + i+1.ToString() + ")";
+                menuitem.MouseLeftButtonDown += MenuItemSelectionChanged;
+                RootDropper.Items.Add(menuitem);
+            }
+        }
 
+        private async void MenuItemSelectionChanged(object sender, MouseButtonEventArgs e)
+        {
+            animationSP.Clear();
+            foreach (var sp in sp_ani.Children)
+            {
+                if (((StackPanel)sp).Tag != null)
+                    if (((StackPanel)sp).Tag.ToString() == "ani")
+                    {
+                        animationSP.Add((StackPanel)sp);
+                    }
+            }
+
+            
+
+            var outanimation = new ThicknessAnimation
+            {
+                To = new Thickness(-2000, 0, 0, 10),
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+            };
+            var inanimation = new ThicknessAnimation
+            {
+                To = new Thickness(0, 0, 0, 10),
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+            };
+
+            foreach (var aniSP in animationSP)
+            {
+                aniSP.BeginAnimation(MarginProperty, outanimation);
+                await Task.Delay(100);
+            }
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            foreach (var aniSP in animationSP)
+            {
+                aniSP.BeginAnimation(MarginProperty, inanimation);
+                await Task.Delay(100);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
