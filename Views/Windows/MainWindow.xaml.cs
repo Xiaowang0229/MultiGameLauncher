@@ -5,6 +5,7 @@ using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -138,6 +139,16 @@ namespace MultiGameLauncher
             RootFrame.Navigate(new Launch());
             BackButton.Width = 0;
             
+        }
+
+        private void RootFrame_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Back ||
+            (e.Key == Key.Left && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) ||
+            (e.Key == Key.Right && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)))
+            {
+                e.Handled = true;  // 标记事件已处理，阻止默认导航
+            }
         }
     }
 }

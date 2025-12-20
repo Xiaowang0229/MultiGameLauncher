@@ -47,9 +47,9 @@
             
         </ui:WindowCommands>
     </ui:MetroWindow.LeftWindowCommands>
-    <Frame x:Name="RootFrame"
+    <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
    NavigationUIVisibility="Hidden"
-        Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating">
+        Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
 
     </Frame>
 

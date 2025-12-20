@@ -24,7 +24,7 @@ namespace MultiGameLauncher
     {
         public readonly static string Version = "Indev 251214\n";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
-        public readonly static string VersionLog = $"[{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n-1.xxx\r\n-2.xxx\r\n-3.xxx";
+        public readonly static string VersionLog = $"#[{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n-1.xxx\r\n-2.xxx\r\n-3.xxx";
     }
 
     
@@ -186,12 +186,14 @@ namespace MultiGameLauncher
         {
             var config = new MainConfig
             {
+                OOBEStatus = false,
                 Username = "Administrator",
                 ThemeColor = "Blue",
                 ThemeMode = "Light",
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
-                ChangeThemeWithSystem = false
+                ChangeThemeWithSystem = false,
+                GameInfos = { }
             };
             Json.WriteJson(Variables.Configpath,config);
             ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
@@ -214,6 +216,9 @@ namespace MultiGameLauncher
 
     public class MainConfig //主体配置项
     {
+        //OOBE状态
+        public bool OOBEStatus { get;set; }
+
         //用户名
         public string Username { get; set; }
 
@@ -239,4 +244,46 @@ namespace MultiGameLauncher
         public List<LaunchConfig> GameInfos { get; set; }
     }
 
+    //Stackpanel页动画
+    //private List<StackPanel> animationSP = new();
+    /*Loaded += (async (s, e) =>
+            {
+                try
+                {
+                    animationSP.Clear();
+                    foreach (var sp in sp_ani.Children)
+                    {
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
+                    }
+
+                    foreach (var spp in animationSP)
+                    {
+                        spp.Margin = new Thickness(-2000, 0, 0, 10);
+                    }
+
+                    var animation = new ThicknessAnimation
+                    {
+                        To = new Thickness(0, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                    };
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        aniSP.BeginAnimation(MarginProperty, animation);
+                        await Task.Delay(100);
+                    }
+                }
+                catch (InvalidOperationException) { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+
+
+            });*/
 }

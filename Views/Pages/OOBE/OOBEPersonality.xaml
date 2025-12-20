@@ -5,10 +5,43 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages.OOBE"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="OOBEPersonality">
+      xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
+      Title="OOBEPersonality" Width="1200" Height="675">
 
     <Grid>
-        
+        <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <StackPanel x:Name="sp_ani" Margin="0,74,0,0">
+            <StackPanel Tag="ani">
+                <Label Margin="10,0,10,10" Content="挑选一种你喜欢的颜色，并为自己的账户命名（你喜欢的任何名字都行）。此后，你还可以进行更多个性化设置。" FontSize="16"/>
+            </StackPanel>
+            <StackPanel  Tag="ani">
+                <Label Content="背景颜色:" FontSize="16" Margin="10,5,10,0"/>
+                <ui:ColorPalette SelectionChanged="ColorPalette_SelectionChanged" x:Name="RootColor" Height="59" Width="396" Header="请选择：" FontSize="14" HorizontalAlignment="Left" Margin="6,0,0,0">
+                    <Color>Brown</Color>
+                    <Color>Red</Color>
+                    <Color>Sienna</Color>
+                    <Color>Orange</Color>
+                    <Color>Yellow</Color>
+                    <Color>Olive</Color>
+                    <Color>Lime</Color>
+                    <Color>Green</Color>
+                    <Color>Purple</Color>
+                    <Color>Violet</Color>
+                    <Color>Indigo</Color>
+                    <Color>Blue</Color>
+                    <Color>Teal</Color>
+                    <Color>Pink</Color>
+                    <Color>Crimson</Color>
+
+                </ui:ColorPalette>
+            </StackPanel>
+            <StackPanel  Tag="ani">
+                <Label  Margin="10,10,10,0" Content="用户名称:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox  HorizontalAlignment="Left" x:Name="UserName" Width="300" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14" ui:TextBoxHelper.ClearTextButton="True" />
+            </StackPanel>
+            <StackPanel Tag="ani" FlowDirection="RightToLeft">
+                <Button Width="150" Margin="30,300,10,0" Content="确定" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Click="Button_Click"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

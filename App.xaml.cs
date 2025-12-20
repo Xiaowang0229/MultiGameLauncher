@@ -38,8 +38,16 @@ namespace MultiGameLauncher
 
 
             //主加载逻辑
-            Window win = new MainWindow();
-            win.Show();
+            if(config.OOBEStatus)
+            {
+                var win = new MainWindow();
+                win.Show();
+            }
+            else
+            {
+                var win = new OOBEWindow();
+                win.Show();
+            }
 
 
 

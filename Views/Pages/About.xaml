@@ -29,8 +29,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  Margin="10,0,0,10">
                         <Label Content="版本日志：" FontSize="18" Margin="10,0,0,0"/>
-                        <GroupBox Height="185" Header="版本日志" Width="428">
-                            <TextBlock x:Name="UpdateLog" FontSize="14"/>
+                        <GroupBox Height="206" Header="版本日志" Width="428">
+                            <FlowDocumentScrollViewer x:Name="UpdateLog" FontSize="14"/>
                         </GroupBox>
                     </StackPanel>
                 </StackPanel>

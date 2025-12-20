@@ -191,7 +191,7 @@
                 HorizontalTitleAlignment="Right" Height="250" Width="250" Click="UpdateTile_Click">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="209" Width="230">
                                 <TextBlock Text="版本日志：" FontSize="20" FontWeight="Bold"/>
-                                <TextBlock x:Name="LogText" Height="167" Width="220"/>
+                                <FlowDocumentScrollViewer x:Name="LogText" Height="167" Width="220"/>
                             </StackPanel>
                         </ui:Tile>
                     </StackPanel>

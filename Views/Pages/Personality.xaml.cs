@@ -113,8 +113,15 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            config.Username = UserName.Text;
-            Json.WriteJson(Variables.Configpath, config);
+            if (UserName.Text != "")
+            {
+                config.Username = UserName.Text;
+                Json.WriteJson(Variables.Configpath, config);
+            }
+            if (UserName.Text == "")
+            {
+                MessageBox.Show("用户名不可置空！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -143,8 +150,15 @@ namespace MultiGameLauncher.Views.Pages
 
         private void UserName_LostFocus(object sender, RoutedEventArgs e)
         {
-            config.Username = UserName.Text;
-            Json.WriteJson(Variables.Configpath, config);
+            if (UserName.Text != "")
+            {
+                config.Username = UserName.Text;
+                Json.WriteJson(Variables.Configpath, config);
+            }
+            if (UserName.Text == "")
+            {
+                MessageBox.Show("用户名不可置空！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Markdig;
 using MultiGameLauncher.Views.Windows;
 using System;
 using System.Collections.Generic;
@@ -75,8 +76,17 @@ namespace MultiGameLauncher.Views.Pages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             RootImage.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationImage);
-            UpdateLog.Text = Variables.VersionLog;
-            if(IsCheckUpdate)
+            // 构建 Markdown 管道（支持高级扩展，如表格、脚注等）
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()  // 启用扩展功能
+                .Build();
+
+            // 转换为 FlowDocument
+            FlowDocument document = Markdig.Wpf.Markdown.ToFlowDocument(Variables.VersionLog, pipeline);
+
+            // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
+            UpdateLog.Document = document;
+            if (IsCheckUpdate)
             {
                 CheckupdateButton.IsEnabled = false;
                 try

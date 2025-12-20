@@ -5,10 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages.OOBE"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="OOBEGuide">
+      Title="OOBEGuide" Width="1200" Height="675">
 
     <Grid>
-        
+        <Label Content="入门" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
     </Grid>
 </Page>

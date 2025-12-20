@@ -5,10 +5,25 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages.OOBE"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="OOBEEULA">
+
+      Title="OOBEEULA" Width="1200" Height="675">
 
     <Grid>
-        
+        <Label Content="许可协议" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="256" FontSize="48" FontWeight="Bold"/>
+        <StackPanel x:Name="sp_ani" Margin="0,74,0,0">
+            <StackPanel Tag="ani">
+                <Label Content="本程序严格按照Apache 2.0协议提供服务，除非遵守本许可证，否则不得使用本软件。" Margin="10,0,0,0" FontSize="16"/>
+            </StackPanel>
+            <StackPanel Tag="ani">
+                <GroupBox Height="450" Header="许可协议" Width="1100">
+                    <FlowDocumentScrollViewer x:Name="RootEULAViewer" FontSize="14" FontFamily="Microsoft YaHei UI"/>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Tag="ani" FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0,0,20,0">
+                <Button Content="同意并继续" Width="150" Height="35" FontFamily="Microsoft Yahei UI" FontSize="14" Margin="30,20,10,10" Click="Button_Click_1"/>
+                <Button Content="不同意并退出" Width="150" Height="35" FontFamily="Microsoft Yahei UI" FontSize="14" Margin="10,20,10,10" Click="Button_Click"/>
+
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

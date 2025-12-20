@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
+using Markdig;
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -136,7 +137,15 @@ namespace MultiGameLauncher.Views.Pages
         {
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             Welcome.Content = "欢迎，" + config.Username;
-            LogText.Text = Variables.VersionLog;
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()  // 启用扩展功能
+                .Build();
+
+            // 转换为 FlowDocument
+            FlowDocument document = Markdig.Wpf.Markdown.ToFlowDocument(Variables.VersionLog, pipeline);
+
+            // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
+            LogText.Document = document;
         }
 
         private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)
