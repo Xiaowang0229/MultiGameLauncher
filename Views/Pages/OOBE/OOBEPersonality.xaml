@@ -54,7 +54,7 @@
             </StackPanel>
 
             <StackPanel Tag="ani" FlowDirection="RightToLeft">
-                <Button Width="150" Margin="30,300,10,0" Content="确定" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Click="Button_Click"/>
+                <Button Width="150" Margin="30,220,10,0" Content="确定" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Click="Button_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -24,7 +24,10 @@ namespace MultiGameLauncher
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             //读取逻辑
             Tools.ApplicationLogo = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
-
+            if(!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds"))
+            {
+                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds");
+            }
             
 
             ThemeManager.Current.ChangeTheme(Current,config.ThemeMode+"."+config.ThemeColor);
@@ -38,9 +41,14 @@ namespace MultiGameLauncher
 
 
             //主加载逻辑
-            if(config.OOBEStatus)
+            if(config.OOBEStatus && config.GameInfos.Count != 0)
             {
                 var win = new MainWindow();
+                win.Show();
+            }
+            else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
+            {
+                var win = new OOBEWindow(true);
                 win.Show();
             }
             else
@@ -48,7 +56,7 @@ namespace MultiGameLauncher
                 var win = new OOBEWindow();
                 win.Show();
             }
-
+            
 
 
 
@@ -83,7 +91,7 @@ namespace MultiGameLauncher
                     }
                 }
                 catch { }
-                
+
             }
 
         }

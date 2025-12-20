@@ -68,6 +68,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (IsCreateNewGame || config.OOBEStatus == true)
             {
                 var win = new MainWindow();

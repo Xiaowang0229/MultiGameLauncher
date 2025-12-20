@@ -10,10 +10,10 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="sp_ani">
             <StackPanel Tag="ani" Orientation="Horizontal" >
-                <TextBlock Text="让我们来完成一些基本步骤" FontSize="20"/>
+                <Label Content="让我们来完成一些基本步骤" FontSize="20"/>
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal">
-                <TextBlock Text="个性化     登录     导入     入门" FontSize="36" FontWeight="Bold" Margin="4,0,0,0"/>
+                <Label Content="个性化     登录     导入     入门" FontSize="36" FontWeight="Bold" Margin="4,0,0,0"/>
             </StackPanel>
         </StackPanel>
     </Grid>

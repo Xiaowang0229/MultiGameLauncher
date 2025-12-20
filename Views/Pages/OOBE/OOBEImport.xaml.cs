@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace MultiGameLauncher.Views.Pages.OOBE
@@ -17,12 +18,14 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         private List<StackPanel> animationSP = new();
         private MainConfig config;
         private LaunchConfig newconfig;
+        private string DialogFileName;
         public OOBEImport()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             newconfig = new LaunchConfig
             {
+                HashCode = Tools.RandomHashGenerate(),
                 Arguments = "",
                 BackgroundImagestatus = null,
                 Launchpath = null,
@@ -87,28 +90,36 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         private void Font_Click(object sender, EventArgs e)
         {
             var fontdialog = new System.Windows.Forms.FontDialog();
-            using (ColorDialog colorDialog = new ColorDialog())
+            var colorDialog = new ColorDialog();
 
             if (fontdialog.ShowDialog() == DialogResult.OK)
             {
-                    
+                    newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name);
 
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name); ;
-                    newconfig.MainTitleFontColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(
-                    colorDialog.Color.A,
-                    colorDialog.Color.R,
-                    colorDialog.Color.G,
-                    colorDialog.Color.B));
+                    if (colorDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name); 
+                        newconfig.MainTitleFontColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(
+                        colorDialog.Color.A,
+                        colorDialog.Color.R,
+                        colorDialog.Color.G,
+                        colorDialog.Color.B));
                         MessageBox.Show(
-                            "字体设置成功！",
+                            "字体及颜色设置成功！",
                             "提示",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information
                         );
+                        return;
                         
-                }
+                    }
+
+                MessageBox.Show(
+                        "字体设置成功！",
+                        "提示",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                );
             }
         }
 
@@ -117,7 +128,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             newconfig.SubTitle = SubTitleBox.Text;
         }
 
-        private void Button_Click_3(object sender, EventArgs e)
+        private async void Button_Click_3(object sender, EventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -128,9 +139,18 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             };
             if(dialog.ShowDialog() == true)
             {
+               
                 newconfig.BackgroundImagestatus = true;
-                File.Copy(dialog.FileName, Environment.CurrentDirectory+@"\Background"+Path.GetExtension(dialog.FileName));
-                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+                DialogFileName = dialog.FileName;
+                /*await Task.Delay(500);
+                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
+                {
+                    File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName));
+                }
+                File.Copy(dialog.FileName, Environment.CurrentDirectory+$"\\Backgrounds\\{newconfig.HashCode}\\Background"+Path.GetExtension(dialog.FileName));
+                BackgroundCopyTip.Visibility = Visibility.Hidden;
+                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);*/
                 
                 
             }
@@ -164,8 +184,17 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         {
             if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
             {
+                BackgroundCopyTip.Visibility = Visibility.Visible;
                 config.GameInfos.Add(newconfig);
                 config.OOBEStatus = true;
+                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName)))
+                {
+                    File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                }
+                File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                BackgroundCopyTip.Visibility = Visibility.Hidden;
+                MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 Json.WriteJson(Variables.Configpath, config);
                 
                 var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();

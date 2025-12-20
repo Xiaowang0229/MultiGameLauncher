@@ -83,7 +83,7 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <MediaElement x:Name="BackgroundVideo"
             LoadedBehavior="Play"
                       Stretch="UniformToFill"
@@ -91,9 +91,7 @@
                       UnloadedBehavior="Close"
                       MediaEnded="BackgroundVideo_MediaEnded" />
 
-            <ui:MetroTabControl x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged">
-            
-        </ui:MetroTabControl>
+        <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged"/>
 
         <Grid>
             <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
@@ -127,11 +125,11 @@
             </ui:Tile>
             <StackPanel x:Name="sp_ani">
                 <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
-                    <Label   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81"/>
+                    <Label x:Name="MainTitle"   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" >
-                    <Label HorizontalAlignment="Left"  Content="副标题" VerticalAlignment="Top" FontSize="22" Margin="40,0,0,0" Height="38" />
+                    <Label x:Name="SubTitle" HorizontalAlignment="Left"  Content="副标题" VerticalAlignment="Top" FontSize="22" Margin="40,0,0,0" Height="38" />
                 </StackPanel>
                 <StackPanel Margin="0,140,0,0">
 

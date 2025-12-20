@@ -1,23 +1,11 @@
 ﻿using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using Markdig;
-using Microsoft.Xaml.Behaviors;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -28,10 +16,12 @@ namespace MultiGameLauncher.Views.Pages
     {
         private List<StackPanel> animationSP = new();
         private MainConfig config;
+        private LaunchConfig launchConfig;
         public Launch()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            
             Loaded += (async (s, e) =>
             {
                 try
@@ -140,11 +130,28 @@ namespace MultiGameLauncher.Views.Pages
             {
                 var menuitem = new TabItem();
                 menuitem.ToolTip = config.GameInfos[i].ShowName;
+                menuitem.Tag = config.GameInfos[i].HashCode;
                 menuitem.MouseLeftButtonDown += RootTabItemSelectionChanged;
                 RootTabControl.Items.Add(menuitem);
             }
-
+            launchConfig = config.GameInfos[0];
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+
+            MainTitle.Content = launchConfig.MainTitle;
+            SubTitle.Content = launchConfig.SubTitle;
+            LaunchTile.Tag = launchConfig.Launchpath;
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.mp4"))
+            {
+                BackgroundImage.Visibility = Visibility.Hidden;
+                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + @"\Background.mp4", UriKind.Absolute);
+                BackgroundVideo.Play();
+            }
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.png"))
+            {
+                BackgroundVideo.Visibility = Visibility.Hidden;
+                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.png");
+            }
+
             Welcome.Content = "欢迎，" + config.Username;
             var pipeline = new MarkdownPipelineBuilder()
                 .UseAdvancedExtensions()  // 启用扩展功能
@@ -159,7 +166,22 @@ namespace MultiGameLauncher.Views.Pages
 
         private void RootTabItemSelectionChanged(object sender, RoutedEventArgs e)
         {
-            
+            RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
+            launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
+            MainTitle.Content = launchConfig.MainTitle;
+            SubTitle.Content = launchConfig.SubTitle;
+            LaunchTile.Tag = launchConfig.Launchpath;
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+                BackgroundImage.Visibility = Visibility.Hidden;
+                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", UriKind.Absolute);
+                BackgroundVideo.Play();
+            }
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
+            {
+                BackgroundVideo.Visibility = Visibility.Hidden;
+                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
+            }
         }
 
         private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)

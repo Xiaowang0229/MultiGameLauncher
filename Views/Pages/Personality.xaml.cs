@@ -100,10 +100,20 @@ namespace MultiGameLauncher.Views.Pages
             //UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             UserName.Text = config.Username;
-            if(config.ThemeMode == "Dark")
+
+            if(config.ChangeThemeWithSystem)
             {
-                Darkmode.IsOn = true;
+                Darkmode.IsEnabled = false;
+                SystemChangeTip.Visibility = Visibility.Visible;
             }
+            else
+            {
+                if (config.ThemeMode == "Dark")
+                {
+                    Darkmode.IsOn = true;
+                }
+            }
+            
         }
 
         private void ChooseBackground_Click(object sender, RoutedEventArgs e)

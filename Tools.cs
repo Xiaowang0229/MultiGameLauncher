@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -94,6 +95,12 @@ namespace MultiGameLauncher
             }
         }
 
+        public static string RandomHashGenerate(int byteLength = 16)
+        {
+            byte[] bytes = new byte[byteLength];
+            RandomNumberGenerator.Fill(bytes);
+            return Convert.ToHexString(bytes);
+        }
         public static BitmapImage LoadImageFromPath(string imagePath)
         {
             if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
@@ -199,6 +206,7 @@ namespace MultiGameLauncher
     
     public class LaunchConfig
     {
+        public string HashCode { get; set; }
         public string ShowName { get; set; }
         public string MainTitle { get; set; }
         public System.Windows.Media.FontFamily MaintitleFontName { get; set; }

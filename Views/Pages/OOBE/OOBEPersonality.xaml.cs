@@ -135,7 +135,11 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            
+            if (config.ThemeMode == "Dark")
+            {
+                Darkmode.IsOn = true;
+            }
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
