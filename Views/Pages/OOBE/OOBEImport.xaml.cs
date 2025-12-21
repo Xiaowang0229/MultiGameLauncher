@@ -27,7 +27,6 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
                 HashCode = Tools.RandomHashGenerate(),
                 Arguments = "",
-                BackgroundImagestatus = null,
                 Launchpath = null,
                 MainTitle = null,
                 MainTitleFontColor = Brushes.Black,
@@ -140,7 +139,6 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             if(dialog.ShowDialog() == true)
             {
                
-                newconfig.BackgroundImagestatus = true;
                 DialogFileName = dialog.FileName;
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
@@ -187,6 +185,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 BackgroundCopyTip.Visibility = Visibility.Visible;
                 config.GameInfos.Add(newconfig);
                 config.OOBEStatus = true;
+                this.IsEnabled = false;
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName)))
                 {
@@ -194,6 +193,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
+                this.IsEnabled = true;
                 MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 Json.WriteJson(Variables.Configpath, config);
                 

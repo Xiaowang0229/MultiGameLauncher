@@ -227,6 +227,7 @@ namespace MultiGameLauncher.Views.Pages
                 config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
                 config.GameInfos.Add(newconfig);
                 await Task.Delay(500);
+                this.IsEnabled = false;
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName)))
                 {
@@ -236,6 +237,7 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
 
                 Json.WriteJson(Variables.Configpath, config);
+                this.IsEnabled = true;
                 MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Manage());
@@ -310,7 +312,6 @@ namespace MultiGameLauncher.Views.Pages
             if (dialog.ShowDialog() == true)
             {
                 
-                newconfig.BackgroundImagestatus = true;
                 dialogFileName = dialog.FileName;
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");

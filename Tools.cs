@@ -212,7 +212,6 @@ namespace MultiGameLauncher
         public System.Windows.Media.FontFamily MaintitleFontName { get; set; }
         public System.Windows.Media.Brush MainTitleFontColor { get; set; }
         public string SubTitle { get; set; }
-        public bool? BackgroundImagestatus { get; set; }
         public string Launchpath { get; set; }
         public string Arguments { get; set; }
 

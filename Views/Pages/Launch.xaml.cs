@@ -138,18 +138,20 @@ namespace MultiGameLauncher.Views.Pages
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
 
             MainTitle.Content = launchConfig.MainTitle;
+            MainTitle.FontFamily = launchConfig.MaintitleFontName;
+            MainTitle.Foreground = launchConfig.MainTitleFontColor;
             SubTitle.Content = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.mp4"))
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
-                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + @"\Background.mp4", UriKind.Absolute);
+                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
                 BackgroundVideo.Play();
             }
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.png"))
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
                 BackgroundVideo.Visibility = Visibility.Hidden;
-                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.MainTitle}\\.png");
+                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
 
             Welcome.Content = "欢迎，" + config.Username;
