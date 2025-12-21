@@ -18,6 +18,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
             Library.LoadFFmpeg();
             if (!File.Exists(Variables.Configpath))
             {

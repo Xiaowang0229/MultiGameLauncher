@@ -13,6 +13,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="FFmpeg\avcodec-58.dll" />
+    <None Remove="FFmpeg\avcodec-62.dll" />
+    <None Remove="FFmpeg\avdevice-58.dll" />
+    <None Remove="FFmpeg\avdevice-62.dll" />
+    <None Remove="FFmpeg\avfilter-11.dll" />
+    <None Remove="FFmpeg\avfilter-7.dll" />
+    <None Remove="FFmpeg\avformat-58.dll" />
+    <None Remove="FFmpeg\avformat-62.dll" />
+    <None Remove="FFmpeg\avutil-56.dll" />
+    <None Remove="FFmpeg\avutil-60.dll" />
+    <None Remove="FFmpeg\ffmpeg.exe" />
+    <None Remove="FFmpeg\ffplay.exe" />
+    <None Remove="FFmpeg\ffprobe.exe" />
+    <None Remove="FFmpeg\postproc-55.dll" />
+    <None Remove="FFmpeg\swresample-3.dll" />
+    <None Remove="FFmpeg\swresample-6.dll" />
+    <None Remove="FFmpeg\swscale-5.dll" />
+    <None Remove="FFmpeg\swscale-9.dll" />
     <None Remove="update\HuaZi.Library.dll" />
     <None Remove="update\Newtonsoft.Json.dll" />
     <None Remove="update\UpdateAPI.deps.json" />
@@ -23,6 +41,39 @@
 
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="FFmpeg\avcodec-58.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\avdevice-58.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\avfilter-7.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\avformat-58.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\avutil-56.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\ffmpeg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\ffplay.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\ffprobe.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\postproc-55.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\swresample-3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\swscale-5.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="update\HuaZi.Library.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

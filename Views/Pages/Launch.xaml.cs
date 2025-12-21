@@ -159,7 +159,7 @@ namespace MultiGameLauncher.Views.Pages
 
                 //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
                 BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                BackgroundVideo.Play();
+                //BackgroundVideo.Play();
 
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
