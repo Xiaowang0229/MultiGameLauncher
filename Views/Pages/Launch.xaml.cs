@@ -77,43 +77,92 @@ namespace MultiGameLauncher.Views.Pages
 
         
 
-        private void SettingsTile_Click(object sender, RoutedEventArgs e)
+        private async void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Settings());
             win.BackButton.Width = 40;
         }
 
-        private void UserTile_Click(object sender, RoutedEventArgs e)
+        private async void UserTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Personality());
             win.BackButton.Width = 40;
         }
 
-        private void AboutTile_Click(object sender, RoutedEventArgs e)
+        private async void AboutTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new About());
             win.BackButton.Width = 40;
         }
 
-        private void ManageTile_Click(object sender, RoutedEventArgs e)
+        private async void ManageTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());
             win.BackButton.Width = 40;
         }
 
-        private void UpdateTile_Click(object sender, RoutedEventArgs e)
+        private async void UpdateTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new About(true));
             win.BackButton.Width = 40;
         }
 
-        private void LaunchTile_Click(object sender, RoutedEventArgs e)
+        private async void LaunchTile_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Loading
             {
@@ -127,7 +176,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            
+            Tools.Process.Close();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -148,7 +197,7 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
-            SubTitle.Content = launchConfig.SubTitle;
+            SubTitle.Text = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
@@ -159,7 +208,7 @@ namespace MultiGameLauncher.Views.Pages
 
                 //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
                 BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                //BackgroundVideo.Play();
+
 
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -186,14 +235,14 @@ namespace MultiGameLauncher.Views.Pages
             RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
             launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
             MainTitle.Text = launchConfig.MainTitle;
-            SubTitle.Content = launchConfig.SubTitle;
+            SubTitle.Text = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
                 BackgroundVideo.Visibility = Visibility.Visible;
                 BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                BackgroundVideo.Play();
+                
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
@@ -277,8 +326,16 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        private void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Personality());
             win.BackButton.Width = 40;
@@ -297,6 +354,23 @@ namespace MultiGameLauncher.Views.Pages
         private void BackgroundVideo_MediaFailed(object sender, Unosquare.FFME.Common.MediaFailedEventArgs e)
         {
             MessageBox.Show($"媒体播放失败:{e.ErrorException}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void BackgroundVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        {
+            BackgroundVideo.Play();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            /*if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+
+
+            }*/
         }
     }
 }

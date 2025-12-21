@@ -7,7 +7,7 @@
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
       xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
-      Title="Launch" Width="1200" Height="675" Loaded="Page_Loaded">
+      Title="Launch" Width="1200" Height="675" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
     <Grid>
         <Grid.Resources>
@@ -83,7 +83,7 @@
             </Style>
         </Grid.Resources>
 
-        <ffme:MediaElement x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" />
+        <ffme:MediaElement Visibility="Hidden" x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" MediaOpened="BackgroundVideo_MediaOpened" />
         <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged"/>
         <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
@@ -110,14 +110,14 @@
             </StackPanel>
         </ui:Tile>
         <StackPanel x:Name="sp_ani">
-            
+
 
             <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
-                <TextBlock x:Name="MainTitle"   Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81" FontFamily="Microsoft YaHei UI"/>
+                <TextBlock x:Name="MainTitle"   Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" FontFamily="Microsoft YaHei UI"/>
 
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal" >
-                <Label x:Name="SubTitle" HorizontalAlignment="Left"  Content="副标题" VerticalAlignment="Top" FontSize="22" Margin="40,0,0,140" Height="38" />
+                <TextBlock x:Name="SubTitle"  Text="副标题" VerticalAlignment="Top" FontSize="22" Margin="43,-20,0,170" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"  Tag="ani">
