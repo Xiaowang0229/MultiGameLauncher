@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,7 +22,7 @@ namespace MultiGameLauncher
     {
         public readonly static string Version = "RC 0.101.9.0\n";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
-        public readonly static string VersionLog = $"### [{Version.Substring(0, Version.Length - 1)} 版本日志]\r\n\r\n-1.xxx\r\n\r\n-2.xxx\r\n\r\n-3.xxx";
+        public static string VersionLog { get; set; }
     }
 
     
@@ -201,11 +202,32 @@ namespace MultiGameLauncher
             Json.WriteJson(Variables.Configpath,config);
             ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
+
+        public static string ReadEmbeddedMarkdown(string resourceName)
+        {
+            // 获取当前执行的程序集
+            var assembly = Assembly.GetExecutingAssembly();
+
+            // 获取嵌入资源的流
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                    throw new FileNotFoundException($"Resource {resourceName} not found.");
+
+                // 使用 StreamReader 读取流中的文本
+                using (var reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
     }
 
     
     public class LaunchConfig
     {
+        internal readonly System.Windows.Media.Brush MainTitleFontName;
+
         public string HashCode { get; set; }
         public string ShowName { get; set; }
         public string MainTitle { get; set; }

@@ -28,63 +28,52 @@
                         <ui:ProgressRing x:Name="CheckProgress" Height="40" Width="40" Visibility="Hidden"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  Margin="10,0,0,10">
-                        <Label Content="版本日志：" FontSize="18" Margin="10,0,0,0"/>
-                        <GroupBox Height="206" Header="版本日志" Width="428">
-                            <FlowDocumentScrollViewer x:Name="UpdateLog" FontSize="14"/>
-                        </GroupBox>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel>
-                    <StackPanel   Margin="10,0,0,10">
-                        <Label Content="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,5"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="版本日志：" FontSize="18" Margin="10,0,0,0"/>
+                            <GroupBox Height="206" Header="版本日志" Width="428">
+                                <FlowDocumentScrollViewer x:Name="UpdateLog" FontSize="14"/>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel   Margin="10,0,0,10">
+                                <Label Content="Github 开源仓库地址：" FontSize="18" Margin="10,0,0,5"/>
+                                <TextBlock FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0">
             <Hyperlink x:Name="Library"  Click="Library_Click" Cursor="Hand" >
                 https://github.com/Xiaowang0229/MultiGameLauncher
             </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel  Margin="10,0,0,10">
-                        <Label Content="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0">
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel  Margin="10,0,0,10">
+                                <Label Content="Github 错误报告地址：" FontSize="18" Margin="10,0,0,0"/>
+                                <TextBlock FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0">
 <Hyperlink x:Name="Issue"  Cursor="Hand" Click="Issue_Click">
     https://github.com/Xiaowang0229/MultiGameLauncher/issues/new
 </Hyperlink>
-                        </TextBlock>
+                                </TextBlock>
 
-                    </StackPanel>
-                    <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
-                        <Label Content="爱发电打赏地址：" FontSize="18" Margin="10,0,0,0"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center">
+                            </StackPanel>
+                            <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
+                                <Label Content="爱发电打赏地址：" FontSize="18" Margin="10,0,0,0"/>
+                                <TextBlock FontSize="18" VerticalAlignment="Center">
                     <Hyperlink x:Name="Afdian"  Click="Afdian_Click">
                         https://afdian.com/a/csharpfadian
                     </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
-                        <Label Content="本程序依据" FontSize="18" Margin="10,0,10,0"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center">
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
+                                <Label Content="本程序依据" FontSize="18" Margin="10,0,10,0"/>
+                                <TextBlock FontSize="18" VerticalAlignment="Center">
     <Hyperlink x:Name="Apache"  Click="Apache_Click">
         Apache License V2.0
     </Hyperlink>
-                        </TextBlock>
-                        <Label Content="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
-                        
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="本程序所使用的UI库：" FontSize="18" Margin="20,0,0,0"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center">
-    <Hyperlink x:Name="MahMetro" Click="MahMetro_Click" >
-        Mahapps.Metro
-    </Hyperlink>
-                        </TextBlock>
-                        <Label Content="UI库开源协议：" FontSize="18" Margin="10,0,0,0"/>
-                        <TextBlock FontSize="18" VerticalAlignment="Center">
-<Hyperlink x:Name="MahLicense" Click="MahLicense_Click" >
-    MIT License
-</Hyperlink>
-                        </TextBlock>
+                                </TextBlock>
+                                <Label Content="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
+
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
+                
             </StackPanel>
         </StackPanel>
     </StackPanel>

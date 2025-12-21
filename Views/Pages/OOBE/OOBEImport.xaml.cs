@@ -105,17 +105,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                         colorDialog.Color.R,
                         colorDialog.Color.G,
                         colorDialog.Color.B));
-                        
-                        return;
-                        
+
+                        Fontview.Foreground = newconfig.MainTitleFontColor;
+
                     }
 
-                MessageBox.Show(
-                        "字体设置成功！",
-                        "提示",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                );
+                Fontview.FontFamily = newconfig.MaintitleFontName;
             }
         }
 
@@ -138,6 +133,15 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                
                 DialogFileName = dialog.FileName;
                 IsBackGroundChange = true;
+                if (Path.GetExtension(DialogFileName) == ".mp4")
+                {
+                    Backgroundview.Content = "动态背景";
+                }
+                if (Path.GetExtension(DialogFileName) == ".png")
+                {
+                    Backgroundview.Content = "静态背景";
+                }
+                DeleteBackground.Visibility = Visibility.Visible;
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
@@ -147,8 +151,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 File.Copy(dialog.FileName, Environment.CurrentDirectory+$"\\Backgrounds\\{newconfig.HashCode}\\Background"+Path.GetExtension(dialog.FileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
                 MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);*/
-                
-                
+
+
             }
         }
 
@@ -167,7 +171,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
 
                 newconfig.Launchpath = dialog.FileName;
-                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+                LaunchPathView.Content = dialog.FileName;
             }
         }
 
@@ -186,7 +190,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 this.IsEnabled = false;
                 if (IsBackGroundChange)
                 {
-                    if (Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+                    if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
                     {
                         Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                     }
@@ -214,6 +218,13 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
         }
 
-        
+        private void DeleteBackground_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("确定删除背景吗？此操作不可逆","提示",MessageBoxButton.YesNo,MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                IsBackGroundChange = false;
+                DeleteBackground.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@
     <Grid>
 
         <Label Content="管理" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
-        
+
         <StackPanel>
             <StackPanel  Orientation="Horizontal" Margin="10,74,10,0" Height="41">
                 <Label Content="选择管理对象：" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -25,20 +25,23 @@
             <StackPanel x:Name="sp_ani" Margin="10,0,0,0">
                 <StackPanel Tag="ani" 
                 Margin="10,10,0,10">
-                    <Label  Content="程序名：" FontSize="16" VerticalAlignment="Center"/>
+                    <Label  Content="*程序名：" FontSize="16" VerticalAlignment="Center"/>
                     <TextBox x:Name="ProgramNameBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" Width="403" FontFamily="Microsoft YaHei UI" FontSize="16" LostFocus="ProgramNameBlock_LostFocus"/>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="10,0,0,10">
                     <StackPanel Margin="0,0,20,0">
-                        <Label  Content="主标题文本：" FontSize="16" VerticalAlignment="Center"/>
+                        <Label  Content="*主标题文本：" FontSize="16" VerticalAlignment="Center"/>
                         <TextBox x:Name="MainTitleBox"  TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="401" FontFamily="Microsoft YaHei UI" FontSize="16" LostFocus="MainTitleBox_LostFocus" />
                     </StackPanel>
                     <StackPanel>
-                        <Label x:Name="FontLabel" Content="字体配置：" FontSize="16"/>
+                        <Label Content="字体配置：" FontSize="16"/>
                         <Button x:Name="Font" Content="配置…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Click="Font_Click" />
                     </StackPanel>
-
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="预览效果(不含字体大小和字体形态)：" FontSize="16" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="Fontview" Text="示例文字" VerticalAlignment="Center" FontSize="36"/>
+                    </StackPanel>
 
 
 
@@ -48,17 +51,28 @@
                     <TextBox x:Name="SubTitleBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="412" FontFamily="Microsoft YaHei UI" FontSize="16" LostFocus="SubTitleBox_LostFocus" />
 
                 </StackPanel>
-                <StackPanel Tag="ani"  Margin="10,0,0,10">
-                    <Label Content="背景视频/图片（本地）路径：(支持mp4动态背景和png静态背景)" VerticalAlignment="Center" FontSize="16"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="浏览"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,10,0" Click="Button_Click_4" />
+                <StackPanel Tag="ani"  Margin="10,0,0,10" Orientation="Horizontal">
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Label Content="背景视频/图片（本地）路径：(支持mp4动态背景和png静态背景,需拷贝,时间取决于文件大小)" VerticalAlignment="Center" FontSize="16"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="浏览" HorizontalAlignment="Left" Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,10,0" Click="Button_Click_4" />
+                            <Button Visibility="Hidden" x:Name="DeleteBackground" Content="删除" HorizontalAlignment="Left" Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,10,0" Click="DeleteBackground_Click" />
+                        </StackPanel>
                     </StackPanel>
-
+                    <StackPanel Margin="10,0,0,0">
+                        <Label Content="背景模式：" VerticalAlignment="Center" FontSize="16"/>
+                        <Label x:Name="Backgroundview" Content="背景模式" VerticalAlignment="Center" FontSize="16"/>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Tag="ani"  Margin="10,0,0,10">
-                    <Label Content="启动路径：" VerticalAlignment="Center" FontSize="16"/>
-                    <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"  HorizontalAlignment="Left" Click="Button_Click_5"/>
-
+                <StackPanel Tag="ani"  Margin="10,0,0,10" Orientation="Horizontal">
+                    <StackPanel>
+                        <Label Content="*启动路径：" VerticalAlignment="Center" FontSize="16"/>
+                        <Button Content="浏览…"  Width="160" FontFamily="Microsoft YaHei UI" FontSize="14" Margin="0,0,20,0"  HorizontalAlignment="Left" Click="Button_Click_5"/>
+                    </StackPanel>
+                    <StackPanel Margin="10,0,0,0">
+                        <Label Content="文件名：" VerticalAlignment="Center" FontSize="16"/>
+                        <Label x:Name="LaunchPathView" Content="名字" VerticalAlignment="Center" FontSize="16"/>
+                    </StackPanel>
 
                 </StackPanel>
                 <StackPanel Tag="ani" Margin="10,0,0,0">
@@ -68,14 +82,14 @@
                 <StackPanel Tag="ani"  Orientation="Horizontal" Height="113">
                     <Button x:Name="Cancel" Content="取消" Width="150" Height="35" FontFamily="Microsoft Yahei UI" FontSize="14" Margin="30,60,10,10" Click="Cancel_Click" />
                     <Button Content="确定并应用" Width="150" Height="35" FontFamily="Microsoft Yahei UI" FontSize="14" Margin="30,60,10,10" Click="Button_Click_3" />
-                    
+
 
 
                 </StackPanel>
 
             </StackPanel>
         </StackPanel>
-        <StackPanel Visibility="Hidden" x:Name="BackgroundCopyTip" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,368,0,0">
+        <StackPanel Visibility="Hidden" x:Name="BackgroundCopyTip" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,368,0,0">
             <ui:ProgressRing HorizontalAlignment="Left" Height="40"  VerticalAlignment="Top" Width="40"/>
             <Label Content="请稍候，正在配置文件" VerticalAlignment="Center"/>
         </StackPanel>

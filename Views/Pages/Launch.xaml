@@ -83,9 +83,9 @@
             </Style>
         </Grid.Resources>
 
-        <ffme:MediaElement Visibility="Hidden" x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" MediaOpened="BackgroundVideo_MediaOpened" />
+        <ffme:MediaElement LoopingBehavior="Play"  Visibility="Hidden" x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" MediaOpened="BackgroundVideo_MediaOpened" />
         <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged"/>
+        <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
             <Border Margin="10,10,10,10"
                         Height="64"

@@ -31,6 +31,7 @@
     <None Remove="FFmpeg\swresample-6.dll" />
     <None Remove="FFmpeg\swscale-5.dll" />
     <None Remove="FFmpeg\swscale-9.dll" />
+    <None Remove="LocalLog.md" />
     <None Remove="update\HuaZi.Library.dll" />
     <None Remove="update\Newtonsoft.Json.dll" />
     <None Remove="update\UpdateAPI.deps.json" />
@@ -92,6 +93,12 @@
     <Content Include="update\UpdateAPI.runtimeconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LocalLog.md">
+      <CustomToolNamespace></CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

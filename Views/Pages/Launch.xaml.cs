@@ -188,7 +188,7 @@ namespace MultiGameLauncher.Views.Pages
                 var menuitem = new TabItem();
                 menuitem.ToolTip = config.GameInfos[i].ShowName;
                 menuitem.Tag = config.GameInfos[i].HashCode;
-                menuitem.MouseLeftButtonDown += RootTabItemSelectionChanged;
+                menuitem.MouseLeftButtonUp += RootTabItemSelectionChanged;
                 RootTabControl.Items.Add(menuitem);
             }
             launchConfig = config.GameInfos[0];
@@ -230,30 +230,10 @@ namespace MultiGameLauncher.Views.Pages
             LogText.Document = document;
         }
 
-        private async void RootTabItemSelectionChanged(object sender, RoutedEventArgs e)
+        private async void RootTabItemSelectionChanged(object sender, EventArgs e)
         {
             RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
-            launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
-            MainTitle.Text = launchConfig.MainTitle;
-            SubTitle.Text = launchConfig.SubTitle;
-            LaunchTile.Tag = launchConfig.Launchpath;
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
-            {
-                BackgroundImage.Visibility = Visibility.Hidden;
-                BackgroundVideo.Visibility = Visibility.Visible;
-                BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                
-            }
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
-            {
-                BackgroundVideo.Visibility = Visibility.Hidden;
-                BackgroundImage.Visibility = Visibility.Visible;
-                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
-            }
-        }
-
-        private async void RootChganger_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
             try
             {
                 animationSP.Clear();
@@ -303,7 +283,7 @@ namespace MultiGameLauncher.Views.Pages
                         }
                 }
 
-                
+
 
                 var animationin = new ThicknessAnimation
                 {
@@ -324,7 +304,27 @@ namespace MultiGameLauncher.Views.Pages
             {
                 MessageBox.Show(ex.ToString());
             }
+            MainTitle.Text = launchConfig.MainTitle;
+            MainTitle.FontFamily = launchConfig.MaintitleFontName;
+            MainTitle.Foreground = launchConfig.MainTitleFontColor;
+            SubTitle.Text = launchConfig.SubTitle;
+            LaunchTile.Tag = launchConfig.Launchpath;
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+                BackgroundImage.Visibility = Visibility.Hidden;
+                BackgroundVideo.Visibility = Visibility.Visible;
+                BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+                
+            }
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
+            {
+                BackgroundVideo.Visibility = Visibility.Hidden;
+                BackgroundImage.Visibility = Visibility.Visible;
+                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
+            }
         }
+
+        
 
         private async void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -345,10 +345,23 @@ namespace MultiGameLauncher.Views.Pages
 
         
 
-        private void BackgroundVideo_MediaEnded(object sender, EventArgs e)
+        private async void BackgroundVideo_MediaEnded(object sender, EventArgs e)
         {
-            BackgroundVideo.Position = TimeSpan.Zero;
-            BackgroundVideo.Play();
+            await Dispatcher.InvokeAsync(async () =>
+            {
+                try
+                {
+                    BackgroundVideo.Pause();           // 先暂停
+                    await Task.Delay(10);               // 稍等一小会儿
+                    BackgroundVideo.Position = TimeSpan.Zero;
+                    BackgroundVideo.Play();
+                }
+                catch (Exception ex)
+                {
+                    // 可选：记录日志
+                    Console.WriteLine("循环播放异常: " + ex.Message);
+                }
+            });
         }
 
         private void BackgroundVideo_MediaFailed(object sender, Unosquare.FFME.Common.MediaFailedEventArgs e)

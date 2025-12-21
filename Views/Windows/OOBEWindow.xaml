@@ -8,6 +8,6 @@
         xmlns:local="clr-namespace:MultiGameLauncher.Views.Windows"
                 WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="程序初始化" Height="690.84" Width="1200" FontFamily="Microsoft Yahei UI" Loaded="RootWindow_Loaded" Closing="RootWindow_Closing">
+        Title="程序初始化" Height="690.24" Width="1200" FontFamily="Microsoft Yahei UI" Loaded="RootWindow_Loaded" Closing="RootWindow_Closing" MinWidth="1200" MinHeight="690.24" MaxWidth="1200" MaxHeight="690.24">
     <Frame   NavigationUIVisibility="Hidden" x:Name="RootFrame" Source="\Views\Pages\OOBE\OOBEStart.xaml" Navigated="RootFrame_Navigated" PreviewKeyDown="RootFrame_PreviewKeyDown"/>
 </ui:MetroWindow>

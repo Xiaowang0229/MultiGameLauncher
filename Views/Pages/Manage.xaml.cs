@@ -19,6 +19,7 @@ namespace MultiGameLauncher.Views.Pages
         private LaunchConfig newconfig;
         private string dialogFileName;
         private bool IsBackGroundChange = false;
+        public bool IsBackGroundDelete = false;
 
         public Manage()
         {
@@ -118,7 +119,7 @@ namespace MultiGameLauncher.Views.Pages
             var outanimation = new ThicknessAnimation
             {
                 From = new Thickness(0,0,0,10),
-                To = new Thickness(-600, 0, 0, 10),
+                To = new Thickness(-1500, 0, 0, 10),
                 Duration = TimeSpan.FromMilliseconds(500),
                 EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
             };
@@ -158,6 +159,22 @@ namespace MultiGameLauncher.Views.Pages
             MainTitleBox.Text = currentgameinfo.MainTitle;
             SubTitleBox.Text = currentgameinfo.SubTitle;
             ArgumentsBlock.Text = currentgameinfo.Arguments;
+
+            Fontview.FontFamily = currentgameinfo.MaintitleFontName;
+            Fontview.Foreground = currentgameinfo.MainTitleFontColor;
+            Backgroundview.Content = "未设置壁纸";
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.mp4"))
+            {
+                DeleteBackground.Visibility = Visibility.Visible;
+                Backgroundview.Content = "动态壁纸";
+            }
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.png"))
+            {
+                DeleteBackground.Visibility = Visibility.Visible;
+                Backgroundview.Content = "静态壁纸";
+            }
+            LaunchPathView.Content = currentgameinfo.Launchpath;
+
 
 
 
@@ -217,7 +234,7 @@ namespace MultiGameLauncher.Views.Pages
                 this.IsEnabled = false;
                 if(IsBackGroundChange)
                 {
-                    if(Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+                    if(!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
                     {
                         Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                     }
@@ -231,6 +248,19 @@ namespace MultiGameLauncher.Views.Pages
                     }
                     File.Copy(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName));
                 }
+
+                if(IsBackGroundDelete)
+                {
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
+                    }
+                }
+
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
 
                 Json.WriteJson(Variables.Configpath, config);
@@ -273,12 +303,14 @@ namespace MultiGameLauncher.Views.Pages
                     colorDialog.Color.R,
                     colorDialog.Color.G,
                     colorDialog.Color.B));
-                    
-                    return;
+
+
+
+                    Fontview.Foreground = newconfig.MainTitleFontColor;
 
                 }
+                Fontview.FontFamily = newconfig.MaintitleFontName;
 
-                
             }
         }
 
@@ -301,6 +333,14 @@ namespace MultiGameLauncher.Views.Pages
                 
                 dialogFileName = dialog.FileName;
                 IsBackGroundChange = true;
+                if(Path.GetExtension(dialogFileName) == ".mp4")
+                {
+                    Backgroundview.Content = "动态背景";
+                }
+                if (Path.GetExtension(dialogFileName) == ".png")
+                {
+                    Backgroundview.Content = "静态背景";
+                }
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
@@ -328,6 +368,7 @@ namespace MultiGameLauncher.Views.Pages
             {
 
                 newconfig.Launchpath = dialog.FileName;
+                LaunchPathView.Content = dialog.FileName;
                 
             }
         }
@@ -335,6 +376,17 @@ namespace MultiGameLauncher.Views.Pages
         private void ArgumentsBlock_LostFocus(object sender, RoutedEventArgs e)
         {
             newconfig.Arguments = ArgumentsBlock.Text;
+        }
+
+        
+
+        private void DeleteBackground_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("确定删除背景吗？此操作不可逆", "提示", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                IsBackGroundDelete = true;
+                DeleteBackground.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
