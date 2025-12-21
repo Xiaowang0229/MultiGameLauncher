@@ -2,9 +2,9 @@
 using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Windows;
-using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
+using FFmpeg.AutoGen;
 using System.Windows;
 using Unosquare.FFME;
 
@@ -18,7 +18,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
+            Library.LoadFFmpeg();
             if (!File.Exists(Variables.Configpath))
             {
                 Tools.InitalizeConfig();

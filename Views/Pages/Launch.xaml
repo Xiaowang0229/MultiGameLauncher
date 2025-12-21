@@ -4,10 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
-      xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
-
+      xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
       Title="Launch" Width="1200" Height="675" Loaded="Page_Loaded">
 
     <Grid>
@@ -84,7 +83,7 @@
             </Style>
         </Grid.Resources>
 
-        <ffme:MediaElement x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="True" MediaEnded="BackgroundVideo_MediaEnded" LoadedBehavior="Manual" UnloadedBehavior="Manual" />
+        <ffme:MediaElement x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" />
         <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged"/>
         <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >

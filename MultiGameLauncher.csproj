@@ -13,7 +13,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="update\HuaZi.Library.dll" />
+    <None Remove="update\Newtonsoft.Json.dll" />
+    <None Remove="update\UpdateAPI.deps.json" />
+    <None Remove="update\UpdateAPI.dll" />
+    <None Remove="update\UpdateAPI.exe" />
+    <None Remove="update\UpdateAPI.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="update\HuaZi.Library.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\UpdateAPI.deps.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\UpdateAPI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\UpdateAPI.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\UpdateAPI.runtimeconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

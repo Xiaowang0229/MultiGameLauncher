@@ -130,7 +130,7 @@ namespace MultiGameLauncher.Views.Pages
             
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
 
@@ -156,8 +156,10 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundVideo.Visibility = Visibility.Visible;
 
 
-                await BackgroundVideo.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+
                 //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
+                BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+                BackgroundVideo.Play();
 
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -190,9 +192,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
                 BackgroundVideo.Visibility = Visibility.Visible;
-                await BackgroundVideo.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                //_mediaPlayer.Play(new Media(_libVLC, Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", FromType.FromPath));
-                //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", UriKind.Absolute);
+                BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
                 BackgroundVideo.Play();
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -284,10 +284,19 @@ namespace MultiGameLauncher.Views.Pages
             win.BackButton.Width = 40;
         }
 
+        
+
+        
+
         private void BackgroundVideo_MediaEnded(object sender, EventArgs e)
         {
             BackgroundVideo.Position = TimeSpan.Zero;
             BackgroundVideo.Play();
+        }
+
+        private void BackgroundVideo_MediaFailed(object sender, Unosquare.FFME.Common.MediaFailedEventArgs e)
+        {
+            MessageBox.Show($"媒体播放失败:{e.ErrorException}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
