@@ -1,11 +1,13 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -17,11 +19,15 @@ namespace MultiGameLauncher.Views.Pages
         private List<StackPanel> animationSP = new();
         private MainConfig config;
         private LaunchConfig launchConfig;
+
         public Launch()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             
+
+
+
             Loaded += (async (s, e) =>
             {
                 try
@@ -111,10 +117,10 @@ namespace MultiGameLauncher.Views.Pages
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Loading
             {
-                GamePath = "1",
-                GameName = System.IO.Path.GetFileName("1"),
-                ShowName = "1",
-                Arguments = "1",
+                GamePath = launchConfig.Launchpath,
+                GameName = System.IO.Path.GetFileName(launchConfig.Launchpath),
+                ShowName = launchConfig.ShowName,
+                Arguments =launchConfig.Arguments,
             });
 
         }
@@ -124,9 +130,11 @@ namespace MultiGameLauncher.Views.Pages
             
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            for(int i = 0;i<config.GameInfos.Count;i++)
+
+
+            for (int i = 0;i<config.GameInfos.Count;i++)
             {
                 var menuitem = new TabItem();
                 menuitem.ToolTip = config.GameInfos[i].ShowName;
@@ -137,7 +145,7 @@ namespace MultiGameLauncher.Views.Pages
             launchConfig = config.GameInfos[0];
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
 
-            MainTitle.Content = launchConfig.MainTitle;
+            MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             SubTitle.Content = launchConfig.SubTitle;
@@ -145,12 +153,17 @@ namespace MultiGameLauncher.Views.Pages
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
-                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
-                BackgroundVideo.Play();
+                BackgroundVideo.Visibility = Visibility.Visible;
+
+
+                await BackgroundVideo.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+                //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
+
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
                 BackgroundVideo.Visibility = Visibility.Hidden;
+                BackgroundImage.Visibility = Visibility.Visible;
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
 
@@ -166,22 +179,26 @@ namespace MultiGameLauncher.Views.Pages
             LogText.Document = document;
         }
 
-        private void RootTabItemSelectionChanged(object sender, RoutedEventArgs e)
+        private async void RootTabItemSelectionChanged(object sender, RoutedEventArgs e)
         {
             RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
             launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
-            MainTitle.Content = launchConfig.MainTitle;
+            MainTitle.Text = launchConfig.MainTitle;
             SubTitle.Content = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
-                BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", UriKind.Absolute);
+                BackgroundVideo.Visibility = Visibility.Visible;
+                await BackgroundVideo.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+                //_mediaPlayer.Play(new Media(_libVLC, Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", FromType.FromPath));
+                //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4", UriKind.Absolute);
                 BackgroundVideo.Play();
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
                 BackgroundVideo.Visibility = Visibility.Hidden;
+                BackgroundImage.Visibility = Visibility.Visible;
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
         }
@@ -267,7 +284,7 @@ namespace MultiGameLauncher.Views.Pages
             win.BackButton.Width = 40;
         }
 
-        private void BackgroundVideo_MediaEnded(object sender, RoutedEventArgs e)
+        private void BackgroundVideo_MediaEnded(object sender, EventArgs e)
         {
             BackgroundVideo.Position = TimeSpan.Zero;
             BackgroundVideo.Play();

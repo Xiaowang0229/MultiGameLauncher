@@ -19,6 +19,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         private MainConfig config;
         private LaunchConfig newconfig;
         private string DialogFileName;
+        public bool IsBackGroundChange;
+
         public OOBEImport()
         {
             InitializeComponent();
@@ -103,12 +105,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                         colorDialog.Color.R,
                         colorDialog.Color.G,
                         colorDialog.Color.B));
-                        MessageBox.Show(
-                            "字体及颜色设置成功！",
-                            "提示",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information
-                        );
+                        
                         return;
                         
                     }
@@ -140,6 +137,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
                
                 DialogFileName = dialog.FileName;
+                IsBackGroundChange = true;
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
@@ -186,12 +184,22 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 config.GameInfos.Add(newconfig);
                 config.OOBEStatus = true;
                 this.IsEnabled = false;
-                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
-                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName)))
+                if (IsBackGroundChange)
                 {
-                    File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                    if (Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+                    {
+                        Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
+                    }
+                    File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
                 }
-                File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
                 this.IsEnabled = true;
                 MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
+using Unosquare.FFME;
 
 namespace MultiGameLauncher
 {
@@ -17,6 +18,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
             if (!File.Exists(Variables.Configpath))
             {
                 Tools.InitalizeConfig();

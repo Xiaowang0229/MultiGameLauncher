@@ -61,7 +61,7 @@
         </StackPanel>
         <StackPanel Visibility="Hidden" x:Name="BackgroundCopyTip" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,326,0,0">
             <ui:ProgressRing HorizontalAlignment="Left" Height="40"  VerticalAlignment="Top" Width="40"/>
-            <Label Content="请稍候，正在配置背景文件" VerticalAlignment="Center"/>
+            <Label Content="请稍候，正在配置文件" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Page>

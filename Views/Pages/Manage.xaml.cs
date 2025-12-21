@@ -1,23 +1,9 @@
 ﻿using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Windows;
-using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging.Effects;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Path = System.IO.Path;
 
 namespace MultiGameLauncher.Views.Pages
@@ -32,6 +18,7 @@ namespace MultiGameLauncher.Views.Pages
         private bool MenuItemVisiblity = false;
         private LaunchConfig newconfig;
         private string dialogFileName;
+        private bool IsBackGroundChange = false;
 
         public Manage()
         {
@@ -228,12 +215,22 @@ namespace MultiGameLauncher.Views.Pages
                 config.GameInfos.Add(newconfig);
                 await Task.Delay(500);
                 this.IsEnabled = false;
-                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
-                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName)))
+                if(IsBackGroundChange)
                 {
-                    File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName));
+                    if(Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+                    {
+                        Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
+                    }
+                    File.Copy(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName));
                 }
-                File.Copy(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
 
                 Json.WriteJson(Variables.Configpath, config);
@@ -276,22 +273,12 @@ namespace MultiGameLauncher.Views.Pages
                     colorDialog.Color.R,
                     colorDialog.Color.G,
                     colorDialog.Color.B));
-                    MessageBox.Show(
-                        "字体及颜色设置成功！",
-                        "提示",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
+                    
                     return;
 
                 }
 
-                MessageBox.Show(
-                        "字体设置成功！",
-                        "提示",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                );
+                
             }
         }
 
@@ -313,6 +300,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 
                 dialogFileName = dialog.FileName;
+                IsBackGroundChange = true;
                 /*await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 if(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
@@ -340,7 +328,7 @@ namespace MultiGameLauncher.Views.Pages
             {
 
                 newconfig.Launchpath = dialog.FileName;
-                MessageBox.Show($"设置成功，路径为:{dialog.FileName}", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
             }
         }
 

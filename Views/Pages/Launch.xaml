@@ -4,8 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
+      xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      xmlns:pi="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
 
       Title="Launch" Width="1200" Height="675" Loaded="Page_Loaded">
@@ -83,16 +83,10 @@
                 </Setter>
             </Style>
         </Grid.Resources>
+
+        <ffme:MediaElement x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="True" MediaEnded="BackgroundVideo_MediaEnded" LoadedBehavior="Manual" UnloadedBehavior="Manual" />
         <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <MediaElement x:Name="BackgroundVideo"
-            LoadedBehavior="Manual"
-              UnloadedBehavior="Manual"
-                      IsMuted="True"
-                      MediaEnded="BackgroundVideo_MediaEnded" HorizontalAlignment="Left" VerticalAlignment="Top" Height="674" Width="1200"  />
-
         <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="RootChganger_SelectionChanged"/>
-
-
         <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
             <Border Margin="10,10,10,10"
                         Height="64"
@@ -107,12 +101,6 @@
 
             <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
         </StackPanel>
-
-
-
-
-
-
         <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
             <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
         </ui:Tile>
@@ -123,14 +111,16 @@
             </StackPanel>
         </ui:Tile>
         <StackPanel x:Name="sp_ani">
+            
+
             <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
-                <Label x:Name="MainTitle"   Content="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81"/>
+                <TextBlock x:Name="MainTitle"   Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" Height="81" FontFamily="Microsoft YaHei UI"/>
 
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal" >
                 <Label x:Name="SubTitle" HorizontalAlignment="Left"  Content="副标题" VerticalAlignment="Top" FontSize="22" Margin="40,0,0,140" Height="38" />
             </StackPanel>
-            
+
             <StackPanel Orientation="Horizontal"  Tag="ani">
 
                 <StackPanel Margin="5,0,0,0" Tag="ani">

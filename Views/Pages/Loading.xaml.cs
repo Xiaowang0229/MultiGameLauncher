@@ -95,7 +95,7 @@ namespace MultiGameLauncher.Views.Pages
             win.RootFrame.Navigate(new Launch());
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)//StartUp
+        private async void Page_Loaded(object sender, RoutedEventArgs e)//StartUp
         {
             try
             {
