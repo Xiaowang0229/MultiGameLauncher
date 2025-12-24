@@ -155,14 +155,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void LaunchTile_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
-            {
-
-                BackgroundVideo.Stop();
-                BackgroundVideo.Close();
-                await Task.Delay(50);
-
-            }
+            
             try
             {
                 /*Tools.Process.StartInfo = new ProcessStartInfo
@@ -357,10 +350,17 @@ namespace MultiGameLauncher.Views.Pages
                 Arguments = launchConfig.Arguments,
                 UseShellExecute = true
             };*/
+            //MessageBox.Show($"{Variables.GameProcessStatus[RootTabControl.SelectedIndex]}");
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
+            }
+
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
+            {
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
             }
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
