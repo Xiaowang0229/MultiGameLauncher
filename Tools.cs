@@ -2,8 +2,11 @@
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
 using ControlzEx.Theming;
+using Hardcodet.Wpf;
+using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
 using Microsoft.Win32;
+using MultiGameLauncher.Views.Pages;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,24 +14,33 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
+using Image = System.Drawing.Image;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 
 namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "RC 0.101.9.0\n";
+        public readonly static string Version = "1.0.0.0-RC2\n";
+        public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
+        public static List<Process> GameProcess = new List<Process>();
+        public static Hardcodet.Wpf.TaskbarNotification.TaskbarIcon RootTaskBarIcon;
+        public static List<bool> GameProcessStatus = new List<bool>();
         public static string VersionLog { get; set; }
+        public static bool MainWindowHideStatus { get; set; } = false;
     }
 
     
     public class Tools //工具集
     {
-        public static Process Process = new();
+        //public static Process Process = new();
         public static FrameworkElement OldPage = null; 
         public static ImageSource ApplicationLogo;
 
@@ -144,10 +156,7 @@ namespace MultiGameLauncher
                     }
                 }
             }
-            catch
-            {
-                
-            }
+            catch{ }
 
             return true; 
         }
@@ -220,6 +229,91 @@ namespace MultiGameLauncher
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        public static int FindHashcodeinGameinfosint(MainConfig config,string hashcode)
+        {
+            for (int i = 0;i< config.GameInfos.Count;i++)
+            {
+                if (config.GameInfos[i].HashCode == hashcode)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public static void IntializeTaskbar()
+        {
+            //本体初始化
+            Variables.RootTaskBarIcon = new TaskbarIcon();
+            Variables.RootTaskBarIcon.IconSource = ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
+            Variables.RootTaskBarIcon.ToolTipText = $"Rocket Launcher 主程序";
+
+            //列表项初始化
+            var tbcm = new System.Windows.Controls.ContextMenu();
+            var OpenMainWindowItem = new MenuItem { Header="显示主窗口" };
+            var ForceQuitGameItem = new MenuItem { Header="强制退出游戏",Visibility=Visibility.Hidden };
+            var SettingsItem = new MenuItem { Header = "打开设置页" };
+            var ExitApplicationItem = new MenuItem { Header="退出主程序" };
+
+            tbcm.Items.Add(OpenMainWindowItem);
+            //Variables.RootTaskBarIcon.ContextMenu.Items.Add(ForceQuitGameItem);
+            tbcm.Items.Add(new Separator());
+            tbcm.Items.Add(SettingsItem);
+            tbcm.Items.Add(ExitApplicationItem);
+
+            
+
+            //绑定事件
+            OpenMainWindowItem.Click += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Show();
+            };
+            ForceQuitGameItem.Click += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Show();
+                win.RootFrame.Navigate(new Launch());
+
+            };
+            SettingsItem.Click += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Show();
+                win.RootFrame.Navigate(new Settings());
+            };
+            ExitApplicationItem.Click += (s, e) =>
+            {
+                KillTaskBar();
+                Environment.Exit(0);
+            };
+
+            Variables.RootTaskBarIcon.ContextMenu = tbcm;
+
+
+            Variables.RootTaskBarIcon.TrayLeftMouseDown += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                if (Variables.MainWindowHideStatus)
+                {
+                    win.Show();
+                    Variables.MainWindowHideStatus = false;
+                }
+                else
+                {
+                    win.Hide();
+                    Variables.MainWindowHideStatus = true;
+                }
+                
+            };
+
+        }
+
+        public static void KillTaskBar()
+        {
+            Variables.RootTaskBarIcon?.Dispose();
         }
     }
 

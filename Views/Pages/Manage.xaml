@@ -15,7 +15,11 @@
         <StackPanel>
             <StackPanel  Orientation="Horizontal" Margin="10,74,10,0" Height="41">
                 <Label Content="选择管理对象：" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
-                <ui:DropDownButton HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" x:Name="RootDropper" Width="508" Height="36" Margin="0,0,10,0"/>
+                <ui:DropDownButton HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" x:Name="RootDropper" Width="508" Height="36" Margin="0,0,10,0">
+                    <ui:DropDownButton.Content>
+                        <Label x:Name="RootDropperText" HorizontalAlignment="Left" VerticalAlignment="Center"  Width="478"/>
+                    </ui:DropDownButton.Content>
+                </ui:DropDownButton>
 
                 <Button Content="  添加  " FontSize="16" FontFamily="Microsoft YaHei UI" Margin="0,0,10,0" Width="150" Height="36" Click="Button_Click_2" />
                 <Button x:Name="DeleteMenuItem" Content="  删除  " FontSize="16" FontFamily="Microsoft YaHei UI" Width="150" Height="36" Click="DeleteMenuItem_Click"/>

@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using MultiGameLauncher.Views.Windows;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -100,7 +101,7 @@ namespace MultiGameLauncher.Views.Pages
         private async void MenuItemSelectionChanged(object sender, RoutedEventArgs e)
         {
             
-            RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
+            RootDropperText.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
             RootDropper.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
 
             animationSP.Clear();
@@ -211,7 +212,11 @@ namespace MultiGameLauncher.Views.Pages
         {
             if(MessageBox.Show($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}","警告",MessageBoxButton.YesNo,MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
+                //config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
+                var deleteitemindex = newconfig.HashCode;
+                config.GameInfos.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
+                Variables.GameProcess.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
+                Variables.GameProcessStatus.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                 Json.WriteJson(Variables.Configpath, config);
                 Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                 MessageBox.Show("操作成功","提示",MessageBoxButton.OK,MessageBoxImage.Information);
@@ -228,9 +233,13 @@ namespace MultiGameLauncher.Views.Pages
             if (newconfig.Launchpath != "" && newconfig.MainTitle != "" && newconfig.ShowName != "")
             {
                 BackgroundCopyTip.Visibility = Visibility.Visible;
-                config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
-                config.GameInfos.Add(newconfig);
-                await Task.Delay(500);
+                /*config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
+                
+                config.GameInfos.Add(newconfig);*/
+
+                config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
+
+                await Task.Delay(100);
                 this.IsEnabled = false;
                 if(IsBackGroundChange)
                 {
@@ -263,6 +272,12 @@ namespace MultiGameLauncher.Views.Pages
 
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
 
+
+                
+
+
+
+
                 Json.WriteJson(Variables.Configpath, config);
                 this.IsEnabled = true;
                 MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -271,7 +286,7 @@ namespace MultiGameLauncher.Views.Pages
             }
             else
             {
-                MessageBox.Show("请将启动路径，程序名称和主标题填写完整，以便正常写入Json文件进行程序启动！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("请将带星号的必填项填写完整，以便正常写入Json文件进行程序启动！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
         }

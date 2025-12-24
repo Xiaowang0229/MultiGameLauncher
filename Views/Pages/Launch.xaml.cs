@@ -1,6 +1,7 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,6 @@ namespace MultiGameLauncher.Views.Pages
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             
-
 
 
             Loaded += (async (s, e) =>
@@ -163,26 +163,52 @@ namespace MultiGameLauncher.Views.Pages
                 await Task.Delay(50);
 
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Loading
+            try
             {
-                GamePath = launchConfig.Launchpath,
-                GameName = System.IO.Path.GetFileName(launchConfig.Launchpath),
-                ShowName = launchConfig.ShowName,
-                Arguments =launchConfig.Arguments,
-            });
+                /*Tools.Process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = launchConfig.Launchpath,
+                    Arguments = launchConfig.Arguments,
+                    UseShellExecute = true
+                };
+                Tools.Process.Start();*/
+                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+                proc.Start();
+                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = true;
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Hide();
+                Variables.MainWindowHideStatus = true;
+                await proc.WaitForExitAsync();
+                win.Show();
+                Variables.MainWindowHideStatus = false;
+                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"启动游戏时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Process.Close();
+            var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+            proc.Kill();
+            Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+            LaunchTile.Visibility = Visibility.Visible;
+            StopTile.Visibility = Visibility.Hidden;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-
+            
             for (int i = 0;i<config.GameInfos.Count;i++)
             {
                 var menuitem = new TabItem();
@@ -192,6 +218,12 @@ namespace MultiGameLauncher.Views.Pages
                 RootTabControl.Items.Add(menuitem);
             }
             launchConfig = config.GameInfos[0];
+            /*Tools.Process.StartInfo = new ProcessStartInfo
+            {
+                FileName = launchConfig.Launchpath,
+                Arguments = launchConfig.Arguments,
+                UseShellExecute = true
+            };*/
             UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
 
             MainTitle.Text = launchConfig.MainTitle;
@@ -199,6 +231,13 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             SubTitle.Text = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
+
+            if(Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            {
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
+            }
+
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
@@ -217,6 +256,13 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundImage.Visibility = Visibility.Visible;
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
+
+
+            /*if(Tools.Process.HasExited == false)
+            {
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
+            }*/
 
             Welcome.Content = "欢迎，" + config.Username;
             var pipeline = new MarkdownPipelineBuilder()
@@ -285,6 +331,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
+
                 var animationin = new ThicknessAnimation
                 {
                     To = new Thickness(0, 0, 0, 10),
@@ -303,6 +350,17 @@ namespace MultiGameLauncher.Views.Pages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+            /*Tools.Process.StartInfo = new ProcessStartInfo
+            {
+                FileName = launchConfig.Launchpath,
+                Arguments = launchConfig.Arguments,
+                UseShellExecute = true
+            };*/
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            {
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
             }
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;

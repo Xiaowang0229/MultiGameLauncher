@@ -100,13 +100,12 @@
 
             <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
         </StackPanel>
-        <ui:Tile Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
+        <ui:Tile x:Name="StopTile" Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
             <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
         </ui:Tile>
         <ui:Tile x:Name="LaunchTile" Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="LaunchTile_Click">
             <StackPanel>
                 <iconPacks:PackIconModern Width="40" Height="40" Kind="ControlPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                <TextBlock Text="当前游戏："/>
             </StackPanel>
         </ui:Tile>
         <StackPanel x:Name="sp_ani">
@@ -117,7 +116,7 @@
 
             </StackPanel>
             <StackPanel Tag="ani" Orientation="Horizontal" >
-                <TextBlock x:Name="SubTitle"  Text="副标题" VerticalAlignment="Top" FontSize="22" Margin="43,-20,0,170" />
+                <TextBlock x:Name="SubTitle"  Text="副标题" VerticalAlignment="Top" FontSize="22" Margin="43,0,0,150" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"  Tag="ani">

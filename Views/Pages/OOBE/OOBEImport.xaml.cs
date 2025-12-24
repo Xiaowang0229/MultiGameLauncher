@@ -1,6 +1,7 @@
 ﻿using HuaZi.Library.Json;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Windows;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -180,11 +181,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             newconfig.Arguments = ArgumentsBlock.Text;
         }
 
-        private void Button_Click_7(object sender, EventArgs e)
+        private async void Button_Click_7(object sender, EventArgs e)
         {
             if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
             {
                 BackgroundCopyTip.Visibility = Visibility.Visible;
+                await Task.Delay(100);
                 config.GameInfos.Add(newconfig);
                 config.OOBEStatus = true;
                 this.IsEnabled = false;
@@ -203,11 +205,24 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
                     }
                     File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                   
                 }
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
                 this.IsEnabled = true;
-                MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                var proc = new Process();
+                proc.StartInfo = new ProcessStartInfo
+                {
+                    FileName = newconfig.Launchpath,
+                    Arguments = newconfig.Arguments,
+                    UseShellExecute = true
+                };
+                Variables.GameProcess.Add(proc);
+                Variables.GameProcessStatus.Add(false);
                 Json.WriteJson(Variables.Configpath, config);
+
+                MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 
                 var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
                 win.Close();

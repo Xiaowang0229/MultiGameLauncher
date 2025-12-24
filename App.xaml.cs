@@ -1,11 +1,13 @@
 ﻿using ControlzEx.Theming;
+using FFmpeg.AutoGen;
 using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Windows;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using FFmpeg.AutoGen;
 using System.Windows;
+using System.Windows.Threading;
 using Unosquare.FFME;
 
 namespace MultiGameLauncher
@@ -18,6 +20,8 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            //RegisterGlobalExceptionHandlers();
+            Variables.ShowVersion = Variables.Version.Substring(Variables.Version.Length - 1);
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
             Library.LoadFFmpeg();
@@ -33,6 +37,18 @@ namespace MultiGameLauncher
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds");
             }
             
+            for(int i = 0;i<config.GameInfos.Count;i++)
+            {
+                var proc = new Process();
+                proc.StartInfo = new ProcessStartInfo
+                {
+                    FileName = config.GameInfos[i].Launchpath,
+                    Arguments = config.GameInfos[i].Arguments,
+                    UseShellExecute = true
+                };
+                Variables.GameProcess.Add(proc);
+                Variables.GameProcessStatus.Add(false);
+            }
 
             ThemeManager.Current.ChangeTheme(Current,config.ThemeMode+"."+config.ThemeColor);
 
@@ -49,6 +65,7 @@ namespace MultiGameLauncher
             {
                 var win = new MainWindow();
                 win.Show();
+                Tools.IntializeTaskbar();
             }
             else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
             {
@@ -96,6 +113,48 @@ namespace MultiGameLauncher
                 }
                 catch { }
 
+            }
+
+        }
+
+        private void RegisterGlobalExceptionHandlers()
+        {
+            // 捕获 UI 线程未处理的异常
+            this.DispatcherUnhandledException += UnhandledDispatherException;
+
+            // 捕获非 UI 线程未处理的异常
+            AppDomain.CurrentDomain.UnhandledException += UnhandledDomainException;
+
+            // 捕获 Task 线程未处理的异常
+            TaskScheduler.UnobservedTaskException += UnhandledException;
+        }
+
+        private void UnhandledException(object sender,  UnobservedTaskExceptionEventArgs e)
+        {
+            MessageBox.Show($"程序内部发生错误：{e.Exception}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            Environment.Exit(0);
+        }
+        private void UnhandledDomainException(object sender,  UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"程序内部发生错误：{e.ExceptionObject}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            Environment.Exit(0);
+        }
+        private void UnhandledDispatherException(object sender,  DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"程序内部发生错误：{e.Exception}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            Environment.Exit(0);
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            foreach(var i in Variables.GameProcessStatus)
+            {
+                if(i == true)
+                {
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.Hide();
+                    return;
+                }
             }
 
         }

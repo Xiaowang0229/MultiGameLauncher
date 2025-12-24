@@ -103,13 +103,19 @@
 
   <ItemGroup>
     <PackageReference Include="FFME.Windows" Version="4.4.350" />
-    <PackageReference Include="HuaZi.Library" Version="2025.12.18.2" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1" />
     <PackageReference Include="Markdig" Version="0.44.0" />
     <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HuaZi.Library">
+      <HintPath>..\HuaZi.Library.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
