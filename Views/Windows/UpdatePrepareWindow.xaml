@@ -18,12 +18,16 @@
         </StackPanel>
         <StackPanel Tag="ani">
             <GroupBox Height="363" Header="更新日志" Margin="10,0,10,10">
-                <TextBlock x:Name="UpdateLog"/>
+                <FlowDocumentScrollViewer x:Name="UpdateLogViewer"/>
             </GroupBox>
         </StackPanel>
         <StackPanel Tag="ani"  HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="过会更新" Width="119" Margin="0,0,10,0" Click="Button_Click"/>
-            <Button Content="现在更新" Width="119" Margin="0,0,10,0" Click="Button_Click_1"/>
+            <StackPanel Orientation="Horizontal" Visibility="Hidden" x:Name="UpdatePrepareProgress">
+                <Label Content="启动更新中，请稍候"/>
+                <ui:ProgressRing Width="28" Height="28" Margin="0,0,10,0"/>
+            </StackPanel>
+            <Button Content="过会更新" Width="100" Margin="0,0,10,0" Click="Button_Click"/>
+            <Button Content="现在更新" Width="100" Margin="0,0,10,0" Click="Button_Click_1"/>
         </StackPanel>
 
     </StackPanel>

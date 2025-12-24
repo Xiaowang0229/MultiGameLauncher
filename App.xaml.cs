@@ -20,7 +20,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            //RegisterGlobalExceptionHandlers();
+            RegisterGlobalExceptionHandlers();
             Variables.ShowVersion = Variables.Version.Substring(Variables.Version.Length - 1);
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
@@ -66,6 +66,7 @@ namespace MultiGameLauncher
                 var win = new MainWindow();
                 win.Show();
                 Tools.IntializeTaskbar();
+                //return;
             }
             else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
             {
@@ -106,6 +107,7 @@ namespace MultiGameLauncher
                         using var link = new HttpClient();
                         client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
                         var OnlineLink = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLink");
+                        //await Task.Delay();
                         MetroWindow win2 = new UpdatePrepareWindow(Variables.Version, content, Onlinelog, OnlineLink);
                         win2.ShowDialog();
 

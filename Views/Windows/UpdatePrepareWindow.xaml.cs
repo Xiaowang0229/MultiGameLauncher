@@ -1,7 +1,11 @@
-﻿using MahApps.Metro.Controls;
+﻿using HuaZi.Library.Downloader;
+using MahApps.Metro.Controls;
+using Markdig;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -13,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace MultiGameLauncher.Views.Windows
 {
@@ -82,7 +87,15 @@ namespace MultiGameLauncher.Views.Windows
         {
             CurrentVersion.Text = "当前版本：" + LocalVersion;
             LatestVersion.Text = "最新版本：" + OnlineVersion;
-            UpdateLog.Text = OnlineLog;
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()  // 启用扩展功能
+                .Build();
+
+            // 转换为 FlowDocument
+            FlowDocument document = Markdig.Wpf.Markdown.ToFlowDocument(Variables.VersionLog, pipeline);
+
+            // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
+            UpdateLogViewer.Document = document;
 
         }
 
@@ -91,16 +104,59 @@ namespace MultiGameLauncher.Views.Windows
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-            Process.Start(new ProcessStartInfo
+            //MessageBox.Show($"{OnlineLink.Substring(0,OnlineLink.Length - 1)} {Environment.ProcessPath}");
+            this.IsEnabled = false;
+            UpdatePrepareProgress.Visibility = Visibility.Visible;
+            bool DownloadStatus = false;
+            if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
             {
-                FileName = Environment.CurrentDirectory + @"\Update\UpdateAPI.exe",
-                Arguments = OnlineLink+" "+ Process.GetCurrentProcess().MainModule.FileName,
-                UseShellExecute = true
-            });
-            Application.Current.Shutdown();
+                File.Delete(Path.GetTempPath() + "\\Temp.exe");
+            }
+            try
+            {
+
+                var downloader = new Downloader
+                {
+                    Url = "https://lz.qaiu.top/parser?url=https://xiaowang-hanxing.lanzouv.com/iXrER3ee8pkf&pwd=f3pa",
+                    SavePath = Path.GetTempPath() + "\\Temp.exe",
+                    Completed = (async (s, e) =>
+                    {
+                        if (s)
+                        {
+
+
+                            DownloadStatus = true;
+
+                        }
+                        else
+                        {
+                            MessageBox.Show($"启动失败！错误为:{e}", "错误", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                            Environment.Exit(0);
+                        }
+                    })
+                };
+                downloader.StartDownload();
+                while (DownloadStatus == false)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                }
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = $"{Path.GetTempPath()}Temp.exe",
+                    Arguments = $"{OnlineLink.Substring(0, OnlineLink.Length - 1)} {Environment.ProcessPath}",
+                    UseShellExecute = true
+                });
+                Tools.KillTaskBar();
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"准备更新时发生错误：{ex.Message}", "错误", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                Environment.Exit(0);
+            }
+
         }
     
     }
