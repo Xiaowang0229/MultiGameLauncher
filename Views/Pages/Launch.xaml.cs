@@ -9,6 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -60,6 +61,8 @@ namespace MultiGameLauncher.Views.Pages
                         aniSP.BeginAnimation(MarginProperty, animation);
                         await Task.Delay(20);
                     }
+
+
                 }
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
@@ -173,12 +176,15 @@ namespace MultiGameLauncher.Views.Pages
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.Hide();
                 Variables.MainWindowHideStatus = true;
+
                 await proc.WaitForExitAsync();
                 win.Show();
                 Variables.MainWindowHideStatus = false;
                 Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
+
+
 
 
             }
@@ -267,6 +273,8 @@ namespace MultiGameLauncher.Views.Pages
 
             // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
             LogText.Document = document;
+
+            
         }
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
@@ -351,17 +359,7 @@ namespace MultiGameLauncher.Views.Pages
                 UseShellExecute = true
             };*/
             //MessageBox.Show($"{Variables.GameProcessStatus[RootTabControl.SelectedIndex]}");
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
-            {
-                LaunchTile.Visibility = Visibility.Hidden;
-                StopTile.Visibility = Visibility.Visible;
-            }
-
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
-            {
-                LaunchTile.Visibility = Visibility.Visible;
-                StopTile.Visibility = Visibility.Hidden;
-            }
+            
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
@@ -376,9 +374,31 @@ namespace MultiGameLauncher.Views.Pages
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
+                BackgroundVideo.Close();
+                BackgroundVideo.Stop();
                 BackgroundVideo.Visibility = Visibility.Hidden;
                 BackgroundImage.Visibility = Visibility.Visible;
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
+            }
+
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
+                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+                await proc.WaitForExitAsync();
+                win.Show();
+                Variables.MainWindowHideStatus = false;
+                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
+            }
+
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
+            {
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
             }
         }
 
@@ -386,17 +406,20 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
-
-                BackgroundVideo.Stop();
                 BackgroundVideo.Close();
+                BackgroundVideo.Stop();
+                
                 await Task.Delay(50);
 
             }
+            
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Personality());
-            win.BackButton.Width = 40;
+                win.BackButton.Width = 40;
+            
         }
 
         

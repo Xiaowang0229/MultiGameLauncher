@@ -1,11 +1,12 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using Microsoft.Win32;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
-using System.IO;
 
 
 namespace MultiGameLauncher.Views.Pages
@@ -157,8 +158,9 @@ namespace MultiGameLauncher.Views.Pages
                 {
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
-                    MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Tools.Restart();
+                    
+                    MessageBox.Show("操作成功,为了保证您的游戏体验,重启后生效！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
                 }
             }
         }

@@ -103,8 +103,9 @@ namespace MultiGameLauncher.Views.Pages
             
             RootDropperText.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
             RootDropper.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
-
-            animationSP.Clear();
+            try
+            {
+                animationSP.Clear();
             foreach (var sp in sp_ani.Children)
             {
                 if (((StackPanel)sp).Tag != null)
@@ -179,12 +180,17 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-            foreach (var aniSP in animationSP)
+                foreach (var aniSP in animationSP)
+                {
+                    aniSP.Visibility = Visibility.Visible;
+                    aniSP.BeginAnimation(MarginProperty, null);
+                    aniSP.BeginAnimation(MarginProperty, inanimation);
+                    await Task.Delay(100);
+                }
+            }
+            catch(Exception ex)
             {
-                aniSP.Visibility = Visibility.Visible;
-                aniSP.BeginAnimation(MarginProperty, null);
-                aniSP.BeginAnimation(MarginProperty, inanimation);
-                await Task.Delay(100);
+                
             }
         }
 
@@ -236,10 +242,11 @@ namespace MultiGameLauncher.Views.Pages
                 /*config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
                 
                 config.GameInfos.Add(newconfig);*/
-
+                
+                
                 config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
-
-                await Task.Delay(100);
+               
+                //await Task.Delay(100);
                 this.IsEnabled = false;
                 if(IsBackGroundChange)
                 {
@@ -273,13 +280,14 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
 
 
-                
 
 
 
 
+                //MessageBox.Show(config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Launchpath);
                 Json.WriteJson(Variables.Configpath, config);
                 this.IsEnabled = true;
+                await Task.Delay(100);
                 MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Manage());
@@ -384,13 +392,38 @@ namespace MultiGameLauncher.Views.Pages
 
                 newconfig.Launchpath = dialog.FileName;
                 LaunchPathView.Content = dialog.FileName;
-                
+                //MessageBox.Show("1");
+                try
+                {
+                    Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
+                    Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Close();
+                }
+                catch { }
+                Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].StartInfo = new ProcessStartInfo
+                {
+                    FileName = newconfig.Launchpath,
+                    Arguments = newconfig.Arguments,
+                    UseShellExecute = true
+                };
+                Variables.GameProcessStatus[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = false;
             }
         }
 
         private void ArgumentsBlock_LostFocus(object sender, RoutedEventArgs e)
         {
             newconfig.Arguments = ArgumentsBlock.Text;
+            try
+            {
+                Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
+                Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Close();
+            }
+            catch { }
+            Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].StartInfo = new ProcessStartInfo
+            {
+                FileName = newconfig.Launchpath,
+                Arguments = newconfig.Arguments,
+                UseShellExecute = true
+            };
         }
 
         

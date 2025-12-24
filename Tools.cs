@@ -270,6 +270,8 @@ namespace MultiGameLauncher
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.Show();
+                win.Topmost = true;
+                win.Topmost = false;
             };
             ForceQuitGameItem.Click += (s, e) =>
             {
@@ -300,6 +302,8 @@ namespace MultiGameLauncher
                 {
                     win.Show();
                     Variables.MainWindowHideStatus = false;
+                    win.Topmost = true;
+                    win.Topmost = false;
                 }
                 else
                 {
@@ -315,6 +319,8 @@ namespace MultiGameLauncher
         {
             Variables.RootTaskBarIcon?.Dispose();
         }
+
+
     }
 
     
