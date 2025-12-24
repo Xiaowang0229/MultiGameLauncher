@@ -27,7 +27,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "1.0.0.0-RC2\n";
+        public readonly static string Version = "Release 1.0.0.0\n";
         public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();

@@ -8,28 +8,38 @@
     ".NETCoreApp,Version=v10.0": {
       "UpdateAPI/1.0.0": {
         "dependencies": {
-          "HuaZi.Library": "2025.11.27.1"
+          "WPF-UI": "4.1.0",
+          "WPF-UI.Abstractions": "4.1.0",
+          "HuaZi.Library": "1.0.0.0"
         },
         "runtime": {
           "UpdateAPI.dll": {}
         }
       },
-      "HuaZi.Library/2025.11.27.1": {
+      "WPF-UI/4.1.0": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "WPF-UI.Abstractions": "4.1.0"
         },
         "runtime": {
-          "lib/net8.0-windows7.0/HuaZi.Library.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+          "lib/net10.0-windows7.0/Wpf.Ui.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
           }
         }
       },
-      "Newtonsoft.Json/13.0.1": {
+      "WPF-UI.Abstractions/4.1.0": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.1.25517"
+          "lib/net10.0/Wpf.Ui.Abstractions.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
+        }
+      },
+      "HuaZi.Library/1.0.0.0": {
+        "runtime": {
+          "HuaZi.Library.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -41,19 +51,24 @@
       "serviceable": false,
       "sha512": ""
     },
-    "HuaZi.Library/2025.11.27.1": {
+    "WPF-UI/4.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lX9eBTOx6PnVxMTiRkujPo1zRGla1AzMdHhG+S7tE89/N+k96pr4f958nwR8wzCaf/ONj8Or3JepI0e/EQzqbg==",
-      "path": "huazi.library/2025.11.27.1",
-      "hashPath": "huazi.library.2025.11.27.1.nupkg.sha512"
+      "sha512": "sha512-bL+ehJIgRl9bh8imYFJ33DsJrqcU6xfmbEBPlghW/jaBYtbCEDLfuxsEAVITYQjAxTJjPy+DT5vll3XOSCmHgQ==",
+      "path": "wpf-ui/4.1.0",
+      "hashPath": "wpf-ui.4.1.0.nupkg.sha512"
     },
-    "Newtonsoft.Json/13.0.1": {
+    "WPF-UI.Abstractions/4.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
-      "path": "newtonsoft.json/13.0.1",
-      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+      "sha512": "sha512-SzwdKzoA9ZlNXitVPUBAp79Pao5iRM/miny7/yIQGJwKzfx5bojjzNG4jV9B861ub5zer/AioDwCDc2cUpCoMA==",
+      "path": "wpf-ui.abstractions/4.1.0",
+      "hashPath": "wpf-ui.abstractions.4.1.0.nupkg.sha512"
+    },
+    "HuaZi.Library/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
