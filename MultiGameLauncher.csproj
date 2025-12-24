@@ -38,6 +38,8 @@
     <None Remove="update\UpdateAPI.dll" />
     <None Remove="update\UpdateAPI.exe" />
     <None Remove="update\UpdateAPI.runtimeconfig.json" />
+    <None Remove="update\Wpf.Ui.Abstractions.dll" />
+    <None Remove="update\Wpf.Ui.dll" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,9 +80,6 @@
     <Content Include="update\HuaZi.Library.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="update\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="update\UpdateAPI.deps.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -91,6 +90,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="update\UpdateAPI.runtimeconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\Wpf.Ui.Abstractions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="update\Wpf.Ui.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
