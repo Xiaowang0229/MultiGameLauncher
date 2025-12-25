@@ -1,4 +1,5 @@
 ﻿using HuaZi.Library.Json;
+using MultiGameLauncher.Views.Pages.OOBE;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
@@ -208,10 +209,8 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var createwin = new OOBEWindow(true);
-            createwin.Show();
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.Close();
+            win.RootFrame.Navigate(new OOBEImport(true));
         }
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)

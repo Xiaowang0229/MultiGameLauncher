@@ -21,10 +21,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         private LaunchConfig newconfig;
         private string DialogFileName;
         public bool IsBackGroundChange;
+        public bool Iscreatenewgame;
 
-        public OOBEImport()
+        public OOBEImport(bool isCreateNewGame)
         {
             InitializeComponent();
+            Iscreatenewgame = isCreateNewGame;
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             newconfig = new LaunchConfig
             {

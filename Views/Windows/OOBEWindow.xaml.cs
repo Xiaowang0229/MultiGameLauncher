@@ -74,6 +74,10 @@ namespace MultiGameLauncher.Views.Windows
                 var win = new MainWindow();
                 win.Show();
             }
+            else if(IsCreateNewGame == false)
+            {
+                Tools.IntializeTaskbar();
+            }
         }
     }
 }
