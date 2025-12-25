@@ -23,7 +23,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         public bool IsBackGroundChange;
         public bool Iscreatenewgame;
 
-        public OOBEImport(bool isCreateNewGame)
+        public OOBEImport(bool isCreateNewGame=false)
         {
             InitializeComponent();
             Iscreatenewgame = isCreateNewGame;
@@ -225,9 +225,16 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
                 MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                
-                var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
-                win.Close();
+                if(Iscreatenewgame == true)
+                {
+                    var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                    win.Close();
+                }
+                else
+                {
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.RootFrame.Navigate(new Manage());
+                }
             }
             else
             {
