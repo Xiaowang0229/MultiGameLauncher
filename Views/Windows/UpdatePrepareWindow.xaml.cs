@@ -92,7 +92,7 @@ namespace MultiGameLauncher.Views.Windows
                 .Build();
 
             // 转换为 FlowDocument
-            FlowDocument document = Markdig.Wpf.Markdown.ToFlowDocument(Variables.VersionLog, pipeline);
+            FlowDocument document = Markdig.Wpf.Markdown.ToFlowDocument(OnlineLog, pipeline);
 
             // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
             UpdateLogViewer.Document = document;
@@ -145,7 +145,7 @@ namespace MultiGameLauncher.Views.Windows
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = $"{Path.GetTempPath()}Temp.exe",
-                    Arguments = $"{OnlineLink.Substring(0, OnlineLink.Length - 1)} {Environment.ProcessPath}",
+                    Arguments = $"\"{OnlineLink.Substring(0, OnlineLink.Length - 1)}\" \"{Environment.ProcessPath}\"",
                     UseShellExecute = true
                 });
                 Tools.KillTaskBar();
