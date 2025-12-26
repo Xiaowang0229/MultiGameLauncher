@@ -35,6 +35,7 @@ namespace MultiGameLauncher
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             RootIcon.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
+            //RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
             //RootFrame.Navigate();
 
         }
