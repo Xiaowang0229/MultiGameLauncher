@@ -154,5 +154,18 @@ namespace MultiGameLauncher
                 e.Handled = true;  // 标记事件已处理，阻止默认导航
             }
         }
+
+        private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (var i in Variables.GameProcessStatus)
+            {
+                if (i == true)
+                {
+                    this.Hide();
+                    e.Cancel = true;
+                    return;
+                }
+            }
+        }
     }
 }

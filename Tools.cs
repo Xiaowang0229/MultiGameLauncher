@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
 
@@ -27,11 +28,12 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.1.0.0\n";
+        public readonly static string Version = "Release 1.2.0.0\n";
         public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
         public static Hardcodet.Wpf.TaskbarNotification.TaskbarIcon RootTaskBarIcon;
+        public static ContextMenu TaskBarMenu = new ContextMenu();
         public static List<bool> GameProcessStatus = new List<bool>();
         public static string VersionLog { get; set; }
         public static bool MainWindowHideStatus { get; set; } = false;
@@ -245,6 +247,8 @@ namespace MultiGameLauncher
 
         public static void IntializeTaskbar()
         {
+            MainConfig config = new MainConfig();
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             //本体初始化
             Variables.RootTaskBarIcon = new TaskbarIcon();
             Variables.RootTaskBarIcon.IconSource = ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
@@ -252,18 +256,22 @@ namespace MultiGameLauncher
 
             //列表项初始化
             var tbcm = new System.Windows.Controls.ContextMenu();
-            var OpenMainWindowItem = new MenuItem { Header="显示主窗口" };
-            var ForceQuitGameItem = new MenuItem { Header="强制退出游戏",Visibility=Visibility.Hidden };
+            var OpenMainWindowItem = new MenuItem { Header = "显示主窗口" };
+            var ControlGameProcess = new MenuItem { Header = "快捷管理游戏" };
             var SettingsItem = new MenuItem { Header = "打开设置页" };
-            var ExitApplicationItem = new MenuItem { Header="退出主程序" };
+            var ExitApplicationItem = new MenuItem { Header = "退出主程序" };
+
+            
 
             tbcm.Items.Add(OpenMainWindowItem);
+            
+
             //Variables.RootTaskBarIcon.ContextMenu.Items.Add(ForceQuitGameItem);
             tbcm.Items.Add(new Separator());
             tbcm.Items.Add(SettingsItem);
             tbcm.Items.Add(ExitApplicationItem);
 
-            
+
 
             //绑定事件
             OpenMainWindowItem.Click += (s, e) =>
@@ -273,13 +281,7 @@ namespace MultiGameLauncher
                 win.Topmost = true;
                 win.Topmost = false;
             };
-            ForceQuitGameItem.Click += (s, e) =>
-            {
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                win.Show();
-                win.RootFrame.Navigate(new Launch());
 
-            };
             SettingsItem.Click += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
@@ -310,7 +312,7 @@ namespace MultiGameLauncher
                     win.Hide();
                     Variables.MainWindowHideStatus = true;
                 }
-                
+
             };
 
         }
@@ -318,6 +320,89 @@ namespace MultiGameLauncher
         public static void KillTaskBar()
         {
             Variables.RootTaskBarIcon?.Dispose();
+        }
+
+        public static void InitializeTaskBarContentMenu()
+        {
+            //列表项初始化
+            MainConfig config = new MainConfig();
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var tbcm = new System.Windows.Controls.ContextMenu();
+            var OpenMainWindowItem = new MenuItem { Header = "显示主窗口" };
+            var ControlGameProcess = new MenuItem { Header = "快捷管理游戏" };
+            var SettingsItem = new MenuItem { Header = "打开设置页" };
+            var ExitApplicationItem = new MenuItem { Header = "退出主程序" };
+
+            for (int i = 0; i < Variables.GameProcess.Count; i++)
+            {
+                if (Variables.GameProcessStatus[i] == true)
+                {
+                    int index = i;
+                    var subitem = new MenuItem
+                    {
+                        Header = $"结束 {config.GameInfos[i].ShowName}",
+                        //Header = $"结束 {Variables.GameProcess[i].ProcessName}",
+
+                    };
+                    subitem.Click += (s, e) =>
+                    {
+                        
+                        
+                            Variables.GameProcess[index].Kill();
+                            Variables.GameProcessStatus[index] = false;
+                            InitializeTaskBarContentMenu();
+                        
+                        
+                    };
+                    ControlGameProcess.Items.Add(subitem);
+                }
+            }
+
+            tbcm.Items.Add(OpenMainWindowItem);
+            try
+            {
+                for (int i = 0; i < Variables.GameProcess.Count; i++)
+                {
+                    if (Variables.GameProcessStatus[i] == true)
+                    {
+                        tbcm.Items.Add(ControlGameProcess);
+                        break;
+                    }
+                }
+            }
+            catch { }
+
+            //Variables.RootTaskBarIcon.ContextMenu.Items.Add(ForceQuitGameItem);
+            tbcm.Items.Add(new Separator());
+            tbcm.Items.Add(SettingsItem);
+            tbcm.Items.Add(ExitApplicationItem);
+
+
+
+            
+            Variables.RootTaskBarIcon.ContextMenu = tbcm;
+            //绑定事件
+            OpenMainWindowItem.Click += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Show();
+                win.Topmost = true;
+                win.Topmost = false;
+            };
+
+            SettingsItem.Click += (s, e) =>
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Show();
+                win.RootFrame.Navigate(new Settings());
+            };
+            ExitApplicationItem.Click += (s, e) =>
+            {
+                KillTaskBar();
+                Environment.Exit(0);
+            };
+
+
         }
 
 

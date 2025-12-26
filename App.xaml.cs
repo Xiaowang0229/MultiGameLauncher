@@ -20,7 +20,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            //RegisterGlobalExceptionHandlers();
+            RegisterGlobalExceptionHandlers();
             Variables.ShowVersion = Variables.Version.Substring(Variables.Version.Length - 1);
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
@@ -149,15 +149,7 @@ namespace MultiGameLauncher
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            foreach(var i in Variables.GameProcessStatus)
-            {
-                if(i == true)
-                {
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    win.Hide();
-                    return;
-                }
-            }
+            
 
         }
     }

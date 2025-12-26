@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -24,6 +26,7 @@ namespace MultiGameLauncher.Views.Pages
     {
         private List<StackPanel> animationSP = new();
         private MainConfig config;
+        private double cachesizeint = 0;
         public Settings()
         {
             InitializeComponent();
@@ -137,6 +140,48 @@ namespace MultiGameLauncher.Views.Pages
             StartUpCheckUpdate.IsOn = config.StartUpCheckUpdate;
             ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
             AutoStartWithSystem.IsOn = config.AutoStartUp;
+            if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
+            {
+                FileInfo fi = new FileInfo(Path.GetTempPath() + "\\Temp.exe");
+                cachesizeint += fi.Length;
+            }
+            if (File.Exists(Path.GetTempPath() + "\\Temp.zip"))
+            {
+                FileInfo fi = new FileInfo(Path.GetTempPath() + "\\Temp.zip");
+                cachesizeint += fi.Length;
+            }
+
+            if(cachesizeint != 0)
+            {
+                CacheSizeBlock.Content = $"{cachesizeint.ToString().Substring(0, 2)}.{cachesizeint.ToString().Substring(2, 2)}MB";
+            }
+            else if(cachesizeint == 0)
+            {
+                CacheSizeBlock.Content = "0.0MB";
+            }
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
+                {
+                    File.Delete(Path.GetTempPath() + "\\Temp.exe");
+                }
+                if (File.Exists(Path.GetTempPath() + "\\Temp.zip"))
+                {
+                    File.Delete(Path.GetTempPath() + "\\Temp.zip");
+                }
+                MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"操作失败，原因:{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Settings());
         }
     }
 }

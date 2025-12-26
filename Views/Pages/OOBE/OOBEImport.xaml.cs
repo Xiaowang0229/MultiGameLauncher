@@ -227,13 +227,14 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 
                 if(Iscreatenewgame == true)
                 {
-                    var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
-                    win.Close();
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.RootFrame.Navigate(new Manage());
+                    
                 }
                 else
                 {
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    win.RootFrame.Navigate(new Manage());
+                    var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                    win.Close();
                 }
             }
             else

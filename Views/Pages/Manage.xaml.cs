@@ -102,96 +102,99 @@ namespace MultiGameLauncher.Views.Pages
         private async void MenuItemSelectionChanged(object sender, RoutedEventArgs e)
         {
             
-            RootDropperText.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
-            RootDropper.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
-            try
+            if(RootDropper.Content != ((System.Windows.Controls.MenuItem)sender).Header.ToString())
             {
-                animationSP.Clear();
-            foreach (var sp in sp_ani.Children)
-            {
-                if (((StackPanel)sp).Tag != null)
-                    if (((StackPanel)sp).Tag.ToString() == "ani")
+                RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
+                RootDropper.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
+                try
+                {
+                    animationSP.Clear();
+                    foreach (var sp in sp_ani.Children)
                     {
-                        animationSP.Add((StackPanel)sp);
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
                     }
-            }
 
 
 
 
-            var outanimation = new ThicknessAnimation
-            {
-                From = new Thickness(0,0,0,10),
-                To = new Thickness(-1500, 0, 0, 10),
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
-            };
-            var inanimation = new ThicknessAnimation
-            {
-                From = new Thickness(-2000,0,0,10),
-                To = new Thickness(0, 0, 0, 10),
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
-            };
-
-            
+                    var outanimation = new ThicknessAnimation
+                    {
+                        From = new Thickness(0, 0, 0, 10),
+                        To = new Thickness(-1500, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                    };
+                    var inanimation = new ThicknessAnimation
+                    {
+                        From = new Thickness(-2000, 0, 0, 10),
+                        To = new Thickness(0, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+                    };
 
 
-            foreach (var aniSP in animationSP)
-            {
-                if(aniSP.Visibility == Visibility.Visible)
-                {
-                    aniSP.BeginAnimation(MarginProperty, outanimation);
-                    await Task.Delay(100);
+
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        if (aniSP.Visibility == Visibility.Visible)
+                        {
+                            aniSP.BeginAnimation(MarginProperty, outanimation);
+                            await Task.Delay(100);
+                        }
+                    }
+
+                    if (MenuItemVisiblity)
+                    {
+                        await Task.Delay(TimeSpan.FromMilliseconds(600));
+                    }
+
+
+                    MenuItemVisiblity = true;
+
+                    //初始化控件状态
+                    //e.g. RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
+                    var currentgameinfo = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
+                    newconfig = currentgameinfo;
+                    ProgramNameBlock.Text = currentgameinfo.ShowName;
+                    MainTitleBox.Text = currentgameinfo.MainTitle;
+                    SubTitleBox.Text = currentgameinfo.SubTitle;
+                    ArgumentsBlock.Text = currentgameinfo.Arguments;
+
+                    Fontview.FontFamily = currentgameinfo.MaintitleFontName;
+                    Fontview.Foreground = currentgameinfo.MainTitleFontColor;
+                    Backgroundview.Content = "未设置壁纸";
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.mp4"))
+                    {
+                        DeleteBackground.Visibility = Visibility.Visible;
+                        Backgroundview.Content = "动态壁纸";
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.png"))
+                    {
+                        DeleteBackground.Visibility = Visibility.Visible;
+                        Backgroundview.Content = "静态壁纸";
+                    }
+                    LaunchPathView.Content = currentgameinfo.Launchpath;
+
+
+
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        aniSP.Visibility = Visibility.Visible;
+                        aniSP.BeginAnimation(MarginProperty, null);
+                        aniSP.BeginAnimation(MarginProperty, inanimation);
+                        await Task.Delay(100);
+                    }
                 }
-            }
-            
-            if(MenuItemVisiblity)
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(600));
-            }
-
-
-            MenuItemVisiblity = true;
-
-            //初始化控件状态
-            //e.g. RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
-            var currentgameinfo =  config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
-            newconfig = currentgameinfo;
-            ProgramNameBlock.Text = currentgameinfo.ShowName;
-            MainTitleBox.Text = currentgameinfo.MainTitle;
-            SubTitleBox.Text = currentgameinfo.SubTitle;
-            ArgumentsBlock.Text = currentgameinfo.Arguments;
-
-            Fontview.FontFamily = currentgameinfo.MaintitleFontName;
-            Fontview.Foreground = currentgameinfo.MainTitleFontColor;
-            Backgroundview.Content = "未设置壁纸";
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.mp4"))
-            {
-                DeleteBackground.Visibility = Visibility.Visible;
-                Backgroundview.Content = "动态壁纸";
-            }
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{currentgameinfo.HashCode}\\Background.png"))
-            {
-                DeleteBackground.Visibility = Visibility.Visible;
-                Backgroundview.Content = "静态壁纸";
-            }
-            LaunchPathView.Content = currentgameinfo.Launchpath;
-
-
-
-
-                foreach (var aniSP in animationSP)
+                catch (Exception ex)
                 {
-                    aniSP.Visibility = Visibility.Visible;
-                    aniSP.BeginAnimation(MarginProperty, null);
-                    aniSP.BeginAnimation(MarginProperty, inanimation);
-                    await Task.Delay(100);
+
                 }
-            }
-            catch(Exception ex)
-            {
-                
             }
         }
 
@@ -215,19 +218,26 @@ namespace MultiGameLauncher.Views.Pages
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if(MessageBox.Show($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}","警告",MessageBoxButton.YesNo,MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if(RootDropper.Content != "请选择对象")
             {
-                //config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
-                var deleteitemindex = newconfig.HashCode;
-                config.GameInfos.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
-                Variables.GameProcess.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
-                Variables.GameProcessStatus.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
-                Json.WriteJson(Variables.Configpath, config);
-                Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
-                MessageBox.Show("操作成功","提示",MessageBoxButton.OK,MessageBoxImage.Information);
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                win.RootFrame.Navigate(new Manage());
+                if (MessageBox.Show($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    //config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
+                    var deleteitemindex = newconfig.HashCode;
+                    config.GameInfos.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
+                    Variables.GameProcess.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
+                    Variables.GameProcessStatus.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
+                    Json.WriteJson(Variables.Configpath, config);
+                    Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                    MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.RootFrame.Navigate(new Manage());
 
+                }
+            }
+            else
+            {
+                MessageBox.Show($"请选择对象后再进行当前操作", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

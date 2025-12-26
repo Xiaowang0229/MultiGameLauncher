@@ -176,8 +176,10 @@ namespace MultiGameLauncher.Views.Pages
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.Hide();
                 Variables.MainWindowHideStatus = true;
+                Tools.InitializeTaskBarContentMenu();
 
                 await proc.WaitForExitAsync();
+                Tools.InitializeTaskBarContentMenu();
                 win.Show();
                 Variables.MainWindowHideStatus = false;
                 Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
@@ -199,6 +201,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
             proc.Kill();
+            Tools.InitializeTaskBarContentMenu();
             Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
             LaunchTile.Visibility = Visibility.Visible;
             StopTile.Visibility = Visibility.Hidden;
@@ -206,8 +209,8 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
             
+
             for (int i = 0;i<config.GameInfos.Count;i++)
             {
                 var menuitem = new TabItem();
@@ -217,6 +220,7 @@ namespace MultiGameLauncher.Views.Pages
                 RootTabControl.Items.Add(menuitem);
             }
             launchConfig = config.GameInfos[0];
+            RootTabControl.Tag = launchConfig.HashCode;
             /*Tools.Process.StartInfo = new ProcessStartInfo
             {
                 FileName = launchConfig.Launchpath,
@@ -255,7 +259,17 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundImage.Visibility = Visibility.Visible;
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
-
+            if(!(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png")) && !(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4")))
+            {
+                try
+                {
+                    BackgroundVideo.Stop();
+                    BackgroundVideo.Close();
+                    BackgroundVideo.Visibility = Visibility.Hidden;
+                    BackgroundImage.Visibility = Visibility.Hidden;
+                }
+                catch { }
+            }
 
             /*if(Tools.Process.HasExited == false)
             {
@@ -279,127 +293,145 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
         {
-            RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
-            launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
-            try
+
+            if(RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
             {
-                animationSP.Clear();
-                foreach (var sp in sp_ani.Children)
+                RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
+                launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
+                try
                 {
-                    if (((StackPanel)sp).Tag != null)
-                        if (((StackPanel)sp).Tag.ToString() == "ani")
-                        {
-                            animationSP.Add((StackPanel)sp);
-                        }
+                    animationSP.Clear();
+                    foreach (var sp in sp_ani.Children)
+                    {
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
+                    }
+
+                    foreach (var spp in animationSP)
+                    {
+                        spp.Margin = new Thickness(0, 0, 0, 10);
+                    }
+
+
+                    var animationout = new ThicknessAnimation
+                    {
+                        To = new Thickness(-2000, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                    };
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        aniSP.BeginAnimation(MarginProperty, null);
+                        aniSP.BeginAnimation(MarginProperty, animationout);
+                        await Task.Delay(20);
+                    }
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(250));
+
+                    foreach (var spp in animationSP)
+                    {
+                        spp.Margin = new Thickness(-2000, 0, 0, 10);
+                    }
+
+                    animationSP.Clear();
+                    foreach (var sp in sp_ani.Children)
+                    {
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
+                    }
+
+
+
+
+                    var animationin = new ThicknessAnimation
+                    {
+                        To = new Thickness(0, 0, 0, 10),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                    };
+
+                    foreach (var aniSP in animationSP)
+                    {
+                        aniSP.BeginAnimation(MarginProperty, null);
+                        aniSP.BeginAnimation(MarginProperty, animationin);
+                        await Task.Delay(20);
+                    }
+                }
+                catch (InvalidOperationException) { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                /*Tools.Process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = launchConfig.Launchpath,
+                    Arguments = launchConfig.Arguments,
+                    UseShellExecute = true
+                };*/
+                //MessageBox.Show($"{Variables.GameProcessStatus[RootTabControl.SelectedIndex]}");
+
+                MainTitle.Text = launchConfig.MainTitle;
+                MainTitle.FontFamily = launchConfig.MaintitleFontName;
+                MainTitle.Foreground = launchConfig.MainTitleFontColor;
+                SubTitle.Text = launchConfig.SubTitle;
+                LaunchTile.Tag = launchConfig.Launchpath;
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+                {
+                    BackgroundImage.Visibility = Visibility.Hidden;
+                    BackgroundVideo.Visibility = Visibility.Visible;
+                    BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+
+                }
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
+                {
+                    BackgroundVideo.Stop();
+                    BackgroundVideo.Close();
+
+                    BackgroundVideo.Visibility = Visibility.Hidden;
+                    BackgroundImage.Visibility = Visibility.Visible;
+                    BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
+                }
+                if (!(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png")) && !(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4")))
+                {
+                    try
+                    {
+                        BackgroundVideo.Stop();
+                        BackgroundVideo.Close();
+                        BackgroundVideo.Visibility = Visibility.Hidden;
+                        BackgroundImage.Visibility = Visibility.Hidden;
+                    }
+                    catch { }
                 }
 
-                foreach (var spp in animationSP)
+                if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
                 {
-                    spp.Margin = new Thickness(0, 0, 0, 10);
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    LaunchTile.Visibility = Visibility.Hidden;
+                    StopTile.Visibility = Visibility.Visible;
+                    var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+                    await proc.WaitForExitAsync();
+                    win.Show();
+                    Variables.MainWindowHideStatus = false;
+                    Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                    LaunchTile.Visibility = Visibility.Visible;
+                    StopTile.Visibility = Visibility.Hidden;
                 }
 
-
-                var animationout = new ThicknessAnimation
+                if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
                 {
-                    To = new Thickness(-2000, 0, 0, 10),
-                    Duration = TimeSpan.FromMilliseconds(500),
-                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
-                };
-
-                foreach (var aniSP in animationSP)
-                {
-                    aniSP.BeginAnimation(MarginProperty, null);
-                    aniSP.BeginAnimation(MarginProperty, animationout);
-                    await Task.Delay(20);
-                }
-
-                await Task.Delay(TimeSpan.FromMilliseconds(250));
-
-                foreach (var spp in animationSP)
-                {
-                    spp.Margin = new Thickness(-2000, 0, 0, 10);
-                }
-
-                animationSP.Clear();
-                foreach (var sp in sp_ani.Children)
-                {
-                    if (((StackPanel)sp).Tag != null)
-                        if (((StackPanel)sp).Tag.ToString() == "ani")
-                        {
-                            animationSP.Add((StackPanel)sp);
-                        }
-                }
-
-
-
-
-                var animationin = new ThicknessAnimation
-                {
-                    To = new Thickness(0, 0, 0, 10),
-                    Duration = TimeSpan.FromMilliseconds(500),
-                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
-                };
-
-                foreach (var aniSP in animationSP)
-                {
-                    aniSP.BeginAnimation(MarginProperty, null);
-                    aniSP.BeginAnimation(MarginProperty, animationin);
-                    await Task.Delay(20);
+                    LaunchTile.Visibility = Visibility.Visible;
+                    StopTile.Visibility = Visibility.Hidden;
                 }
             }
-            catch (InvalidOperationException) { }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            /*Tools.Process.StartInfo = new ProcessStartInfo
-            {
-                FileName = launchConfig.Launchpath,
-                Arguments = launchConfig.Arguments,
-                UseShellExecute = true
-            };*/
-            //MessageBox.Show($"{Variables.GameProcessStatus[RootTabControl.SelectedIndex]}");
+
             
-            MainTitle.Text = launchConfig.MainTitle;
-            MainTitle.FontFamily = launchConfig.MaintitleFontName;
-            MainTitle.Foreground = launchConfig.MainTitleFontColor;
-            SubTitle.Text = launchConfig.SubTitle;
-            LaunchTile.Tag = launchConfig.Launchpath;
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
-            {
-                BackgroundImage.Visibility = Visibility.Hidden;
-                BackgroundVideo.Visibility = Visibility.Visible;
-                BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                
-            }
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
-            {
-                BackgroundVideo.Close();
-                BackgroundVideo.Stop();
-                BackgroundVideo.Visibility = Visibility.Hidden;
-                BackgroundImage.Visibility = Visibility.Visible;
-                BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
-            }
-
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
-            {
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                LaunchTile.Visibility = Visibility.Hidden;
-                StopTile.Visibility = Visibility.Visible;
-                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
-                await proc.WaitForExitAsync();
-                win.Show();
-                Variables.MainWindowHideStatus = false;
-                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
-                LaunchTile.Visibility = Visibility.Visible;
-                StopTile.Visibility = Visibility.Hidden;
-            }
-
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
-            {
-                LaunchTile.Visibility = Visibility.Visible;
-                StopTile.Visibility = Visibility.Hidden;
-            }
         }
 
         

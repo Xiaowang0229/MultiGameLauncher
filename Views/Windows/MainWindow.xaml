@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Rocket Launcher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" MinWidth="1210" MaxWidth="1210" MinHeight="705.24" MaxHeight="705.24">
+        Title="Rocket Launcher" Height="705.24" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" MinWidth="1210" MaxWidth="1210" MinHeight="705.24" MaxHeight="705.24" Closing="RootWindow_Closing">
 
     <Window.Resources>
         <Storyboard x:Key="SlideOutStoryboard">
