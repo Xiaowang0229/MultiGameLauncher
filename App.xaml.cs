@@ -39,6 +39,7 @@ namespace MultiGameLauncher
             
             for(int i = 0;i<config.GameInfos.Count;i++)
             {
+                int index = i;
                 var proc = new Process();
                 proc.StartInfo = new ProcessStartInfo
                 {
@@ -47,7 +48,18 @@ namespace MultiGameLauncher
                     UseShellExecute = true
                 };
                 Variables.GameProcess.Add(proc);
+                Variables.PlayingTimeintList.Add(0);
                 Variables.GameProcessStatus.Add(false);
+
+                var dt = new DispatcherTimer();
+                dt.Interval = TimeSpan.FromMinutes(1);
+
+                dt.Tick += async (s, e) =>
+                {
+                    Variables.PlayingTimeintList[index] += 1;
+                };
+                Variables.PlayingTimeRecorder.Add(dt);
+                
             }
 
             ThemeManager.Current.ChangeTheme(Current,config.ThemeMode+"."+config.ThemeColor);

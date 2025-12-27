@@ -45,7 +45,7 @@
                     <Button Width="100" Margin="10,3,0,0" Content="浏览…" Click="Button_Click_1"/>
                 </StackPanel>
                 <StackPanel>
-                    <Image Height="64" Width="64" x:Name="UserHead"/>
+                    <Image Height="64" Width="64" x:Name="UserHead" Margin="10,0,0,0"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Tag="ani">

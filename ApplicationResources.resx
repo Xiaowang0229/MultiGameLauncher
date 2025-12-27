@@ -124,6 +124,9 @@
   <data name="ApplicationImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SkillIconsRocket.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="DefaultGameIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>MaterialSymbolsUnknownDocumentRounded.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="UserIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SolarUserCircleBold.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

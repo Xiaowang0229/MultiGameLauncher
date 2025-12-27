@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Brushes = System.Windows.Media.Brushes;
 
@@ -37,7 +38,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 MainTitleFontColor = Brushes.Black,
                 MaintitleFontName = new System.Windows.Media.FontFamily("Microsoft YaHei UI"),
                 ShowName = null,
-                SubTitle = ""
+                GamePlayedMinutes = 0
             };
             Loaded += (async (s, e) =>
             {
@@ -70,6 +71,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                         aniSP.BeginAnimation(MarginProperty, animation);
                         await Task.Delay(100);
                     }
+
+                    
                 }
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
@@ -117,17 +120,14 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
         }
 
-        private void Button_Click_2(object sender, EventArgs e)
-        {
-            newconfig.SubTitle = SubTitleBox.Text;
-        }
+        
 
         private async void Button_Click_3(object sender, EventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "选择文件",
-                Filter = "背景文件(*.png;*.mp4)|*.png;*.mp4",
+                Filter = "背景文件(*.png;*.webp;*.bmp;*.jpg;*.jpeg;*.mp4)|*.png;*.webp;*.bmp;*.jpg;*.jpeg;*.mp4",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 Multiselect = false
             };
@@ -185,7 +185,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private async void Button_Click_7(object sender, EventArgs e)
         {
-            if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null)
+            if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null && File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
             {
                 BackgroundCopyTip.Visibility = Visibility.Visible;
                 await Task.Delay(100);
@@ -194,10 +194,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 this.IsEnabled = false;
                 if (IsBackGroundChange)
                 {
-                    if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
-                    {
-                        Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
-                    }
+                    
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
                     {
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
@@ -212,15 +209,26 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
                 this.IsEnabled = true;
 
-                var proc = new Process();
-                proc.StartInfo = new ProcessStartInfo
+                if(Iscreatenewgame == true)
                 {
-                    FileName = newconfig.Launchpath,
-                    Arguments = newconfig.Arguments,
-                    UseShellExecute = true
-                };
-                Variables.GameProcess.Add(proc);
-                Variables.GameProcessStatus.Add(false);
+                    var proc = new Process();
+                    proc.StartInfo = new ProcessStartInfo
+                    {
+                        FileName = newconfig.Launchpath,
+                        Arguments = newconfig.Arguments,
+                        UseShellExecute = true
+                    };
+                    Variables.GameProcess.Add(proc);
+                    Variables.GameProcessStatus.Add(false);
+                    Variables.PlayingTimeintList.Add(0);
+                    var dt = new DispatcherTimer();
+                    dt.Interval = TimeSpan.FromMinutes(1);
+                    dt.Tick += async (s, e) =>
+                    {
+                        Variables.PlayingTimeintList[Variables.PlayingTimeintList.Count - 1] += 1;
+                    };
+                    Variables.PlayingTimeRecorder.Add(dt);
+                }
                 Json.WriteJson(Variables.Configpath, config);
 
                 MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -250,6 +258,46 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 IsBackGroundChange = false;
                 DeleteBackground.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "图标文件(*.png;*.webp;*.bmp;*.jpg;*.jpeg)|*.png;*.webp;*.bmp;*.jpg;*.jpeg",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    }
+                    File.Copy(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"错误：{ex.Message}","错误",MessageBoxButton.OK,MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+            {
+                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+            }
+            if(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
+            {
+                File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+            }
+            Tools.ConvertToPngAndSave(ApplicationResources.DefaultGameIcon, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
         }
     }
 }

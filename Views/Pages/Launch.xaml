@@ -111,15 +111,14 @@
         <StackPanel x:Name="sp_ani">
 
 
-            <StackPanel Tag="ani" Orientation="Horizontal" Height="118"  >
+            <StackPanel Tag="ani" Orientation="Horizontal" Height="118"   >
                 <TextBlock x:Name="MainTitle"   Text="主标题" VerticalAlignment="Top" FontSize="60" FontWeight="Bold" Margin="40,40,0,0" FontFamily="Microsoft YaHei UI"/>
 
             </StackPanel>
-            <StackPanel Tag="ani" Orientation="Horizontal" >
-                <TextBlock x:Name="SubTitle"  Text="副标题" VerticalAlignment="Top" FontSize="22" Margin="43,0,0,150" />
-            </StackPanel>
+            <StackPanel Height="180"/>
+            <StackPanel Tag="ani" Orientation="Horizontal" />
 
-            <StackPanel Orientation="Horizontal"  Tag="ani">
+            <StackPanel Orientation="Horizontal"  Tag="ani" >
 
                 <StackPanel Margin="5,0,0,0" Tag="ani">
 

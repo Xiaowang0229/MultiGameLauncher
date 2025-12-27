@@ -1,12 +1,14 @@
 ﻿global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
+
 using ControlzEx.Theming;
-using Hardcodet.Wpf;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
+using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -15,9 +17,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
@@ -28,13 +30,15 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.2.0.0\n";
+        public readonly static string Version = "Release 1.3.0.0 RC1\n";
         public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
         public static Hardcodet.Wpf.TaskbarNotification.TaskbarIcon RootTaskBarIcon;
         public static ContextMenu TaskBarMenu = new ContextMenu();
         public static List<bool> GameProcessStatus = new List<bool>();
+        public static List<DispatcherTimer> PlayingTimeRecorder = new List<DispatcherTimer>();
+        public static List<Int64> PlayingTimeintList = new List<Int64>();
         public static string VersionLog { get; set; }
         public static bool MainWindowHideStatus { get; set; } = false;
     }
@@ -346,12 +350,14 @@ namespace MultiGameLauncher
                     };
                     subitem.Click += (s, e) =>
                     {
-                        
-                        
-                            Variables.GameProcess[index].Kill();
+
+
+                        Variables.PlayingTimeRecorder[index].Stop();
+
+                        Variables.GameProcess[index].Kill();
                             Variables.GameProcessStatus[index] = false;
                             InitializeTaskBarContentMenu();
-                        
+                            
                         
                     };
                     ControlGameProcess.Items.Add(subitem);
@@ -405,6 +411,16 @@ namespace MultiGameLauncher
 
         }
 
+        public static string? OpenInputWindow(string Title)
+        {
+            var win = new InputWindow(Title);
+            if(win.ShowDialog() == true)
+            {
+                return win.Results;
+            }
+            return null;
+        }
+
 
     }
 
@@ -418,7 +434,7 @@ namespace MultiGameLauncher
         public string MainTitle { get; set; }
         public System.Windows.Media.FontFamily MaintitleFontName { get; set; }
         public System.Windows.Media.Brush MainTitleFontColor { get; set; }
-        public string SubTitle { get; set; }
+        public Int64 GamePlayedMinutes { get; set; }
         public string Launchpath { get; set; }
         public string Arguments { get; set; }
 

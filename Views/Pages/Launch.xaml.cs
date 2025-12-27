@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -177,16 +178,30 @@ namespace MultiGameLauncher.Views.Pages
                 win.Hide();
                 Variables.MainWindowHideStatus = true;
                 Tools.InitializeTaskBarContentMenu();
+                Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Start();
+                var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
+                toast.Show();
 
                 await proc.WaitForExitAsync();
-                Tools.InitializeTaskBarContentMenu();
-                win.Show();
+
+                //计时器清理逻辑，防卡顿
+                
+                    Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Stop();
+                    var time = Variables.PlayingTimeintList[RootTabControl.SelectedIndex];
+                    
+                    config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes += time;
+                    var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"游戏时长：{time}分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
+                    toast0.Show();
+                    Tools.InitializeTaskBarContentMenu();
+                    Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                    Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
+
                 Variables.MainWindowHideStatus = false;
-                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                win.Show();
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
 
-
+                
 
 
             }
@@ -232,7 +247,6 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
-            SubTitle.Text = launchConfig.SubTitle;
             LaunchTile.Tag = launchConfig.Launchpath;
 
             if(Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
@@ -380,7 +394,6 @@ namespace MultiGameLauncher.Views.Pages
                 MainTitle.Text = launchConfig.MainTitle;
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
                 MainTitle.Foreground = launchConfig.MainTitleFontColor;
-                SubTitle.Text = launchConfig.SubTitle;
                 LaunchTile.Tag = launchConfig.Launchpath;
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
                 {
@@ -418,8 +431,19 @@ namespace MultiGameLauncher.Views.Pages
                     var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                     await proc.WaitForExitAsync();
                     win.Show();
+                    
+                        Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Stop();
+                        var time = Variables.PlayingTimeintList[RootTabControl.SelectedIndex];
+                        //Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
+                        config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes += time;
+                        var toast = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"游戏时长：{time}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
+                        toast.Show();
+                        Tools.InitializeTaskBarContentMenu();
+
+                        Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                    Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
+
                     Variables.MainWindowHideStatus = false;
-                    Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
                     LaunchTile.Visibility = Visibility.Visible;
                     StopTile.Visibility = Visibility.Hidden;
                 }

@@ -68,6 +68,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Tools.IntializeTaskbar();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (IsCreateNewGame || config.OOBEStatus == true)
             {
@@ -76,7 +77,7 @@ namespace MultiGameLauncher.Views.Windows
             }
             else if(IsCreateNewGame == false)
             {
-                Tools.IntializeTaskbar();
+                
             }
         }
     }
