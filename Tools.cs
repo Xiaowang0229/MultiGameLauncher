@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -30,7 +31,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.0 RC1\n";
+        public readonly static string Version = "Release 1.3.0.0 RC2\n";
         public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -50,7 +51,28 @@ namespace MultiGameLauncher
         public static FrameworkElement OldPage = null; 
         public static ImageSource ApplicationLogo;
 
-        
+        // ========== 必要的 Win32 API 声明 ==========
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr ExtractIcon(IntPtr hInst, string lpszExeFileName, uint nIconIndex);
+
+        [DllImport("user32.dll")]
+        private static extern bool DestroyIcon(IntPtr hIcon);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+            public int iIcon;
+            public uint dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        }
+
 
         //读图片函数
         public static void Restart()
@@ -447,6 +469,123 @@ namespace MultiGameLauncher
             return null;
         }
 
+        public static void ExtractExeIconToPng(string exePath, string pngPath)
+        {
+
+            // ========== 尝试使用 SHGetFileInfo 获取系统关联的大图标（最可靠）==========
+            SHFILEINFO shinfo = new SHFILEINFO();
+            IntPtr result = SHGetFileInfo(exePath, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), 0x100); // SHGFI_ICON = 0x100
+
+            Icon icon = null;
+            bool iconFromSH = false;
+
+            if (result != IntPtr.Zero && shinfo.hIcon != IntPtr.Zero)
+            {
+                icon = Icon.FromHandle(shinfo.hIcon);
+                iconFromSH = true;
+            }
+            else
+            {
+                // ========== 备选：直接从资源提取第一个图标 ==========
+                IntPtr hIcon = ExtractIcon(IntPtr.Zero, exePath, 0);
+                if (hIcon != IntPtr.Zero && hIcon != new IntPtr(-1))
+                {
+                    icon = Icon.FromHandle(hIcon);
+                }
+            }
+            string dir = Path.GetDirectoryName(pngPath);
+            if (icon == null)
+            {   if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    { Directory.CreateDirectory(dir); }
+                ConvertToPngAndSave(ApplicationResources.DefaultGameIcon,dir);
+            }
+
+            
+
+            // 确保输出目录存在
+            
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            try
+            {
+                // 优先提取 64x64 尺寸的图标
+                using (Icon sizedIcon = new Icon(icon, 64, 64))
+                using (Bitmap bmp = sizedIcon.ToBitmap())
+                {
+                    bmp.Save(pngPath, ImageFormat.Png);
+                }
+            }
+            catch
+            {
+                // 如果没有正好 64x64 的尺寸，回退到原始图标转 Bitmap
+                using (Bitmap bmp = icon.ToBitmap())
+                {
+                    bmp.Save(pngPath, ImageFormat.Png);
+                }
+            }
+            finally
+            {
+                icon.Dispose();
+                // 如果是从 SHGetFileInfo 拿到的图标，需要手动销毁原始句柄（FromHandle 已复制）
+                if (iconFromSH && shinfo.hIcon != IntPtr.Zero)
+                    DestroyIcon(shinfo.hIcon);
+            }
+        }
+
+        public static bool ForceDelete(string filePath, int maxRetries = 10, int retryDelayMs = 300)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return false;
+
+            if (!File.Exists(filePath))
+                return true; // 文件不存在，也算“成功”
+
+            int attempts = 0;
+
+            while (attempts <= maxRetries)
+            {
+                try
+                {
+                    // 第1步：移除只读、隐藏、系统等属性
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    if (fileInfo.Exists)
+                    {
+                        fileInfo.IsReadOnly = false;                // 清除只读
+                        fileInfo.Attributes = FileAttributes.Normal; // 强制设为普通属性
+                    }
+
+                    // 第2步：直接删除
+                    File.Delete(filePath);
+
+                    return true; // 删除成功
+                }
+                catch (IOException) // 文件被其他进程占用
+                {
+                    attempts++;
+                    if (attempts > maxRetries)
+                        break;
+
+                    // 等待一段时间后重试（很多情况下占用会自动释放）
+                    Thread.Sleep(retryDelayMs);
+                }
+                catch (UnauthorizedAccessException) // 权限不足
+                {
+                    // 如果是权限问题，重试也没用，直接返回失败
+                    // （如果你的程序能以管理员运行，这里可能成功；否则建议手动处理）
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    // 其他异常（如路径无效等），直接抛出或返回失败
+                    Console.WriteLine($"ForceDelete 异常: {ex.Message}");
+                    return false;
+                }
+            }
+
+            // 重试次数用尽仍失败
+            return false;
+        }
 
     }
 

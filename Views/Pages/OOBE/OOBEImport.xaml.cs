@@ -24,6 +24,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         public bool IsBackGroundChange;
         public bool Iscreatenewgame;
 
+        public bool SaveGame = false;
+
         public OOBEImport(bool isCreateNewGame=false)
         {
             InitializeComponent();
@@ -172,7 +174,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             };
             if (dialog.ShowDialog() == true)
             {
-
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
+                {
+                    File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                }
+                Tools.ExtractExeIconToPng(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                 newconfig.Launchpath = dialog.FileName;
                 LaunchPathView.Content = dialog.FileName;
             }
@@ -185,6 +192,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private async void Button_Click_7(object sender, EventArgs e)
         {
+            SaveGame = true;
             if( newconfig.Launchpath!= null && newconfig.MainTitle != null && newconfig.ShowName != null && File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
             {
                 BackgroundCopyTip.Visibility = Visibility.Visible;
@@ -298,6 +306,11 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
             }
             Tools.ConvertToPngAndSave(ApplicationResources.DefaultGameIcon, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+        }
+
+        private async void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

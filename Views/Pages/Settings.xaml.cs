@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using Microsoft.Win32;
+using NAudio.Gui;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -151,19 +152,46 @@ namespace MultiGameLauncher.Views.Pages
                 cachesizeint += fi.Length;
             }
 
-            if(cachesizeint != 0)
+
+
+            string[] subFolderNames = Directory.GetDirectories($"{Environment.CurrentDirectory}\\Backgrounds")
+                                  .Select(Path.GetFileName)  // 只取文件夹名称，不带路径
+                                  .ToArray();
+            for (int i = 0; i < subFolderNames.Length; i++)
+            {
+                for (int j = 0; j < config.GameInfos.Count; j++)
+                {
+                    if (subFolderNames[i] == config.GameInfos[j].HashCode)
+                    {
+                        goto outer;
+                    }
+                }
+                DirectoryInfo di = new DirectoryInfo($"{Environment.CurrentDirectory}\\Backgrounds\\{subFolderNames[i]}");
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    cachesizeint += file.Length;
+                }
+            outer:;
+            }
+
+            if (cachesizeint != 0)
             {
                 CacheSizeBlock.Content = $"{cachesizeint.ToString().Substring(0, 2)}.{cachesizeint.ToString().Substring(2, 2)}MB";
+                
             }
             else if(cachesizeint == 0)
             {
                 CacheSizeBlock.Content = "0.0MB";
+                
             }
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            string[] subFolderNames = Directory.GetDirectories($"{Environment.CurrentDirectory}\\Backgrounds")
+                                  .Select(Path.GetFileName)  // 只取文件夹名称，不带路径
+                                  .ToArray();
             try
             {
                 if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
@@ -175,6 +203,20 @@ namespace MultiGameLauncher.Views.Pages
                     File.Delete(Path.GetTempPath() + "\\Temp.zip");
                 }
                 MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                for (int i = 0; i < subFolderNames.Length; i++)
+                {
+                    for (int j = 0; j < config.GameInfos.Count; j++)
+                    {
+                        if (subFolderNames[i] == config.GameInfos[j].HashCode)
+                        {
+                            goto outer;
+                        }
+                    }
+                    Directory.Delete($"{Environment.CurrentDirectory}\\Backgrounds\\{subFolderNames[i]}",true);
+                outer:;
+                }
+
+
             }
             catch(Exception ex)
             {

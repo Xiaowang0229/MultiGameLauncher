@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using Unosquare.FFME;
 
@@ -75,6 +76,20 @@ namespace MultiGameLauncher
             //主加载逻辑
             if(config.OOBEStatus && config.GameInfos.Count != 0)
             {
+                
+                /*outerloop: foreach (var folder in subFolderNames)
+                {
+                    foreach (var hashcode in config.GameInfos)
+                    {
+                        if (hashcode.HashCode == folder)
+                        {
+                            MessageBox.Show("相同");
+                            continue outerloop;
+                        }
+                    }
+                    MessageBox.Show(folder);
+                }*/
+                
                 var win = new MainWindow();
                 win.Show();
                 Tools.IntializeTaskbar();

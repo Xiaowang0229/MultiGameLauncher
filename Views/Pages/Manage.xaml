@@ -13,12 +13,18 @@
         <Label Content="管理" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
 
         <StackPanel>
-            <StackPanel  Orientation="Horizontal" Margin="10,74,10,0" Height="41">
+            <StackPanel  Orientation="Horizontal" Margin="10,74,10,0">
                 <Label Content="选择管理对象：" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
-                <ui:DropDownButton Content="请选择对象" HorizontalContentAlignment="Left" HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" x:Name="RootDropper" Width="508" Height="40.4" Margin="0,0,10,0" FontSize="14"/>
+                <ui:DropDownButton Content="请选择对象" HorizontalContentAlignment="Left" HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" x:Name="RootDropper" Width="508" Height="35" Margin="0,0,10,0" FontSize="14"/>
 
-                <Button Content="  添加  " FontSize="16" FontFamily="Microsoft YaHei UI" Margin="0,0,10,0" Width="150" Height="40" Click="Button_Click_2" />
-                <Button x:Name="DeleteMenuItem" Content="  删除  " FontSize="16" FontFamily="Microsoft YaHei UI" Width="150" Height="40" Click="DeleteMenuItem_Click"/>
+                <Button x:Name="Addnewgame" Margin="10" Width="150" Click="Button_Click_2"  VerticalAlignment="Center" Height="35">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center" Margin="0,0,10,0" />
+                            <TextBlock FontFamily="Microsoft YaHei UI" Text="创建新游戏"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
 
             </StackPanel>
 
@@ -70,6 +76,14 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <Button x:Name="ChangeApplicationPath" Margin="10" Width="150" Click="Button_Click_5">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock FontFamily="Microsoft YaHei UI" Text="修改程序目录"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <Button x:Name="ChangeApplicationName" Margin="10" Width="150" Click="ChangeApplicationName_Click">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -99,6 +113,14 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                 <TextBlock FontFamily="Microsoft YaHei UI" Text="清空游玩时长"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="DeleteFullGame" Margin="10" Width="150" Click="DeleteMenuItem_Click" Height="35">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="Red" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock FontFamily="Microsoft YaHei UI" Foreground="Red" Text="删除此游戏"/>
                             </StackPanel>
                         </Button.Content>
                     </Button>

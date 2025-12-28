@@ -79,6 +79,7 @@ namespace MultiGameLauncher.Views.Windows
             {
                 
             }
+            Tools.Restart();
         }
     }
 }

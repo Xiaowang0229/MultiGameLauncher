@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages.OOBE"
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls" x:Class="MultiGameLauncher.Views.Pages.OOBE.OOBEImport"
       mc:Ignorable="d" 
-      Title="OOBEImport" Width="1200" Height="675" Loaded="Page_Loaded">
+      Title="OOBEImport" Width="1200" Height="675" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
     <Grid>
         <Label Content="导入" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>

@@ -161,7 +161,7 @@ namespace MultiGameLauncher.Views.Pages
                     var currentgameinfo = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
                     newconfig = currentgameinfo;
                     
-                    LaunchPathView.Content = currentgameinfo.Launchpath;
+                    LaunchPathView.Content = currentgameinfo.Launchpath +" "+ currentgameinfo.Arguments;
                     ApplicationNameBlock.Content = currentgameinfo.ShowName;
                     MainTitleBlock.Content = currentgameinfo.MainTitle;
                     PlayedTimeBlock.Content = currentgameinfo.GamePlayedMinutes.ToString() + "分钟";
@@ -215,7 +215,7 @@ namespace MultiGameLauncher.Views.Pages
                     Variables.PlayingTimeintList.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Variables.PlayingTimeRecorder.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Json.WriteJson(Variables.Configpath, config);
-                    Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
+                    Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}",true);
                     MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                     var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                     win.RootFrame.Navigate(new Manage());
@@ -358,6 +358,23 @@ namespace MultiGameLauncher.Views.Pages
 
                 newconfig.Launchpath = dialog.FileName;
                 LaunchPathView.Content = dialog.FileName;
+                string a = Tools.OpenInputWindow("请输入参数，无可置空");
+                if (a != null)
+                {
+                    newconfig.Arguments = a;
+                    
+
+                }
+                if (MessageBox.Show("是否使用exe内的图标替换旧图标？","提示",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
+                    {
+                        File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    }
+                    Tools.ExtractExeIconToPng(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                }
+                
                 //MessageBox.Show("1");
                 try
                 {
@@ -377,6 +394,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ArgumentsBlock_LostFocus(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
@@ -491,7 +509,7 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                
             }
