@@ -111,13 +111,12 @@
                                 </TextBlock>
                             </StackPanel>
                             <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
-                                <Label Content="本程序依据" FontSize="18" Margin="10,0,10,0"/>
+                                <Label Content="使用此软件是默认您同意了" FontSize="18" Margin="10,0,10,0"/>
                                 <TextBlock FontSize="18" VerticalAlignment="Center">
     <Hyperlink x:Name="Apache"  Click="Apache_Click">
-        Apache License V2.0
+        使用条款
     </Hyperlink>
                                 </TextBlock>
-                                <Label Content="协议进行开源" FontSize="18" Margin="10,0,0,0"/>
 
                             </StackPanel>
                         </StackPanel>
