@@ -204,7 +204,7 @@ Process.Start(new ProcessStartInfo
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "https://afdian.com/a/csharpfadian",
+                FileName = "https://github.com/Xiaowang0229/MultiGameLauncher/blob/master/EULA.md",
                 UseShellExecute = true
             });
         }
