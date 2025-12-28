@@ -169,11 +169,14 @@ namespace MultiGameLauncher.Views.Pages
                     UseShellExecute = true
                 };
                 Tools.Process.Start();*/
-                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
-                proc.Start();
-                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = true;
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
+
+                Tools.StartMonitingGameStatus(RootTabControl.SelectedIndex);
+
+                /*var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+                proc.Start();
+                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = true;
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.Hide();
                 Variables.MainWindowHideStatus = true;
@@ -186,18 +189,17 @@ namespace MultiGameLauncher.Views.Pages
 
                 //计时器清理逻辑，防卡顿
                 
-                    Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Stop();
-                    var time = Variables.PlayingTimeintList[RootTabControl.SelectedIndex];
-                    
-                    config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes += time;
-                    var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"游戏时长：{time}分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
-                    toast0.Show();
-                    Tools.InitializeTaskBarContentMenu();
-                    Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
-                    Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
-
+                Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Stop();
+                var time = Variables.PlayingTimeintList[RootTabControl.SelectedIndex];  
+                config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes += time;
+                var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"游戏时长：{time}分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
+                toast0.Show();
+                Tools.InitializeTaskBarContentMenu();
+                Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+                Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
                 Variables.MainWindowHideStatus = false;
-                win.Show();
+                win.Show();*/
+
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
 
@@ -216,13 +218,13 @@ namespace MultiGameLauncher.Views.Pages
         {
             var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
             proc.Kill();
-            Tools.InitializeTaskBarContentMenu();
-            Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
+            /*Tools.InitializeTaskBarContentMenu();
+            Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;*/
             LaunchTile.Visibility = Visibility.Visible;
             StopTile.Visibility = Visibility.Hidden;
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             
 
@@ -290,6 +292,17 @@ namespace MultiGameLauncher.Views.Pages
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
             }*/
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                LaunchTile.Visibility = Visibility.Hidden;
+                StopTile.Visibility = Visibility.Visible;
+                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
+                await proc.WaitForExitAsync();
+                win.Show();
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
+            }
 
             Welcome.Content = "欢迎，" + config.Username;
             var pipeline = new MarkdownPipelineBuilder()
@@ -431,19 +444,6 @@ namespace MultiGameLauncher.Views.Pages
                     var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                     await proc.WaitForExitAsync();
                     win.Show();
-                    
-                        Variables.PlayingTimeRecorder[RootTabControl.SelectedIndex].Stop();
-                        var time = Variables.PlayingTimeintList[RootTabControl.SelectedIndex];
-                        //Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
-                        config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes += time;
-                        var toast = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"游戏时长：{time}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
-                        toast.Show();
-                        Tools.InitializeTaskBarContentMenu();
-
-                        Variables.GameProcessStatus[RootTabControl.SelectedIndex] = false;
-                    Variables.PlayingTimeintList[RootTabControl.SelectedIndex] = 0;
-
-                    Variables.MainWindowHideStatus = false;
                     LaunchTile.Visibility = Visibility.Visible;
                     StopTile.Visibility = Visibility.Hidden;
                 }

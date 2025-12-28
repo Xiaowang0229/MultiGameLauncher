@@ -348,15 +348,13 @@ namespace MultiGameLauncher
                         //Header = $"结束 {Variables.GameProcess[i].ProcessName}",
 
                     };
-                    subitem.Click += (s, e) =>
+                    subitem.Click += async (s, e) =>
                     {
 
 
-                        Variables.PlayingTimeRecorder[index].Stop();
-
                         Variables.GameProcess[index].Kill();
-                            Variables.GameProcessStatus[index] = false;
-                            InitializeTaskBarContentMenu();
+                        await Task.Delay(100);
+                        InitializeTaskBarContentMenu();
                             
                         
                     };
@@ -411,6 +409,34 @@ namespace MultiGameLauncher
 
         }
 
+        public async static void StartMonitingGameStatus(int index)
+        {
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var proc = Variables.GameProcess[index];
+            proc.Start();
+            Variables.GameProcessStatus[index] = true;
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.Hide();
+            Variables.MainWindowHideStatus = true;
+            Tools.InitializeTaskBarContentMenu();
+            Variables.PlayingTimeRecorder[index].Start();
+            var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            toast.Show();
+
+            await proc.WaitForExitAsync();
+
+            Variables.PlayingTimeRecorder[index].Stop();
+            var time = Variables.PlayingTimeintList[index];
+            config.GameInfos[index].GamePlayedMinutes += time;
+            Json.WriteJson(Variables.Configpath, config);
+            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            toast0.Show();
+            Tools.InitializeTaskBarContentMenu();
+            Variables.GameProcessStatus[index] = false;
+            Variables.PlayingTimeintList[index] = 0;
+            Variables.MainWindowHideStatus = false;
+            win.Show();
+        }
         public static string? OpenInputWindow(string Title)
         {
             var win = new InputWindow(Title);
