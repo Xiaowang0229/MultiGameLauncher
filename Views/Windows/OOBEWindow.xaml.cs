@@ -72,14 +72,13 @@ namespace MultiGameLauncher.Views.Windows
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (IsCreateNewGame || config.OOBEStatus == true)
             {
-                var win = new MainWindow();
-                win.Show();
+                Tools.Restart();
             }
             else if(IsCreateNewGame == false)
             {
                 
             }
-            Tools.Restart();
+            
         }
     }
 }
