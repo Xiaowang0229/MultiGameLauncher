@@ -28,7 +28,7 @@
 
             </StackPanel>
 
-            <StackPanel x:Name="sp_ani" Margin="10,0,0,0" Visibility="Hidden">
+            <StackPanel x:Name="sp_ani" Visibility="Hidden" Margin="10">
                 <StackPanel Tag="ani" Orientation="Horizontal" Margin="0,10,0,10">
                     <Image Width="128" Height="128" x:Name="ApplicationIcon" Margin="10"/>
                     <StackPanel>

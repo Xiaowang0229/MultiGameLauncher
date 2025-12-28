@@ -28,11 +28,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(InputBox.Text == null || InputBox.Text == "")
-            {
-                MessageBox.Show("不允许置空！","错误",MessageBoxButton.OK,MessageBoxImage.Error);
-            }
-            else
+            
             {
                 Results = InputBox.Text;
                 this.DialogResult = true;

@@ -99,7 +99,10 @@ namespace MultiGameLauncher.Views.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //UserHead.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.UserIcon);
-            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            if (File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+            {
+                UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            }
             UserName.Text = config.Username;
 
             if(config.ChangeThemeWithSystem)
@@ -114,7 +117,12 @@ namespace MultiGameLauncher.Views.Pages
                     Darkmode.IsOn = true;
                 }
             }
-            
+
+            if (File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+            {
+                RestoreHead.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void ChooseBackground_Click(object sender, RoutedEventArgs e)
@@ -175,6 +183,16 @@ namespace MultiGameLauncher.Views.Pages
             if (UserName.Text == "")
             {
                 MessageBox.Show("用户名不可置空！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("确定还原默认头像吗","警告",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                File.Delete(Environment.CurrentDirectory + @"\Head.png");
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.RootFrame.Navigate(new Personality());
             }
         }
     }

@@ -75,7 +75,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            RootImage.Source = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationImage);
+            
             // 构建 Markdown 管道（支持高级扩展，如表格、脚注等）
             var pipeline = new MarkdownPipelineBuilder()
                 .UseAdvancedExtensions()  // 启用扩展功能

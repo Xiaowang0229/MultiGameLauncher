@@ -92,7 +92,6 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            UserHead.Source = null;
             var openFileDialog = new Microsoft.Win32.OpenFileDialog()
             {
 
@@ -114,7 +113,11 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
                     await Task.Delay(300);
-                    UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+                    if(File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+                    {
+                        UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+                    }
+                    
                     
                     
                 }
@@ -140,6 +143,11 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
                 Darkmode.IsOn = true;
             }
+            if (File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+            {
+                RestoreHead.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -155,6 +163,16 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 ThemeManager.Current.ChangeTheme(Application.Current, "Light." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
                 config.ThemeMode = "Light";
                 Json.WriteJson(Variables.Configpath, config);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("确定还原默认头像吗", "警告", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                File.Delete(Environment.CurrentDirectory + @"\Head.png");
+                var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                win.RootFrame.Navigate(new OOBEPersonality());
             }
         }
     }

@@ -31,7 +31,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.0 RC2\n";
+        public readonly static string Version = "Release 1.3.0.0 RC2-Hotfix 1\n";
         public static string ShowVersion;
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -237,7 +237,7 @@ namespace MultiGameLauncher
                 GameInfos = new List<LaunchConfig>()
             };
             Json.WriteJson(Variables.Configpath,config);
-            ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
+            //ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
 
         public static string ReadEmbeddedMarkdown(string resourceName)
@@ -375,6 +375,7 @@ namespace MultiGameLauncher
 
 
                         Variables.GameProcess[index].Kill();
+                        StopMonitingGameStatus(index);
                         await Task.Delay(100);
                         InitializeTaskBarContentMenu();
                             
@@ -445,19 +446,36 @@ namespace MultiGameLauncher
             var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
             toast.Show();
 
-            await proc.WaitForExitAsync();
+            
 
+            
+        }
+
+        public static async Task WaitMonitingGameExitAsync(int index)
+        {
+            var proc = Variables.GameProcess[index];
+            await proc.WaitForExitAsync();
+        }
+
+        public static void StopMonitingGameStatus(int index)
+        {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
             config.GameInfos[index].GamePlayedMinutes += time;
             Json.WriteJson(Variables.Configpath, config);
-            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
-            toast0.Show();
+            
             Tools.InitializeTaskBarContentMenu();
             Variables.GameProcessStatus[index] = false;
             Variables.PlayingTimeintList[index] = 0;
             Variables.MainWindowHideStatus = false;
             win.Show();
+            var pg = new Launch();
+            win.RootFrame.Navigate(pg);
+            pg.RootTabControl.SelectedIndex = index;
+            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            toast0.Show();
         }
         public static string? OpenInputWindow(string Title)
         {
@@ -495,9 +513,10 @@ namespace MultiGameLauncher
             }
             string dir = Path.GetDirectoryName(pngPath);
             if (icon == null)
-            {   if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {   
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     { Directory.CreateDirectory(dir); }
-                ConvertToPngAndSave(ApplicationResources.DefaultGameIcon,dir);
+                
             }
 
             
@@ -533,66 +552,13 @@ namespace MultiGameLauncher
             }
         }
 
-        public static bool ForceDelete(string filePath, int maxRetries = 10, int retryDelayMs = 300)
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
-                return false;
-
-            if (!File.Exists(filePath))
-                return true; // 文件不存在，也算“成功”
-
-            int attempts = 0;
-
-            while (attempts <= maxRetries)
-            {
-                try
-                {
-                    // 第1步：移除只读、隐藏、系统等属性
-                    FileInfo fileInfo = new FileInfo(filePath);
-                    if (fileInfo.Exists)
-                    {
-                        fileInfo.IsReadOnly = false;                // 清除只读
-                        fileInfo.Attributes = FileAttributes.Normal; // 强制设为普通属性
-                    }
-
-                    // 第2步：直接删除
-                    File.Delete(filePath);
-
-                    return true; // 删除成功
-                }
-                catch (IOException) // 文件被其他进程占用
-                {
-                    attempts++;
-                    if (attempts > maxRetries)
-                        break;
-
-                    // 等待一段时间后重试（很多情况下占用会自动释放）
-                    Thread.Sleep(retryDelayMs);
-                }
-                catch (UnauthorizedAccessException) // 权限不足
-                {
-                    // 如果是权限问题，重试也没用，直接返回失败
-                    // （如果你的程序能以管理员运行，这里可能成功；否则建议手动处理）
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    // 其他异常（如路径无效等），直接抛出或返回失败
-                    Console.WriteLine($"ForceDelete 异常: {ex.Message}");
-                    return false;
-                }
-            }
-
-            // 重试次数用尽仍失败
-            return false;
-        }
+        
 
     }
 
     
     public class LaunchConfig
     {
-        internal readonly System.Windows.Media.Brush MainTitleFontName;
 
         public string HashCode { get; set; }
         public string ShowName { get; set; }

@@ -173,6 +173,8 @@ namespace MultiGameLauncher.Views.Pages
                 StopTile.Visibility = Visibility.Visible;
 
                 Tools.StartMonitingGameStatus(RootTabControl.SelectedIndex);
+                await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
+                Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
 
                 /*var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                 proc.Start();
@@ -185,7 +187,7 @@ namespace MultiGameLauncher.Views.Pages
                 var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[RootTabControl.SelectedIndex].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[RootTabControl.SelectedIndex].HashCode}\\Icon.png"));
                 toast.Show();
 
-                await proc.WaitForExitAsync();
+                
 
                 //计时器清理逻辑，防卡顿
                 
@@ -244,7 +246,10 @@ namespace MultiGameLauncher.Views.Pages
                 Arguments = launchConfig.Arguments,
                 UseShellExecute = true
             };*/
-            UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            if (File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+            {
+                UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
+            }
 
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
@@ -294,12 +299,10 @@ namespace MultiGameLauncher.Views.Pages
             }*/
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
-                var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
-                await proc.WaitForExitAsync();
-                win.Show();
+                await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
+                Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
             }
@@ -438,12 +441,10 @@ namespace MultiGameLauncher.Views.Pages
 
                 if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
                 {
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                     LaunchTile.Visibility = Visibility.Hidden;
                     StopTile.Visibility = Visibility.Visible;
-                    var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
-                    await proc.WaitForExitAsync();
-                    win.Show();
+                    await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
+                    Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
                     LaunchTile.Visibility = Visibility.Visible;
                     StopTile.Visibility = Visibility.Hidden;
                 }
