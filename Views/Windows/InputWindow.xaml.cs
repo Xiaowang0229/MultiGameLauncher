@@ -1,15 +1,5 @@
 ﻿using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MultiGameLauncher.Views.Windows
 {
@@ -28,7 +18,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+
             {
                 Results = InputBox.Text;
                 this.DialogResult = true;
@@ -43,7 +33,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+
         }
     }
 }

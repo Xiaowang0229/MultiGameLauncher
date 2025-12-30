@@ -1,22 +1,12 @@
 ﻿using HuaZi.Library.Downloader;
 using MahApps.Metro.Controls;
 using Markdig;
-using Microsoft.VisualBasic.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace MultiGameLauncher.Views.Windows
@@ -27,7 +17,7 @@ namespace MultiGameLauncher.Views.Windows
     public partial class UpdatePrepareWindow : MetroWindow
     {
         private List<StackPanel> animationSP = new();
-        private string OnlineVersion {get;set;}
+        private string OnlineVersion { get; set; }
         private string OnlineLog { get; set; }
         private string OnlineLink { get; set; }
         private string LocalVersion { get; set; }
@@ -158,6 +148,6 @@ namespace MultiGameLauncher.Views.Windows
             }
 
         }
-    
+
     }
 }

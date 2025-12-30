@@ -2,7 +2,6 @@
 using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Pages.OOBE;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -15,6 +14,7 @@ namespace MultiGameLauncher.Views.Windows
     {
         private bool IsCreateNewGame;
         private MainConfig config;
+        private bool IsOOBE;
         public OOBEWindow(bool iscreatenewgame = false)
         {
             InitializeComponent();
@@ -59,8 +59,7 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
-            if(IsCreateNewGame)
+            if (IsCreateNewGame)
             {
                 RootFrame.Navigate(new OOBEImport());
             }
@@ -68,17 +67,18 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Tools.IntializeTaskbar();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            if (IsCreateNewGame || config.OOBEStatus == true)
+            if (config.GameInfos.Count == 0)
+            {
+                Application.Current.Shutdown();
+            }
+            else if (config.GameInfos.Count != 0)
             {
                 Tools.Restart();
             }
-            else if(IsCreateNewGame == false)
-            {
-                
-            }
             
+            
+
         }
     }
 }

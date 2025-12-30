@@ -1,21 +1,10 @@
 ﻿using HuaZi.Library.Json;
 using Microsoft.Win32;
-using NAudio.Gui;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace MultiGameLauncher.Views.Pages
@@ -76,7 +65,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(MessageBox.Show("确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆","警告",MessageBoxButton.YesNo,MessageBoxImage.Warning)==MessageBoxResult.Yes)
+            if (MessageBox.Show("确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Tools.InitalizeConfig();
                 Tools.Restart();
@@ -97,7 +86,7 @@ namespace MultiGameLauncher.Views.Pages
                 Json.WriteJson(Variables.Configpath, config);
                 //MessageBox.Show("设置成功，重启程序后生效", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            
+
         }
 
         private void ChangeThemeWithSystem_Toggled(object sender, RoutedEventArgs e)
@@ -177,12 +166,12 @@ namespace MultiGameLauncher.Views.Pages
             if (cachesizeint != 0)
             {
                 CacheSizeBlock.Content = $"{cachesizeint.ToString().Substring(0, 2)}.{cachesizeint.ToString().Substring(2, 2)}MB";
-                
+
             }
-            else if(cachesizeint == 0)
+            else if (cachesizeint == 0)
             {
                 CacheSizeBlock.Content = "0.0MB";
-                
+
             }
 
         }
@@ -212,13 +201,13 @@ namespace MultiGameLauncher.Views.Pages
                             goto outer;
                         }
                     }
-                    Directory.Delete($"{Environment.CurrentDirectory}\\Backgrounds\\{subFolderNames[i]}",true);
+                    Directory.Delete($"{Environment.CurrentDirectory}\\Backgrounds\\{subFolderNames[i]}", true);
                 outer:;
                 }
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"操作失败，原因:{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }

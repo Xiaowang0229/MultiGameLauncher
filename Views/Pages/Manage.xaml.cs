@@ -34,11 +34,11 @@ namespace MultiGameLauncher.Views.Pages
                     animationSP.Clear();
                     foreach (var sp in sp_ani.Children)
                     {
-                        if(((StackPanel)sp).Tag!=null)
-                        if (((StackPanel)sp).Tag.ToString() == "ani")
-                        {
-                            animationSP.Add((StackPanel)sp);
-                        }
+                        if (((StackPanel)sp).Tag != null)
+                            if (((StackPanel)sp).Tag.ToString() == "ani")
+                            {
+                                animationSP.Add((StackPanel)sp);
+                            }
                     }
 
                     foreach (var spp in animationSP)
@@ -66,25 +66,18 @@ namespace MultiGameLauncher.Views.Pages
                     MessageBox.Show(ex.ToString());
                 }
 
-                
+
             });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(config.GameInfos.Count == 0)
-            {
-                var createwin = new OOBEWindow(true);
-                createwin.Show();
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                win.Close();
-                return;
-            }
+            
             for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 var menuitem = new System.Windows.Controls.MenuItem();
@@ -93,16 +86,16 @@ namespace MultiGameLauncher.Views.Pages
                 menuitem.Click += MenuItemSelectionChanged;
                 RootDropper.Items.Add(menuitem);
             }
-                
-            
-            
+
+
+
 
         }
 
         private async void MenuItemSelectionChanged(object sender, RoutedEventArgs e)
         {
-            
-            if(RootDropper.Content != ((System.Windows.Controls.MenuItem)sender).Header.ToString())
+
+            if (RootDropper.Content != ((System.Windows.Controls.MenuItem)sender).Header.ToString())
             {
                 RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
                 RootDropper.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
@@ -154,14 +147,14 @@ namespace MultiGameLauncher.Views.Pages
                     }
 
 
-                    
+
 
                     //初始化控件状态
                     //e.g. RootDropper.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
                     var currentgameinfo = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.MenuItem)sender).Tag.ToString());
                     newconfig = currentgameinfo;
-                    
-                    LaunchPathView.Content = currentgameinfo.Launchpath +" "+ currentgameinfo.Arguments;
+
+                    LaunchPathView.Content = currentgameinfo.Launchpath + " " + currentgameinfo.Arguments;
                     ApplicationNameBlock.Content = currentgameinfo.ShowName;
                     MainTitleBlock.Content = currentgameinfo.MainTitle;
                     PlayedTimeBlock.Content = currentgameinfo.GamePlayedMinutes.ToString() + "分钟";
@@ -203,7 +196,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if(RootDropper.Content != "请选择对象")
+            if (RootDropper.Content != "请选择对象")
             {
                 if (MessageBox.Show($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
@@ -215,8 +208,17 @@ namespace MultiGameLauncher.Views.Pages
                     Variables.PlayingTimeintList.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Variables.PlayingTimeRecorder.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Json.WriteJson(Variables.Configpath, config);
-                    Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}",true);
+                    Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\", true);
                     MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (config.GameInfos.Count == 0)
+                    {
+                        Tools.KillTaskBar();
+                        var win3 = new OOBEWindow(true);
+                        win3.Show();
+                        var win2 = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                        win2.Close();
+                        return;
+                    }
                     var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                     win.RootFrame.Navigate(new Manage());
 
@@ -230,7 +232,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            
+
 
             if (newconfig.Launchpath != "" && newconfig.MainTitle != "" && newconfig.ShowName != "")
             {
@@ -238,15 +240,15 @@ namespace MultiGameLauncher.Views.Pages
                 /*config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
                 
                 config.GameInfos.Add(newconfig);*/
-                
-                
+
+
                 config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
                 ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                 //await Task.Delay(100);
                 this.IsEnabled = false;
-                if(IsBackGroundChange)
+                if (IsBackGroundChange)
                 {
-                    if(!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
+                    if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}"))
                     {
                         Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                     }
@@ -261,7 +263,7 @@ namespace MultiGameLauncher.Views.Pages
                     File.Copy(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialogFileName));
                 }
 
-                if(IsBackGroundDelete)
+                if (IsBackGroundDelete)
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
                     {
@@ -295,11 +297,11 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        
 
-        
 
-        
+
+
+
 
         private async void Button_Click_4(object sender, RoutedEventArgs e)
         {
@@ -312,13 +314,13 @@ namespace MultiGameLauncher.Views.Pages
             };
             if (dialog.ShowDialog() == true)
             {
-                
+
                 dialogFileName = dialog.FileName;
                 IsBackGroundChange = true;
-                
+
                 await Task.Delay(500);
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
-                if(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName)))
                 {
                     File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName));
                 }
@@ -330,7 +332,7 @@ namespace MultiGameLauncher.Views.Pages
             }
             else
             {
-                if(MessageBox.Show($"您什么也没有设置，请问是否清除已有的背景？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"您什么也没有设置，请问是否清除已有的背景？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4"))
                     {
@@ -362,10 +364,10 @@ namespace MultiGameLauncher.Views.Pages
                 if (a != null)
                 {
                     newconfig.Arguments = a;
-                    
+
 
                 }
-                if (MessageBox.Show("是否使用exe内的图标替换旧图标？","提示",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("是否使用exe内的图标替换旧图标？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
                     {
@@ -373,8 +375,10 @@ namespace MultiGameLauncher.Views.Pages
                     }
                     Tools.ExtractExeIconToPng(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                     ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.RootFrame.Navigate(new Manage());
                 }
-                
+
                 //MessageBox.Show("1");
                 try
                 {
@@ -394,7 +398,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ArgumentsBlock_LostFocus(object sender, RoutedEventArgs e)
         {
-            
+
             try
             {
                 Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
@@ -409,17 +413,17 @@ namespace MultiGameLauncher.Views.Pages
             };
         }
 
-        
+
 
         private void DeleteBackground_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ChangeApplicationName_Click(object sender, RoutedEventArgs e)
         {
             string a = Tools.OpenInputWindow("请输入新程序名");
-            if(a != null)
+            if (a != null)
             {
                 newconfig.ShowName = a;
                 config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
@@ -427,7 +431,7 @@ namespace MultiGameLauncher.Views.Pages
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Manage());
             }
-            
+
 
         }
 
@@ -439,7 +443,7 @@ namespace MultiGameLauncher.Views.Pages
                 newconfig.MainTitle = a;
                 config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
                 Json.WriteJson(Variables.Configpath, config);
-                
+
             }
 
             var fontdialog = new System.Windows.Forms.FontDialog();
@@ -458,7 +462,7 @@ namespace MultiGameLauncher.Views.Pages
                     colorDialog.Color.B));
 
 
-                    
+
                     config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
                     Json.WriteJson(Variables.Configpath, config);
 
@@ -496,7 +500,7 @@ namespace MultiGameLauncher.Views.Pages
             };
             if (dialog.ShowDialog() == true)
             {
-                
+
                 try
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
@@ -504,14 +508,14 @@ namespace MultiGameLauncher.Views.Pages
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                     }
                     File.Copy(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    Tools.RefreshAllImageCaches(this);
                     ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
-                    MessageBox.Show("操作成功，为了保证您的游戏体验，操作将于重启应用后生效", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-               
+
             }
         }
     }

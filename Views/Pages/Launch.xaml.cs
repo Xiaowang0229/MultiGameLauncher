@@ -1,15 +1,11 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
-using Microsoft.Toolkit.Uwp.Notifications;
-using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace MultiGameLauncher.Views.Pages
@@ -27,7 +23,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            
+
 
 
             Loaded += (async (s, e) =>
@@ -47,7 +43,7 @@ namespace MultiGameLauncher.Views.Pages
 
                     foreach (var spp in animationSP)
                     {
-                        spp.Margin = new Thickness(-2000, 0,0, 10);
+                        spp.Margin = new Thickness(-2000, 0, 0, 10);
                     }
 
                     var animation = new ThicknessAnimation
@@ -73,13 +69,13 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
-           
+
 
         }
 
-        
 
-        
+
+
 
         private async void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
@@ -159,7 +155,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void LaunchTile_Click(object sender, RoutedEventArgs e)
         {
-            
+
             try
             {
                 /*Tools.Process.StartInfo = new ProcessStartInfo
@@ -205,7 +201,7 @@ namespace MultiGameLauncher.Views.Pages
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
 
-                
+
 
 
             }
@@ -228,9 +224,9 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
 
-            for (int i = 0;i<config.GameInfos.Count;i++)
+
+            for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 var menuitem = new TabItem();
                 menuitem.ToolTip = config.GameInfos[i].ShowName;
@@ -256,7 +252,7 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             LaunchTile.Tag = launchConfig.Launchpath;
 
-            if(Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
@@ -276,11 +272,13 @@ namespace MultiGameLauncher.Views.Pages
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
+                Tools.RefreshAllImageCaches(this);
                 BackgroundVideo.Visibility = Visibility.Hidden;
                 BackgroundImage.Visibility = Visibility.Visible;
+
                 BackgroundImage.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png");
             }
-            if(!(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png")) && !(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4")))
+            if (!(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png")) && !(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4")))
             {
                 try
                 {
@@ -318,13 +316,13 @@ namespace MultiGameLauncher.Views.Pages
             // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
             LogText.Document = document;
 
-            
+
         }
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
         {
 
-            if(RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
+            if (RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
             {
                 RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
                 launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
@@ -421,6 +419,7 @@ namespace MultiGameLauncher.Views.Pages
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
                 {
                     BackgroundVideo.Stop();
+                    Tools.RefreshAllImageCaches(this);
                     BackgroundVideo.Close();
 
                     BackgroundVideo.Visibility = Visibility.Hidden;
@@ -456,32 +455,32 @@ namespace MultiGameLauncher.Views.Pages
                 }
             }
 
-            
+
         }
 
-        
+
 
         private async void UserHead_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundVideo.Close();
                 BackgroundVideo.Stop();
-                
+
                 await Task.Delay(50);
 
             }
-            
+
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Personality());
-                win.BackButton.Width = 40;
-            
+            win.BackButton.Width = 40;
+
         }
 
-        
 
-        
+
+
 
         private async void BackgroundVideo_MediaEnded(object sender, EventArgs e)
         {

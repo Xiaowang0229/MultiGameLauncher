@@ -39,7 +39,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
                     var animationin = new ThicknessAnimation
                     {
-                        From = new Thickness(-2000,0,0,10),
+                        From = new Thickness(-2000, 0, 0, 10),
                         To = new Thickness(0, 0, 0, 10),
                         Duration = TimeSpan.FromSeconds(1),
                         EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }

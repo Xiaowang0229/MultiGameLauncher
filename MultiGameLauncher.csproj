@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="EULA.md" />
     <None Remove="FFmpeg\avcodec-58.dll" />
     <None Remove="FFmpeg\avcodec-62.dll" />
     <None Remove="FFmpeg\avdevice-58.dll" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <PackageReference Include="FFME.Windows" Version="4.4.350" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
+    <PackageReference Include="IconExtractor.dll" Version="1.0.2" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1" />
     <PackageReference Include="Markdig" Version="0.44.0" />
@@ -124,6 +126,10 @@
     <Reference Include="HuaZi.Library">
       <HintPath>..\HuaZi.Library.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EULA.md" />
   </ItemGroup>
 
   <ItemGroup>

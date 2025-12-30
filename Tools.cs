@@ -21,6 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using TsudaKageyu;
 using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
@@ -31,8 +32,9 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.0 RC2-Hotfix 1\n";
-        public static string ShowVersion;
+        public readonly static string Version = "Release 1.3.0.0 RC2-Hotfix 3\n";
+        public static string ShowVersion = Version.Substring(0, Version.Length - 1);
+        public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
         public static Hardcodet.Wpf.TaskbarNotification.TaskbarIcon RootTaskBarIcon;
@@ -41,37 +43,18 @@ namespace MultiGameLauncher
         public static List<DispatcherTimer> PlayingTimeRecorder = new List<DispatcherTimer>();
         public static List<Int64> PlayingTimeintList = new List<Int64>();
         public static string VersionLog { get; set; }
+        public static string EULAString { get; set; }
         public static bool MainWindowHideStatus { get; set; } = false;
     }
 
-    
+
     public class Tools //工具集
     {
         //public static Process Process = new();
-        public static FrameworkElement OldPage = null; 
+        public static FrameworkElement OldPage = null;
         public static ImageSource ApplicationLogo;
 
-        // ========== 必要的 Win32 API 声明 ==========
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr ExtractIcon(IntPtr hInst, string lpszExeFileName, uint nIconIndex);
-
-        [DllImport("user32.dll")]
-        private static extern bool DestroyIcon(IntPtr hIcon);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private struct SHFILEINFO
-        {
-            public IntPtr hIcon;
-            public int iIcon;
-            public uint dwAttributes;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szDisplayName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-            public string szTypeName;
-        }
+        
 
 
         //读图片函数
@@ -106,13 +89,13 @@ namespace MultiGameLauncher
                     if (namedColor.R == color.R &&
                         namedColor.G == color.G &&
                         namedColor.B == color.B &&
-                        namedColor.A == color.A) 
+                        namedColor.A == color.A)
                     {
                         return prop.Name;
                     }
                 }
             }
-            return color.ToString(); 
+            return color.ToString();
         }
 
         public static bool ConvertToPngAndSave(byte[] imageBytes, string savePath)
@@ -157,7 +140,7 @@ namespace MultiGameLauncher
                 bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
                 bitmap.EndInit();
-                bitmap.Freeze(); 
+                bitmap.Freeze();
 
                 return bitmap;
             }
@@ -180,13 +163,13 @@ namespace MultiGameLauncher
                     var value = key?.GetValue(ValueName);
                     if (value is int intValue)
                     {
-                        return intValue > 0; 
+                        return intValue > 0;
                     }
                 }
             }
-            catch{ }
+            catch { }
 
-            return true; 
+            return true;
         }
         public static void StartThemeMonitoring()
         {
@@ -236,7 +219,7 @@ namespace MultiGameLauncher
                 ChangeThemeWithSystem = false,
                 GameInfos = new List<LaunchConfig>()
             };
-            Json.WriteJson(Variables.Configpath,config);
+            Json.WriteJson(Variables.Configpath, config);
             //ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
 
@@ -259,9 +242,9 @@ namespace MultiGameLauncher
             }
         }
 
-        public static int FindHashcodeinGameinfosint(MainConfig config,string hashcode)
+        public static int FindHashcodeinGameinfosint(MainConfig config, string hashcode)
         {
-            for (int i = 0;i< config.GameInfos.Count;i++)
+            for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 if (config.GameInfos[i].HashCode == hashcode)
                 {
@@ -287,10 +270,10 @@ namespace MultiGameLauncher
             var SettingsItem = new MenuItem { Header = "打开设置页" };
             var ExitApplicationItem = new MenuItem { Header = "退出主程序" };
 
-            
+
 
             tbcm.Items.Add(OpenMainWindowItem);
-            
+
 
             //Variables.RootTaskBarIcon.ContextMenu.Items.Add(ForceQuitGameItem);
             tbcm.Items.Add(new Separator());
@@ -378,8 +361,8 @@ namespace MultiGameLauncher
                         StopMonitingGameStatus(index);
                         await Task.Delay(100);
                         InitializeTaskBarContentMenu();
-                            
-                        
+
+
                     };
                     ControlGameProcess.Items.Add(subitem);
                 }
@@ -406,7 +389,7 @@ namespace MultiGameLauncher
 
 
 
-            
+
             Variables.RootTaskBarIcon.ContextMenu = tbcm;
             //绑定事件
             OpenMainWindowItem.Click += (s, e) =>
@@ -446,9 +429,9 @@ namespace MultiGameLauncher
             var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
             toast.Show();
 
-            
 
-            
+
+
         }
 
         public static async Task WaitMonitingGameExitAsync(int index)
@@ -465,7 +448,7 @@ namespace MultiGameLauncher
             var time = Variables.PlayingTimeintList[index];
             config.GameInfos[index].GamePlayedMinutes += time;
             Json.WriteJson(Variables.Configpath, config);
-            
+
             Tools.InitializeTaskBarContentMenu();
             Variables.GameProcessStatus[index] = false;
             Variables.PlayingTimeintList[index] = 0;
@@ -480,64 +463,66 @@ namespace MultiGameLauncher
         public static string? OpenInputWindow(string Title)
         {
             var win = new InputWindow(Title);
-            if(win.ShowDialog() == true)
+            if (win.ShowDialog() == true)
             {
                 return win.Results;
             }
             return null;
         }
 
-        public static void ExtractExeIconToPng(string exePath, string pngPath)
+        /*public static void ExtractExeIconToPng(string exePath, string pngPath)
         {
+            if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
+                throw new FileNotFoundException("EXE 文件不存在", exePath);
 
-            // ========== 尝试使用 SHGetFileInfo 获取系统关联的大图标（最可靠）==========
+            if (string.IsNullOrWhiteSpace(pngPath))
+                throw new ArgumentException("PNG 输出路径不能为空");
+
+            // 使用 SHGetFileInfo + LARGEICON 获取包含高清尺寸的图标（Windows Vista+ 支持 256x256）
             SHFILEINFO shinfo = new SHFILEINFO();
-            IntPtr result = SHGetFileInfo(exePath, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), 0x100); // SHGFI_ICON = 0x100
+            const uint SHGFI_ICON = 0x100;
+            const uint SHGFI_LARGEICON = 0x0;
+
+            IntPtr result = SHGetFileInfo(exePath, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo),
+                                          SHGFI_ICON | SHGFI_LARGEICON);
 
             Icon icon = null;
-            bool iconFromSH = false;
+            IntPtr originalHandle = IntPtr.Zero;
 
             if (result != IntPtr.Zero && shinfo.hIcon != IntPtr.Zero)
             {
-                icon = Icon.FromHandle(shinfo.hIcon);
-                iconFromSH = true;
+                originalHandle = shinfo.hIcon;
+                icon = Icon.FromHandle(originalHandle);
             }
             else
             {
-                // ========== 备选：直接从资源提取第一个图标 ==========
+                // 备选方案：直接提取资源中的第一个图标
                 IntPtr hIcon = ExtractIcon(IntPtr.Zero, exePath, 0);
-                if (hIcon != IntPtr.Zero && hIcon != new IntPtr(-1))
-                {
-                    icon = Icon.FromHandle(hIcon);
-                }
-            }
-            string dir = Path.GetDirectoryName(pngPath);
-            if (icon == null)
-            {   
-                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    { Directory.CreateDirectory(dir); }
-                
-            }
+                if (hIcon == IntPtr.Zero || hIcon == new IntPtr(-1))
+                    throw new InvalidOperationException($"指定的 EXE 文件不包含任何图标: {exePath}");
 
-            
+                originalHandle = hIcon;
+                icon = Icon.FromHandle(originalHandle);
+            }
 
             // 确保输出目录存在
-            
+            string dir = Path.GetDirectoryName(pngPath);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
+            // 直接在主函数中完成保存逻辑：优先 256x256，回退到最大可用尺寸
             try
             {
-                // 优先提取 64x64 尺寸的图标
-                using (Icon sizedIcon = new Icon(icon, 64, 64))
-                using (Bitmap bmp = sizedIcon.ToBitmap())
+                // 尝试获取 256x256 尺寸（大多数现代程序都包含）
+                using (Icon largeIcon = new Icon(icon, 256, 256))
+                using (Bitmap bmp = largeIcon.ToBitmap())
                 {
                     bmp.Save(pngPath, ImageFormat.Png);
                 }
             }
             catch
             {
-                // 如果没有正好 64x64 的尺寸，回退到原始图标转 Bitmap
+                // 如果没有 256x256 尺寸，使用图标自带的最大尺寸转 Bitmap
                 using (Bitmap bmp = icon.ToBitmap())
                 {
                     bmp.Save(pngPath, ImageFormat.Png);
@@ -545,18 +530,107 @@ namespace MultiGameLauncher
             }
             finally
             {
+                // 释放托管 Icon
                 icon.Dispose();
-                // 如果是从 SHGetFileInfo 拿到的图标，需要手动销毁原始句柄（FromHandle 已复制）
-                if (iconFromSH && shinfo.hIcon != IntPtr.Zero)
-                    DestroyIcon(shinfo.hIcon);
+
+                // 必须手动销毁 Win32 返回的原始图标句柄（Icon.FromHandle 已复制一份）
+                if (originalHandle != IntPtr.Zero)
+                    DestroyIcon(originalHandle);
+            }
+        }*/
+
+        public static void ExtractExeIconToPng(string exePath, string pngPath)
+        {
+            if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
+                throw new FileNotFoundException("EXE 文件不存在", exePath);
+
+            if (string.IsNullOrWhiteSpace(pngPath))
+                throw new ArgumentException("PNG 输出路径不能为空");
+
+            // 使用 IconExtractor.dll 提取图标资源
+            var extractor = new IconExtractor(exePath);
+
+            if (extractor.Count == 0)
+                throw new InvalidOperationException($"指定的 EXE 文件不包含任何图标: {exePath}");
+
+            // 通常第 0 个图标就是主图标（最大、最清晰的那个）
+            // GetIcon(0) 返回的是包含所有尺寸变体（包括 256x256）的完整 Icon 对象
+            using (Icon fullIcon = extractor.GetIcon(0))
+            {
+                // 确保输出目录存在
+                string dir = Path.GetDirectoryName(pngPath);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                // 优先尝试提取 256x256 高清尺寸（现代 Windows 程序几乎都支持）
+                try
+                {
+                    using (Icon largeIcon = new Icon(fullIcon, 256, 256))
+                    using (Bitmap bmp = largeIcon.ToBitmap())  // 自动保留透明度
+                    {
+                        bmp.Save(pngPath, ImageFormat.Png);
+                        return;  // 成功提取 256x256，直接返回
+                    }
+                }
+                catch
+                {
+                    // 如果没有 256x256 尺寸，回退到图标自带的最大尺寸
+                    // ToBitmap() 会选择最佳可用尺寸并保留 Alpha 通道
+                }
+
+                using (Bitmap bmp = fullIcon.ToBitmap())
+                {
+                    bmp.Save(pngPath, ImageFormat.Png);
+                }
             }
         }
 
-        
+
+        public static void RefreshAllImageCaches(DependencyObject parent)
+        {
+            if (parent == null) return;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+
+                
+
+
+
+                if (child is System.Windows.Controls.Image imageControl)
+                {
+                    if (imageControl.Source is BitmapImage bitmapImage && bitmapImage.UriSource != null)
+                    {
+                        // 创建新 BitmapImage，忽略缓存并立即加载
+                        BitmapImage newBitmap = new BitmapImage();
+                        newBitmap.BeginInit();
+                        newBitmap.UriSource = bitmapImage.UriSource;
+                        newBitmap.CacheOption = BitmapCacheOption.OnLoad;           // 立即加载以释放文件锁（如需）
+                        newBitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache; // 关键：忽略现有缓存
+                        newBitmap.EndInit();
+
+                        // 可选：Freeze 以提高性能（多线程安全）
+                        if (newBitmap.CanFreeze)
+                        {
+                            newBitmap.Freeze();
+                        }
+
+                        imageControl.Source = newBitmap;
+                    }
+                }
+
+                // 递归处理子控件
+                RefreshAllImageCaches(child);
+            }
+        }
+
+
 
     }
 
-    
+
     public class LaunchConfig
     {
 
@@ -574,7 +648,7 @@ namespace MultiGameLauncher
     public class MainConfig //主体配置项
     {
         //OOBE状态
-        public bool OOBEStatus { get;set; }
+        public bool OOBEStatus { get; set; }
 
         //用户名
         public string Username { get; set; }

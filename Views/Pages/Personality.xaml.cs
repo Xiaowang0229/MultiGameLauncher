@@ -1,11 +1,9 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
-using Microsoft.Win32;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
 
 
@@ -70,19 +68,19 @@ namespace MultiGameLauncher.Views.Pages
             //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
             try
             {
-                ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme +"."+ Tools.GetColorName((Color)RootColor.SelectedValue));
+                ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme + "." + Tools.GetColorName((Color)RootColor.SelectedValue));
                 //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
                 config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
-                Json.WriteJson(Variables.Configpath,config);
+                Json.WriteJson(Variables.Configpath, config);
             }
-            catch(Exception){ }
+            catch (Exception) { }
 
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show(ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
-            if(Darkmode.IsOn)
+            if (Darkmode.IsOn)
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
                 config.ThemeMode = "Dark";
@@ -105,7 +103,7 @@ namespace MultiGameLauncher.Views.Pages
             }
             UserName.Text = config.Username;
 
-            if(config.ChangeThemeWithSystem)
+            if (config.ChangeThemeWithSystem)
             {
                 Darkmode.IsEnabled = false;
                 SystemChangeTip.Visibility = Visibility.Visible;
@@ -145,10 +143,10 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
+
             var openFileDialog = new Microsoft.Win32.OpenFileDialog()
             {
-                
+
                 Title = "选择文件",
                 Filter = "头像图片(*.png)|*.png",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
@@ -160,15 +158,15 @@ namespace MultiGameLauncher.Views.Pages
             {
                 if (openFileDialog.FileName == Environment.CurrentDirectory + @"\Head.png")
                 {
-                    MessageBox.Show("不能选择同一张头像","错误",MessageBoxButton.OK,MessageBoxImage.Stop);
+                    MessageBox.Show("不能选择同一张头像", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
-                else if(openFileDialog.FileName!= Environment.CurrentDirectory + @"\Head.png")
+                else if (openFileDialog.FileName != Environment.CurrentDirectory + @"\Head.png")
                 {
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
-                    
+                    Tools.RefreshAllImageCaches(this);
                     MessageBox.Show("操作成功,为了保证您的游戏体验,重启后生效！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
+
                 }
             }
         }
@@ -188,7 +186,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if(MessageBox.Show("确定还原默认头像吗","警告",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show("确定还原默认头像吗", "警告", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 File.Delete(Environment.CurrentDirectory + @"\Head.png");
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();

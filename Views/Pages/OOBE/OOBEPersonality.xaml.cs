@@ -1,21 +1,10 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using MultiGameLauncher.Views.Windows;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
 
 namespace MultiGameLauncher.Views.Pages.OOBE
@@ -75,19 +64,19 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(UserName.Text != "")
+            if (UserName.Text != "")
             {
                 config.Username = UserName.Text;
                 Json.WriteJson(Variables.Configpath, config);
                 var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new OOBEImport());
             }
-            if(UserName.Text == "")
+            if (UserName.Text == "")
             {
-                MessageBox.Show("用户名不可置空！","警告",MessageBoxButton.OK,MessageBoxImage.Warning);
+                MessageBox.Show("用户名不可置空！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             }
-            
+
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
@@ -112,14 +101,15 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 {
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
+                    Tools.RefreshAllImageCaches(this);
                     await Task.Delay(300);
-                    if(File.Exists(Environment.CurrentDirectory + @"\Head.png"))
+                    if (File.Exists(Environment.CurrentDirectory + @"\Head.png"))
                     {
                         UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
                     }
-                    
-                    
-                    
+
+
+
                 }
             }
         }
@@ -138,7 +128,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
             if (config.ThemeMode == "Dark")
             {
                 Darkmode.IsOn = true;
