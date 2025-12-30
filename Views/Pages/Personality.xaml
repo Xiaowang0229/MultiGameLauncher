@@ -14,7 +14,7 @@
             <StackPanel Margin="10,10,10,10" Tag="ani" HorizontalAlignment="Left" >
                 <StackPanel Tag="ani">
                     <StackPanel Margin="10">
-                        <Image Height="128" Width="128" x:Name="UserHead">
+                        <Image Height="192" Width="192" x:Name="UserHead">
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
