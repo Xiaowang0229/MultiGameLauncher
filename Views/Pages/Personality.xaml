@@ -77,6 +77,37 @@
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy"/>
                 <Label Visibility="Hidden" x:Name="SystemChangeTip" Content="已经打开跟随系统切换主题，请先到设置->关闭跟随系统切换主题后再重新进入此页" VerticalAlignment="Center" FontSize="14"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
+                <Label Content="管理音乐:" FontSize="16" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ui:DropDownButton x:Name="MusicChooser" Content="" Width="400" Height="35" HorizontalContentAlignment="Left" FontFamily="Microsoft YaHei UI"/>
+                <Button x:Name="AddMusic" Margin="10" Width="120" Click="AddMusic_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock FontFamily="Microsoft YaHei UI" Text="添加音乐"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                
+                <StackPanel Orientation="Horizontal" x:Name="CostomMusicControl" Visibility="Hidden">
+                    <Button x:Name="ReNameMusic" Margin="10" Width="120" Click="ReNameMusic_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Margin="2">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock FontFamily="Microsoft YaHei UI" Text="重命名音乐"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="DelMusic" Margin="10" Width="120" Click="DelMusic_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Margin="2">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center" Foreground="Red"/>
+                                <TextBlock FontFamily="Microsoft YaHei UI" Text="删除音乐" Foreground="Red"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>

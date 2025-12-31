@@ -183,6 +183,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                 newconfig.Launchpath = dialog.FileName;
                 LaunchPathView.Content = dialog.FileName;
+                ProgramNameBlock.Text = Path.GetFileNameWithoutExtension(dialog.FileName);
+                newconfig.ShowName = ProgramNameBlock.Text;
             }
         }
 
@@ -314,5 +316,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
         {
             
         }
+
+        
     }
 }

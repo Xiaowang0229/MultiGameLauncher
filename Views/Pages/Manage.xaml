@@ -33,7 +33,7 @@
                     <Image Width="128" Height="128" x:Name="ApplicationIcon" Margin="10"/>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
-                            <Label  Content="程序名：" FontSize="16" VerticalAlignment="Center"/>
+                            <Label  Content="显示程序名：" FontSize="16" VerticalAlignment="Center"/>
                             <Label x:Name="ApplicationNameBlock" Content="名字" VerticalAlignment="Center" FontSize="16"/>
                         </StackPanel>
                         <StackPanel  Orientation="Horizontal" Margin="10,0,0,10">

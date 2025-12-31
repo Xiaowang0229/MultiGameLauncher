@@ -1,6 +1,7 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using MultiGameLauncher.Views.Windows;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -163,6 +164,69 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 File.Delete(Environment.CurrentDirectory + @"\Head.png");
                 var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new OOBEPersonality());
+            }
+        }
+
+        private void OpenMusicFolder_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = $"{Environment.CurrentDirectory}\\Musics\\",
+                UseShellExecute = true
+            });
+        }
+
+        private void AddMusic_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "音频文件(*.mp3)|*.mp3",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                if (File.Exists($"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}"))
+                {
+                    File.Delete($"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
+                }
+                File.Copy(dialog.FileName, $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
+
+                try
+                {
+                    Variables.MusicList.Clear();
+                    var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
+                    for (int i = 0; i < musicdir.Length; i++)
+                    {
+                        Variables.MusicList.Add(musicdir[i]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"错误:{ex.Message}", "发生错误");
+                }
+            }
+        }
+
+        private void DelMusic_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "音频文件(*.mp3)|*.mp3",
+                InitialDirectory = Environment.CurrentDirectory + "\\Musics",
+                Multiselect = false
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                File.Delete(dialog.FileName);
+                Variables.MusicList.Clear();
+                var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
+                for (int i = 0; i <= musicdir.Length; i++)
+                {
+                    Variables.MusicList.Add(musicdir[i]);
+                }
             }
         }
     }

@@ -202,9 +202,42 @@
                 </StackPanel>
 
 
-
+                <StackPanel VerticalAlignment="Bottom" Width="405">
+                    <Button x:Name="MusicController" FontWeight="Bold" HorizontalAlignment="Right" Click="MusicController_Click" Background="{x:Null}" BorderBrush="{x:Null}" >
+                        <Grid>
+                            <Border
+    x:Name="PlayButton"
+    Width="30"
+    Height="30"
+    CornerRadius="15"
+    Background="Gray"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    ToolTip="音乐播放">
+                            </Border>
+                            <Label Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
             </StackPanel>
 
+        </StackPanel>
+        <StackPanel x:Name="MusicPlayTip" Margin="0,-50,0,0">
+            <Border
+Height="50"
+CornerRadius="25"
+Background="{DynamicResource MahApps.Brushes.Accent}"
+HorizontalAlignment="Center"
+VerticalAlignment="Top"
+ToolTip="音乐播放">
+                <StackPanel Orientation="Horizontal">
+                    <Label FontFamily="Segoe MDL2 Assets" Content="" VerticalAlignment="Center" FontSize="24" Margin="10,0,5,0"/>
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
+                        <TextBlock x:Name="CurrentPlayBlock" Text="当前播放：Unity - TheFatRat" FontSize="14" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="MusicProgressBlock" Text="总进度：9/16" FontSize="10" Margin="0,0,10,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 

@@ -2,6 +2,7 @@
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
 
+using NAudio;
 using ControlzEx.Theming;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
@@ -26,13 +27,14 @@ using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
+using NAudio.Wave;
 
 
 namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.0 RC2-Hotfix 3\n";
+        public readonly static string Version = "Release 1.3.0.0 RC3\n";
         public static string ShowVersion = Version.Substring(0, Version.Length - 1);
         public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
@@ -41,14 +43,16 @@ namespace MultiGameLauncher
         public static ContextMenu TaskBarMenu = new ContextMenu();
         public static List<bool> GameProcessStatus = new List<bool>();
         public static List<DispatcherTimer> PlayingTimeRecorder = new List<DispatcherTimer>();
-        public static List<Int64> PlayingTimeintList = new List<Int64>();
-        public static string VersionLog { get; set; }
-        public static string EULAString { get; set; }
-        public static bool MainWindowHideStatus { get; set; } = false;
+        public static List<long> PlayingTimeintList = new List<long>();
+        public static List<string> MusicList = new List<string>();
+        public static string VersionLog;
+        public static string EULAString;
+        public static bool MainWindowHideStatus = false;
+        public static IWavePlayer RootMusicPlayer=new WaveOutEvent();
     }
 
 
-    public class Tools //工具集
+    public static class Tools //工具集
     {
         //public static Process Process = new();
         public static FrameworkElement OldPage = null;
@@ -57,7 +61,7 @@ namespace MultiGameLauncher
         
 
 
-        //读图片函数
+        //函数
         public static void Restart()
         {
             Process.Start(Process.GetCurrentProcess().MainModule.FileName);
@@ -78,7 +82,6 @@ namespace MultiGameLauncher
                 return bitmapImage;
             }
         }
-
         public static string GetColorName(Color color)
         {
             foreach (PropertyInfo prop in typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static))
@@ -97,7 +100,6 @@ namespace MultiGameLauncher
             }
             return color.ToString();
         }
-
         public static bool ConvertToPngAndSave(byte[] imageBytes, string savePath)
         {
             if (imageBytes == null || imageBytes.Length == 0)
@@ -118,7 +120,6 @@ namespace MultiGameLauncher
                 return false;
             }
         }
-
         public static string RandomHashGenerate(int byteLength = 16)
         {
             byte[] bytes = new byte[byteLength];
@@ -150,7 +151,6 @@ namespace MultiGameLauncher
                 return null;
             }
         }
-
         public static bool AppsUseLightTheme()
         {
             const string RegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
@@ -195,7 +195,6 @@ namespace MultiGameLauncher
                 OutputCurrentTheme();
             }
         }
-
         private static void OutputCurrentTheme()
         {
             bool isLight = AppsUseLightTheme();
@@ -205,7 +204,6 @@ namespace MultiGameLauncher
             config.ThemeMode = theme;
             Json.WriteJson(Variables.Configpath, config);
         }
-
         public static void InitalizeConfig()
         {
             var config = new MainConfig
@@ -217,12 +215,13 @@ namespace MultiGameLauncher
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
                 ChangeThemeWithSystem = false,
-                GameInfos = new List<LaunchConfig>()
+                PlayMusicStarted = false,
+                GameInfos = new List<LaunchConfig>(),
+                MusicInfos = new List<MusicConfig>()
             };
             Json.WriteJson(Variables.Configpath, config);
             //ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
-
         public static string ReadEmbeddedMarkdown(string resourceName)
         {
             // 获取当前执行的程序集
@@ -241,7 +240,6 @@ namespace MultiGameLauncher
                 }
             }
         }
-
         public static int FindHashcodeinGameinfosint(MainConfig config, string hashcode)
         {
             for (int i = 0; i < config.GameInfos.Count; i++)
@@ -253,7 +251,6 @@ namespace MultiGameLauncher
             }
             return 0;
         }
-
         public static void IntializeTaskbar()
         {
             MainConfig config = new MainConfig();
@@ -325,12 +322,10 @@ namespace MultiGameLauncher
             };
 
         }
-
         public static void KillTaskBar()
         {
             Variables.RootTaskBarIcon?.Dispose();
         }
-
         public static void InitializeTaskBarContentMenu()
         {
             //列表项初始化
@@ -414,7 +409,6 @@ namespace MultiGameLauncher
 
 
         }
-
         public async static void StartMonitingGameStatus(int index)
         {
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
@@ -433,13 +427,11 @@ namespace MultiGameLauncher
 
 
         }
-
         public static async Task WaitMonitingGameExitAsync(int index)
         {
             var proc = Variables.GameProcess[index];
             await proc.WaitForExitAsync();
         }
-
         public static void StopMonitingGameStatus(int index)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
@@ -457,7 +449,7 @@ namespace MultiGameLauncher
             var pg = new Launch();
             win.RootFrame.Navigate(pg);
             pg.RootTabControl.SelectedIndex = index;
-            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
             toast0.Show();
         }
         public static string? OpenInputWindow(string Title)
@@ -469,76 +461,6 @@ namespace MultiGameLauncher
             }
             return null;
         }
-
-        /*public static void ExtractExeIconToPng(string exePath, string pngPath)
-        {
-            if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
-                throw new FileNotFoundException("EXE 文件不存在", exePath);
-
-            if (string.IsNullOrWhiteSpace(pngPath))
-                throw new ArgumentException("PNG 输出路径不能为空");
-
-            // 使用 SHGetFileInfo + LARGEICON 获取包含高清尺寸的图标（Windows Vista+ 支持 256x256）
-            SHFILEINFO shinfo = new SHFILEINFO();
-            const uint SHGFI_ICON = 0x100;
-            const uint SHGFI_LARGEICON = 0x0;
-
-            IntPtr result = SHGetFileInfo(exePath, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo),
-                                          SHGFI_ICON | SHGFI_LARGEICON);
-
-            Icon icon = null;
-            IntPtr originalHandle = IntPtr.Zero;
-
-            if (result != IntPtr.Zero && shinfo.hIcon != IntPtr.Zero)
-            {
-                originalHandle = shinfo.hIcon;
-                icon = Icon.FromHandle(originalHandle);
-            }
-            else
-            {
-                // 备选方案：直接提取资源中的第一个图标
-                IntPtr hIcon = ExtractIcon(IntPtr.Zero, exePath, 0);
-                if (hIcon == IntPtr.Zero || hIcon == new IntPtr(-1))
-                    throw new InvalidOperationException($"指定的 EXE 文件不包含任何图标: {exePath}");
-
-                originalHandle = hIcon;
-                icon = Icon.FromHandle(originalHandle);
-            }
-
-            // 确保输出目录存在
-            string dir = Path.GetDirectoryName(pngPath);
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            // 直接在主函数中完成保存逻辑：优先 256x256，回退到最大可用尺寸
-            try
-            {
-                // 尝试获取 256x256 尺寸（大多数现代程序都包含）
-                using (Icon largeIcon = new Icon(icon, 256, 256))
-                using (Bitmap bmp = largeIcon.ToBitmap())
-                {
-                    bmp.Save(pngPath, ImageFormat.Png);
-                }
-            }
-            catch
-            {
-                // 如果没有 256x256 尺寸，使用图标自带的最大尺寸转 Bitmap
-                using (Bitmap bmp = icon.ToBitmap())
-                {
-                    bmp.Save(pngPath, ImageFormat.Png);
-                }
-            }
-            finally
-            {
-                // 释放托管 Icon
-                icon.Dispose();
-
-                // 必须手动销毁 Win32 返回的原始图标句柄（Icon.FromHandle 已复制一份）
-                if (originalHandle != IntPtr.Zero)
-                    DestroyIcon(originalHandle);
-            }
-        }*/
-
         public static void ExtractExeIconToPng(string exePath, string pngPath)
         {
             if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
@@ -584,8 +506,6 @@ namespace MultiGameLauncher
                 }
             }
         }
-
-
         public static void RefreshAllImageCaches(DependencyObject parent)
         {
             if (parent == null) return;
@@ -625,7 +545,26 @@ namespace MultiGameLauncher
                 RefreshAllImageCaches(child);
             }
         }
+        public static bool HasProperty(this object obj, string propertyName, bool ignoreCase = true)
+        {
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (string.IsNullOrWhiteSpace(propertyName)) return false;
 
+            // 场景1：ExpandoObject 或其他实现 IDictionary<string, object> 的动态对象（如 Json 动态反序列化）
+            if (obj is IDictionary<string, object> dict)
+            {
+                return ignoreCase
+                    ? dict.Keys.Any(k => k.Equals(propertyName, StringComparison.OrdinalIgnoreCase))
+                    : dict.ContainsKey(propertyName);
+            }
+
+            // 场景2：普通对象，使用反射查找公共实例属性
+            var type = obj.GetType();
+            var flags = BindingFlags.Public | BindingFlags.Instance;
+            if (ignoreCase) flags |= BindingFlags.IgnoreCase;
+
+            return type.GetProperty(propertyName, flags) != null;
+        }
 
 
     }
@@ -639,7 +578,7 @@ namespace MultiGameLauncher
         public string MainTitle { get; set; }
         public System.Windows.Media.FontFamily MaintitleFontName { get; set; }
         public System.Windows.Media.Brush MainTitleFontColor { get; set; }
-        public Int64 GamePlayedMinutes { get; set; }
+        public long GamePlayedMinutes { get; set; }
         public string Launchpath { get; set; }
         public string Arguments { get; set; }
 
@@ -652,9 +591,6 @@ namespace MultiGameLauncher
 
         //用户名
         public string Username { get; set; }
-
-        //此处不再写头像位置，因为使能头像时已经复制
-        //public string UserImage { get; set; }
 
         //主题(颜色)
         public string ThemeColor { get; set; }
@@ -671,50 +607,23 @@ namespace MultiGameLauncher
         //主题跟随系统
         public bool ChangeThemeWithSystem { get; set; }
 
+        //启动时播放音乐
+        public bool PlayMusicStarted { get; set; }
+
         //游戏配置项，勿动
         public List<LaunchConfig> GameInfos { get; set; }
+
+        //音乐配置项，勿动
+        public List<MusicConfig> MusicInfos { get; set; }
     }
 
-    //Stackpanel页动画
-    //private List<StackPanel> animationSP = new();
-    /*Loaded += (async (s, e) =>
-            {
-                try
-                {
-                    animationSP.Clear();
-                    foreach (var sp in sp_ani.Children)
-                    {
-                        if (((StackPanel)sp).Tag != null)
-                            if (((StackPanel)sp).Tag.ToString() == "ani")
-                            {
-                                animationSP.Add((StackPanel)sp);
-                            }
-                    }
-
-                    foreach (var spp in animationSP)
-                    {
-                        spp.Margin = new Thickness(-2000, 0, 0, 10);
-                    }
-
-                    var animation = new ThicknessAnimation
-                    {
-                        To = new Thickness(0, 0, 0, 10),
-                        Duration = TimeSpan.FromMilliseconds(500),
-                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
-                    };
-
-                    foreach (var aniSP in animationSP)
-                    {
-                        aniSP.BeginAnimation(MarginProperty, animation);
-                        await Task.Delay(100);
-                    }
-                }
-                catch (InvalidOperationException) { }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
+    public class MusicConfig
+    {
+        public string MusicPath { get; set; }
+        public string MusicShowName { get; set; }
+        public string MusicHashCode { get; set; }
+    }
 
 
-            });*/
+
 }

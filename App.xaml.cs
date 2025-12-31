@@ -19,7 +19,8 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            RegisterGlobalExceptionHandlers();
+            //RegisterGlobalExceptionHandlers();
+            
             Variables.ShowVersion = Variables.Version.Substring(Variables.Version.Length - 1);
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Variables.EULAString = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.EULA.md");
@@ -30,11 +31,24 @@ namespace MultiGameLauncher
                 Tools.InitalizeConfig();
             }
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            if(config.OOBEStatus != true)
+            {
+                Tools.InitalizeConfig();
+            }
             //读取逻辑
             Tools.ApplicationLogo = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
             if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds"))
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds");
+            }
+            if (!Directory.Exists(Environment.CurrentDirectory + $"\\Musics"))
+            {
+                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Musics");
+                var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
+                for(int i = 0; i<=musicdir.Length;i++)
+                {
+                    Variables.MusicList.Add(musicdir[i]);
+                }
             }
 
             for (int i = 0; i < config.GameInfos.Count; i++)
@@ -73,7 +87,7 @@ namespace MultiGameLauncher
 
 
             //主加载逻辑
-            if (config.OOBEStatus && config.GameInfos.Count != 0)
+            if (config.OOBEStatus && config.GameInfos.Count != 0 )
             {
 
                 /*outerloop: foreach (var folder in subFolderNames)
@@ -88,10 +102,25 @@ namespace MultiGameLauncher
                     }
                     MessageBox.Show(folder);
                 }*/
-
+                if(config.MusicInfos == null)
+                {
+                    config.MusicInfos = new List<MusicConfig>();
+                    Json.WriteJson(Variables.Configpath, config);
+                }
+                if(config.PlayMusicStarted == null)
+                {
+                    config.PlayMusicStarted = false;
+                    Json.WriteJson(Variables.Configpath, config);
+                }
                 var win = new MainWindow();
                 win.Show();
                 Tools.IntializeTaskbar();
+                
+                
+                /*if( config.MusicInfos)
+                {
+                    
+                }*/
                 //return;
             }
             else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
@@ -160,17 +189,17 @@ namespace MultiGameLauncher
 
         private void UnhandledException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            MessageBox.Show($"程序内部发生错误：{e.Exception}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"程序内部发生错误：{e.Exception}", "客户端发生错误，即将崩溃", MessageBoxButton.OK, MessageBoxImage.Error);
             Environment.Exit(0);
         }
         private void UnhandledDomainException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"程序内部发生错误：{e.ExceptionObject}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"程序内部发生错误：{e.ExceptionObject}", "客户端发生错误，即将崩溃", MessageBoxButton.OK, MessageBoxImage.Error);
             Environment.Exit(0);
         }
         private void UnhandledDispatherException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"程序内部发生错误：{e.Exception}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"程序内部发生错误：{e.Exception}", "客户端发生错误，即将崩溃", MessageBoxButton.OK, MessageBoxImage.Error);
             Environment.Exit(0);
         }
 

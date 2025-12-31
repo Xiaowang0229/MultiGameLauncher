@@ -1,10 +1,12 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
+using NAudio.Wave;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
@@ -16,8 +18,12 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Launch : Page
     {
         private List<StackPanel> animationSP = new();
+        private CancellationTokenSource _animationCts;
         private MainConfig config;
         private LaunchConfig launchConfig;
+        private int musicplayingindex = 0;
+        private bool MusicPageUnload = false;
+        private bool isMusicPlaying = false;
 
         public Launch()
         {
@@ -58,7 +64,7 @@ namespace MultiGameLauncher.Views.Pages
                         aniSP.BeginAnimation(MarginProperty, animation);
                         await Task.Delay(20);
                     }
-
+                    //Variables.RootMusicPlayer.Init(new AudioFileReader());
 
                 }
                 catch (InvalidOperationException) { }
@@ -69,6 +75,14 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
+            Unloaded += (s, e) =>
+            {
+                try
+                {
+                    Variables.RootMusicPlayer.Dispose();
+                }
+                catch { }
+            };
 
 
         }
@@ -295,6 +309,16 @@ namespace MultiGameLauncher.Views.Pages
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
             }*/
+            if(config.MusicInfos.Count != 0 && config.PlayMusicStarted)
+            {
+                var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+                PlayButton.Background = accentBrush;
+                isMusicPlaying = true;
+                Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                Variables.RootMusicPlayer.PlaybackStopped += RootMusicPlayer_PlaybackStopped;
+                Variables.RootMusicPlayer.Play();
+                PopUpMusicTips();
+            }
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Visibility = Visibility.Hidden;
@@ -317,6 +341,61 @@ namespace MultiGameLauncher.Views.Pages
             LogText.Document = document;
 
 
+        }
+
+        private void RootMusicPlayer_PlaybackStopped(object? sender, StoppedEventArgs e)
+        {
+            if(MusicPageUnload != true)
+            {
+                musicplayingindex += 1;
+                if (musicplayingindex <= config.MusicInfos.Count-1)
+                {
+                    Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
+                else
+                {
+                    musicplayingindex = 0;
+                    Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
+            }
+            if(MusicPageUnload == true)
+            {
+                Variables.RootMusicPlayer.Dispose();
+            }
+        }
+
+        private async void PopUpMusicTips()
+        {
+            
+
+            MusicPlayTip.BeginAnimation(MarginProperty, null);
+            CurrentPlayBlock.Text = $"当前播放:{config.MusicInfos[musicplayingindex].MusicShowName}";
+            MusicProgressBlock.Text = $"进度：{musicplayingindex+1}/{config.MusicInfos.Count}";
+
+            var inanimation = new ThicknessAnimation
+            {
+                From = new Thickness(0,-50,0,0),
+                To = new Thickness(0, 10, 0, 0),
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseIn }
+            };
+            var outanimation = new ThicknessAnimation
+            {
+                
+                From = new Thickness(0, 10, 0, 0),
+                To = new Thickness(0, -50, 0, 0),
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
+            };
+            MusicPlayTip.BeginAnimation(MarginProperty, null);
+            MusicPlayTip.BeginAnimation(MarginProperty, inanimation);
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            MusicPlayTip.BeginAnimation(MarginProperty, null);
+            MusicPlayTip.BeginAnimation(MarginProperty, outanimation);
         }
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
@@ -513,14 +592,32 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            /*if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            MusicPageUnload = true;
+            Variables.RootMusicPlayer.Stop();
+        }
+
+        private void MusicController_Click(object sender, RoutedEventArgs e)
+        {
+
+            if(isMusicPlaying)//未播放时
             {
+                MusicPageUnload = true;
+                isMusicPlaying = false;
+                Variables.RootMusicPlayer.Stop();
+                PlayButton.Background = new SolidColorBrush(System.Windows.Media.Colors.Gray);
+            }
+            else
+            {
+                MusicPageUnload = false;
+                isMusicPlaying = true;
+                Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                Variables.RootMusicPlayer.Play();
+                var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+                PlayButton.Background = accentBrush;
+                PopUpMusicTips();
+                
 
-                BackgroundVideo.Stop();
-                BackgroundVideo.Close();
-
-
-            }*/
+            }
         }
     }
 }

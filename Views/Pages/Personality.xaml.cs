@@ -1,6 +1,9 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
+using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -121,6 +124,29 @@ namespace MultiGameLauncher.Views.Pages
                 RestoreHead.Visibility = Visibility.Visible;
             }
 
+            for(int i = 0;i<config.MusicInfos.Count;i++)
+            {
+                var menuitem = new System.Windows.Controls.MenuItem();
+                menuitem.Header = config.MusicInfos[i].MusicShowName;
+                menuitem.Tag = config.MusicInfos[i].MusicHashCode;
+                menuitem.Click += Menuitem_Click;
+                MusicChooser.Items.Add(menuitem);
+            }
+            if(config.MusicInfos.Count == 0)
+            {
+                MusicChooser.Content = "请先添加音乐再来管理哦";
+            }
+
+        }
+
+        private void Menuitem_Click(object sender, RoutedEventArgs e)
+        {
+            if (MusicChooser.Content != ((System.Windows.Controls.MenuItem)sender).Header.ToString())
+            {
+                MusicChooser.Content = ((System.Windows.Controls.MenuItem)sender).Header.ToString();
+                MusicChooser.Tag = ((System.Windows.Controls.MenuItem)sender).Tag.ToString();
+                CostomMusicControl.Visibility = Visibility.Visible;
+            }
         }
 
         private void ChooseBackground_Click(object sender, RoutedEventArgs e)
@@ -190,6 +216,112 @@ namespace MultiGameLauncher.Views.Pages
             {
                 File.Delete(Environment.CurrentDirectory + @"\Head.png");
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.RootFrame.Navigate(new Personality());
+            }
+        }
+
+        private void OpenMusicFolder_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = $"{Environment.CurrentDirectory}\\Musics\\",
+                UseShellExecute = true
+            });
+        }
+
+        private void AddMusic_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "音频文件(*.mp3)|*.mp3",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
+            if (dialog.ShowDialog() == true)
+            {
+
+                var MusicGame = Tools.OpenInputWindow("请输入歌曲名，推荐格式：[歌曲名] - [歌手] (置空则取文件名)");
+                if (File.Exists($"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}"))
+                {
+                    File.Delete($"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
+                }
+                File.Copy(dialog.FileName, $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
+                var newmusicconfig = new MusicConfig
+                {
+                    MusicHashCode = Tools.RandomHashGenerate()
+                };
+                if (MusicGame != null)
+                {
+                    
+
+                    try
+                    {
+                        newmusicconfig.MusicShowName = MusicGame;
+                        newmusicconfig.MusicPath = $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}";
+                        config.MusicInfos.Add(newmusicconfig);
+                        Json.WriteJson(Variables.Configpath, config);
+                        /*Variables.MusicList.Clear();
+                        var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
+                        for (int i = 0; i < musicdir.Length; i++)
+                        {
+                            Variables.MusicList.Add(musicdir[i]);
+                        }*/
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"错误:{ex.Message}", "发生错误");
+                    }
+                }
+                else if(MusicGame == null)
+                {
+                    try
+                    {
+                        newmusicconfig.MusicShowName = $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}";
+                        newmusicconfig.MusicPath = $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}";
+                        config.MusicInfos.Add(newmusicconfig);
+                        Json.WriteJson(Variables.Configpath, config);
+                        /*Variables.MusicList.Clear();
+                        var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
+                        for (int i = 0; i < musicdir.Length; i++)
+                        {
+                            Variables.MusicList.Add(musicdir[i]);
+                        }*/
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"错误:{ex.Message}", "发生错误");
+                    }
+                }
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                //win.Show();
+                win.RootFrame.Navigate(new Personality());
+            }
+        }
+
+        private void DelMusic_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show($"确实要删除{MusicChooser.Content}吗?,操作不可逆！","警告",MessageBoxButton.YesNo,MessageBoxImage.Warning)==MessageBoxResult.Yes)
+            {
+                var deleteitem = MusicChooser.Tag;
+                File.Delete(config.MusicInfos[Tools.FindHashcodeinGameinfosint(config,MusicChooser.Tag.ToString())].MusicPath);
+                config.MusicInfos.RemoveAt(Tools.FindHashcodeinGameinfosint(config, MusicChooser.Tag.ToString()));
+                Json.WriteJson(Variables.Configpath, config);
+                MessageBox.Show("操作成功！","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.RootFrame.Navigate(new Personality());
+            }
+        }
+
+        private void ReNameMusic_Click(object sender, RoutedEventArgs e)
+        {
+            var newname = Tools.OpenInputWindow("请输入新音乐名");
+            if(newname != null)
+            {
+                config.MusicInfos[Tools.FindHashcodeinGameinfosint(config, MusicChooser.Tag.ToString())].MusicShowName = newname;
+                Json.WriteJson(Variables.Configpath, config);
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                //win.Show();
                 win.RootFrame.Navigate(new Personality());
             }
         }

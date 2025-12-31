@@ -25,6 +25,10 @@
                 <ui:ToggleSwitch x:Name="AutoStartWithSystem" Toggled="AutoStartWithSystem_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
+                <Label FontSize="16" Content="启动后立即播放音乐：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="PlayMusicStarted" Toggled="PlayMusicStarted_Toggled"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
                 <Label FontSize="16" Content="删除缓存：" Margin="0,0,10,0" VerticalAlignment="Center"/>
                 <Button Width="120" Content="删除缓存" Click="Button_Click_1"/>
                 <Label x:Name="CacheSizeBlock" FontSize="16" Content="缓存大小" Margin="5,0,10,0" VerticalAlignment="Center"/>
