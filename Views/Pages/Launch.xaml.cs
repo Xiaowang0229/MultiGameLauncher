@@ -1,7 +1,9 @@
 ﻿using HuaZi.Library.Json;
 using Markdig;
 using NAudio.Wave;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -24,12 +26,13 @@ namespace MultiGameLauncher.Views.Pages
         private int musicplayingindex = 0;
         private bool MusicPageUnload = false;
         private bool isMusicPlaying = false;
+        public int TabIndex = 0;
 
         public Launch()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-
+            
 
 
             Loaded += (async (s, e) =>
@@ -181,10 +184,18 @@ namespace MultiGameLauncher.Views.Pages
                 Tools.Process.Start();*/
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
-
+                BackgroundVideo.Pause();
                 Tools.StartMonitingGameStatus(RootTabControl.SelectedIndex);
+
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
                 Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+                {
+                    //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
+                    BackgroundVideo.Play();
+
+
+                }
 
                 /*var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                 proc.Start();
@@ -309,16 +320,26 @@ namespace MultiGameLauncher.Views.Pages
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
             }*/
-            if(config.MusicInfos.Count != 0 && config.PlayMusicStarted)
+            if(config.MusicInfos.Count != 0)
             {
-                var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
-                PlayButton.Background = accentBrush;
-                isMusicPlaying = true;
+
                 Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
-                Variables.RootMusicPlayer.PlaybackStopped += RootMusicPlayer_PlaybackStopped;
-                Variables.RootMusicPlayer.Play();
-                PopUpMusicTips();
+                if(config.PlayMusicStarted)
+                {
+                    var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+                    PlayButton.Background = accentBrush;
+                    isMusicPlaying = true;
+                    Variables.RootMusicPlayer.PlaybackStopped += RootMusicPlayer_PlaybackStopped;
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
             }
+
+            if(config.MusicInfos.Count == 0)
+            {
+                MusicController.Visibility = Visibility.Hidden;
+            }
+
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Visibility = Visibility.Hidden;
@@ -374,7 +395,7 @@ namespace MultiGameLauncher.Views.Pages
 
             MusicPlayTip.BeginAnimation(MarginProperty, null);
             CurrentPlayBlock.Text = $"当前播放:{config.MusicInfos[musicplayingindex].MusicShowName}";
-            MusicProgressBlock.Text = $"进度：{musicplayingindex+1}/{config.MusicInfos.Count}";
+            MusicProgressBlock.Text = $"进度：{Variables.RootMusicPlayer.PlaybackState}";
 
             var inanimation = new ThicknessAnimation
             {
@@ -403,6 +424,7 @@ namespace MultiGameLauncher.Views.Pages
 
             if (RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
             {
+                TabIndex = RootTabControl.SelectedIndex;
                 RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
                 launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
                 try
@@ -599,18 +621,15 @@ namespace MultiGameLauncher.Views.Pages
         private void MusicController_Click(object sender, RoutedEventArgs e)
         {
 
-            if(isMusicPlaying)//未播放时
+            if(isMusicPlaying)
             {
-                MusicPageUnload = true;
+                Variables.RootMusicPlayer.Pause();
                 isMusicPlaying = false;
-                Variables.RootMusicPlayer.Stop();
                 PlayButton.Background = new SolidColorBrush(System.Windows.Media.Colors.Gray);
             }
             else
             {
-                MusicPageUnload = false;
                 isMusicPlaying = true;
-                Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
                 Variables.RootMusicPlayer.Play();
                 var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
                 PlayButton.Background = accentBrush;
@@ -619,5 +638,7 @@ namespace MultiGameLauncher.Views.Pages
 
             }
         }
+
+        
     }
 }

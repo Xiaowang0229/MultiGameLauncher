@@ -1,5 +1,7 @@
-﻿using MahApps.Metro.Controls;
+﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Pages;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -154,12 +156,26 @@ namespace MultiGameLauncher
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            
+            
+
             foreach (var i in Variables.GameProcessStatus)
             {
                 if (i == true)
                 {
                     this.Hide();
                     e.Cancel = true;
+                    Page currentPage = RootFrame.Content as Page;
+                    var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                    if (currentPage is Launch launchpage)
+                    {
+                        if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                        {
+                            launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                            launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                            launchpage.BackgroundVideo.Pause();
+                        }
+                    }
                     return;
                 }
             }

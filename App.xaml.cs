@@ -19,7 +19,7 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            //RegisterGlobalExceptionHandlers();
+            RegisterGlobalExceptionHandlers();
             
             Variables.ShowVersion = Variables.Version.Substring(Variables.Version.Length - 1);
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
@@ -44,11 +44,7 @@ namespace MultiGameLauncher
             if (!Directory.Exists(Environment.CurrentDirectory + $"\\Musics"))
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Musics");
-                var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
-                for(int i = 0; i<=musicdir.Length;i++)
-                {
-                    Variables.MusicList.Add(musicdir[i]);
-                }
+                
             }
 
             for (int i = 0; i < config.GameInfos.Count; i++)
@@ -107,11 +103,13 @@ namespace MultiGameLauncher
                     config.MusicInfos = new List<MusicConfig>();
                     Json.WriteJson(Variables.Configpath, config);
                 }
+
                 if(config.PlayMusicStarted == null)
                 {
                     config.PlayMusicStarted = false;
                     Json.WriteJson(Variables.Configpath, config);
                 }
+
                 var win = new MainWindow();
                 win.Show();
                 Tools.IntializeTaskbar();

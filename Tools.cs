@@ -1,19 +1,21 @@
 ﻿global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
-
-using NAudio;
 using ControlzEx.Theming;
+using FFmpeg.AutoGen;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
 using MultiGameLauncher.Views.Windows;
+using NAudio;
+using NAudio.Wave;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -27,14 +29,13 @@ using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
-using NAudio.Wave;
 
 
 namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.0 RC3\n";
+        public readonly static string Version = "Release 1.3.0.1\n";
         public static string ShowVersion = Version.Substring(0, Version.Length - 1);
         public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
@@ -283,7 +284,17 @@ namespace MultiGameLauncher
             OpenMainWindowItem.Click += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                Page currentPage = win.RootFrame.Content as Page;
                 win.Show();
+                if (currentPage is Launch launchpage)
+                {
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                    {
+                        launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                        launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                        launchpage.BackgroundVideo.Play();
+                    }
+                }
                 win.Topmost = true;
                 win.Topmost = false;
             };
@@ -306,15 +317,36 @@ namespace MultiGameLauncher
             Variables.RootTaskBarIcon.TrayLeftMouseDown += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                Page currentPage = win.RootFrame.Content as Page;
+
+                
                 if (Variables.MainWindowHideStatus)
                 {
                     win.Show();
                     Variables.MainWindowHideStatus = false;
                     win.Topmost = true;
                     win.Topmost = false;
+                    if(currentPage is Launch launchpage)
+                    {
+                        if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                        {
+                            launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                            launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                            launchpage.BackgroundVideo.Play();
+                        }
+                    }
                 }
                 else
                 {
+                    if (currentPage is Launch launchpage)
+                    {
+                        if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                        {
+                            launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                            launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                            launchpage.BackgroundVideo.Pause();
+                        }
+                    }
                     win.Hide();
                     Variables.MainWindowHideStatus = true;
                 }
@@ -353,7 +385,6 @@ namespace MultiGameLauncher
 
 
                         Variables.GameProcess[index].Kill();
-                        StopMonitingGameStatus(index);
                         await Task.Delay(100);
                         InitializeTaskBarContentMenu();
 
@@ -390,7 +421,17 @@ namespace MultiGameLauncher
             OpenMainWindowItem.Click += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                Page currentPage = win.RootFrame.Content as Page;
                 win.Show();
+                if (currentPage is Launch launchpage)
+                {
+                    if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                    {
+                        launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                        launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                        launchpage.BackgroundVideo.Play();
+                    }
+                }
                 win.Topmost = true;
                 win.Topmost = false;
             };
@@ -429,8 +470,12 @@ namespace MultiGameLauncher
         }
         public static async Task WaitMonitingGameExitAsync(int index)
         {
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var proc = Variables.GameProcess[index];
             await proc.WaitForExitAsync();
+            var time = Variables.PlayingTimeintList[index];
+            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            toast0.Show();
         }
         public static void StopMonitingGameStatus(int index)
         {
@@ -446,11 +491,7 @@ namespace MultiGameLauncher
             Variables.PlayingTimeintList[index] = 0;
             Variables.MainWindowHideStatus = false;
             win.Show();
-            var pg = new Launch();
-            win.RootFrame.Navigate(pg);
-            pg.RootTabControl.SelectedIndex = index;
-            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
-            toast0.Show();
+            
         }
         public static string? OpenInputWindow(string Title)
         {
@@ -565,6 +606,7 @@ namespace MultiGameLauncher
 
             return type.GetProperty(propertyName, flags) != null;
         }
+        
 
 
     }
