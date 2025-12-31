@@ -215,7 +215,7 @@
     VerticalAlignment="Center"
     ToolTip="音乐播放">
                             </Border>
-                            <Label Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Label x:Name="PlayLabel" Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
                 </StackPanel>
@@ -231,10 +231,10 @@ HorizontalAlignment="Center"
 VerticalAlignment="Top"
 ToolTip="音乐播放">
                 <StackPanel Orientation="Horizontal">
-                    <Label FontFamily="Segoe MDL2 Assets" Content="" VerticalAlignment="Center" FontSize="24" Margin="10,0,5,0"/>
+                    <Label FontFamily="Segoe MDL2 Assets" Content="" VerticalAlignment="Center" FontSize="24" Margin="10,0,5,0"/>
                     <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
-                        <TextBlock x:Name="CurrentPlayBlock" Text="当前播放：Unity - TheFatRat" FontSize="14" Margin="0,0,10,0"/>
-                        <TextBlock x:Name="MusicProgressBlock" Text="总进度：9/16" FontSize="10" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="CurrentPlayBlock" Text="当前播放：控件正在初始化中，请稍候……" FontSize="14" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="MusicProgressBlock" Text="进度：控件正在初始化中，请稍候……" FontSize="10" Margin="0,0,10,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

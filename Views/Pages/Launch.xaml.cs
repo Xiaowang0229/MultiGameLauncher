@@ -4,6 +4,7 @@ using NAudio.Wave;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -20,19 +21,21 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Launch : Page
     {
         private List<StackPanel> animationSP = new();
-        private CancellationTokenSource _animationCts;
+        private AudioFileReader Audio;
+        private bool _isTipAnimating = false;
         private MainConfig config;
         private LaunchConfig launchConfig;
         private int musicplayingindex = 0;
         private bool MusicPageUnload = false;
         private bool isMusicPlaying = false;
         public int TabIndex = 0;
+        public DispatcherTimer musicupdater = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(750) };
 
         public Launch()
         {
             InitializeComponent();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            
+            musicupdater.Tick += Musicupdater_Tick;
 
 
             Loaded += (async (s, e) =>
@@ -90,9 +93,20 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
+        private void Musicupdater_Tick(object? sender, EventArgs e)
+        {
+            if (Audio == null) return;
 
+            // 总时长（始终不变）
+            string totalTime = Audio.TotalTime.ToString(@"mm\:ss");
 
+            // 当前进度
+            string currentTime = Audio.CurrentTime.ToString(@"mm\:ss");
 
+            // 更新你的两个 TextBlock
+            CurrentPlayBlock.Text = $"当前播放：{config.MusicInfos[musicplayingindex].MusicShowName}";
+            MusicProgressBlock.Text = $"{currentTime} / {totalTime}";  // 就是 xx:xx / xx:xx
+        }
 
         private async void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
@@ -322,15 +336,17 @@ namespace MultiGameLauncher.Views.Pages
             }*/
             if(config.MusicInfos.Count != 0)
             {
-
-                Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                Variables.RootMusicPlayer.Init(Audio);
                 if(config.PlayMusicStarted)
                 {
                     var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
                     PlayButton.Background = accentBrush;
+                    PlayLabel.Content = "";
                     isMusicPlaying = true;
                     Variables.RootMusicPlayer.PlaybackStopped += RootMusicPlayer_PlaybackStopped;
                     Variables.RootMusicPlayer.Play();
+                    musicupdater.Start();
                     PopUpMusicTips();
                 }
             }
@@ -371,14 +387,16 @@ namespace MultiGameLauncher.Views.Pages
                 musicplayingindex += 1;
                 if (musicplayingindex <= config.MusicInfos.Count-1)
                 {
-                    Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                    Variables.RootMusicPlayer.Init(Audio);
                     Variables.RootMusicPlayer.Play();
                     PopUpMusicTips();
                 }
                 else
                 {
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
                     musicplayingindex = 0;
-                    Variables.RootMusicPlayer.Init(new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath));
+                    Variables.RootMusicPlayer.Init(Audio);
                     Variables.RootMusicPlayer.Play();
                     PopUpMusicTips();
                 }
@@ -389,34 +407,55 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        private async void PopUpMusicTips()
+        private async void PopUpMusicTips()  // 或 Task，根据你原来调用方式
         {
-            
+            // 如果正在动画中，直接返回（防止重复触发导致紊乱）
+            if (_isTipAnimating) return;
 
-            MusicPlayTip.BeginAnimation(MarginProperty, null);
-            CurrentPlayBlock.Text = $"当前播放:{config.MusicInfos[musicplayingindex].MusicShowName}";
-            MusicProgressBlock.Text = $"进度：{Variables.RootMusicPlayer.PlaybackState}";
+            _isTipAnimating = true;
+
+            // 确保从正确初始位置开始
+            MusicPlayTip.Margin = new Thickness(0, -50, 0, 0);
+            MusicPlayTip.Visibility = Visibility.Visible;
 
             var inanimation = new ThicknessAnimation
             {
-                From = new Thickness(0,-50,0,0),
+                From = new Thickness(0, -50, 0, 0),
                 To = new Thickness(0, 10, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(500),
                 EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseIn }
             };
+
             var outanimation = new ThicknessAnimation
             {
-                
                 From = new Thickness(0, 10, 0, 0),
                 To = new Thickness(0, -50, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(500),
                 EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
             };
-            MusicPlayTip.BeginAnimation(MarginProperty, null);
-            MusicPlayTip.BeginAnimation(MarginProperty, inanimation);
-            await Task.Delay(TimeSpan.FromSeconds(3));
-            MusicPlayTip.BeginAnimation(MarginProperty, null);
-            MusicPlayTip.BeginAnimation(MarginProperty, outanimation);
+
+            string totalTime = Audio.TotalTime.ToString(@"mm\:ss");
+
+            // 当前进度
+            string currentTime = Audio.CurrentTime.ToString(@"mm\:ss");
+
+            // 更新你的两个 TextBlock
+            CurrentPlayBlock.Text = $"当前播放：{config.MusicInfos[musicplayingindex].MusicShowName}";
+            MusicProgressBlock.Text = $"{currentTime} / {totalTime}";  // 就是 xx:xx / xx:xx
+
+            // 滑入（关键：使用 Compose 平滑接管可能残留的旧动画）
+            MusicPlayTip.BeginAnimation(MarginProperty, inanimation, HandoffBehavior.Compose);
+
+            await Task.Delay(TimeSpan.FromSeconds(3) + TimeSpan.FromMilliseconds(500));  // 等待显示3秒 + 滑入时间
+
+            // 滑出
+            outanimation.Completed += (s, e) =>
+            {
+                MusicPlayTip.Visibility = Visibility.Collapsed;
+                _isTipAnimating = false;  // 动画完全结束后才允许下一次显示
+            };
+
+            MusicPlayTip.BeginAnimation(MarginProperty, outanimation, HandoffBehavior.Compose);
         }
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
@@ -615,6 +654,7 @@ namespace MultiGameLauncher.Views.Pages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             MusicPageUnload = true;
+            musicupdater.Stop();
             Variables.RootMusicPlayer.Stop();
         }
 
@@ -623,16 +663,21 @@ namespace MultiGameLauncher.Views.Pages
 
             if(isMusicPlaying)
             {
+                
                 Variables.RootMusicPlayer.Pause();
                 isMusicPlaying = false;
                 PlayButton.Background = new SolidColorBrush(System.Windows.Media.Colors.Gray);
+                PlayLabel.Content = "";
+                musicupdater.Stop();
             }
             else
             {
                 isMusicPlaying = true;
                 Variables.RootMusicPlayer.Play();
                 var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+                PlayLabel.Content = "";
                 PlayButton.Background = accentBrush;
+                musicupdater.Start();
                 PopUpMusicTips();
                 
 
