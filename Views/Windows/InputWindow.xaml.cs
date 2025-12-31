@@ -18,9 +18,15 @@ namespace MultiGameLauncher.Views.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if(!string.IsNullOrEmpty(InputBox.Text))
             {
                 Results = InputBox.Text;
+                this.DialogResult = true;
+                this.Close();
+            }
+            else
+            {
+                Results = null;
                 this.DialogResult = true;
                 this.Close();
             }

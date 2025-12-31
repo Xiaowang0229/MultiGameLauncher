@@ -93,7 +93,7 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        private void Musicupdater_Tick(object? sender, EventArgs e)
+        private async void Musicupdater_Tick(object? sender, EventArgs e)
         {
             if (Audio == null) return;
 
@@ -106,6 +106,12 @@ namespace MultiGameLauncher.Views.Pages
             // 更新你的两个 TextBlock
             CurrentPlayBlock.Text = $"当前播放：{config.MusicInfos[musicplayingindex].MusicShowName}";
             MusicProgressBlock.Text = $"{currentTime} / {totalTime}";  // 就是 xx:xx / xx:xx
+
+            if(totalTime == currentTime)
+            {
+                await Task.Delay(500);
+                PlayStopped();
+            }
         }
 
         private async void SettingsTile_Click(object sender, RoutedEventArgs e)
@@ -382,11 +388,12 @@ namespace MultiGameLauncher.Views.Pages
 
         private void RootMusicPlayer_PlaybackStopped(object? sender, StoppedEventArgs e)
         {
-            if(MusicPageUnload != true)
+            if (MusicPageUnload != true)
             {
                 musicplayingindex += 1;
-                if (musicplayingindex <= config.MusicInfos.Count-1)
+                if (musicplayingindex <= config.MusicInfos.Count - 1)
                 {
+                    Variables.RootMusicPlayer.Dispose();
                     Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
                     Variables.RootMusicPlayer.Init(Audio);
                     Variables.RootMusicPlayer.Play();
@@ -394,14 +401,44 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 else
                 {
-                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
                     musicplayingindex = 0;
+                    Variables.RootMusicPlayer.Dispose();
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
                     Variables.RootMusicPlayer.Init(Audio);
                     Variables.RootMusicPlayer.Play();
                     PopUpMusicTips();
                 }
             }
-            if(MusicPageUnload == true)
+            if (MusicPageUnload == true)
+            {
+                Variables.RootMusicPlayer.Dispose();
+            }
+        }
+
+        private void PlayStopped()
+        {
+            if (MusicPageUnload != true)
+            {
+                musicplayingindex += 1;
+                if (musicplayingindex <= config.MusicInfos.Count - 1)
+                {
+                    Variables.RootMusicPlayer.Dispose();
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                    Variables.RootMusicPlayer.Init(Audio);
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
+                else
+                {
+                    musicplayingindex = 0;
+                    Variables.RootMusicPlayer.Dispose();
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                    Variables.RootMusicPlayer.Init(Audio);
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
+            }
+            if (MusicPageUnload == true)
             {
                 Variables.RootMusicPlayer.Dispose();
             }

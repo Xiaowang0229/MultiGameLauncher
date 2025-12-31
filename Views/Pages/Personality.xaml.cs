@@ -134,7 +134,7 @@ namespace MultiGameLauncher.Views.Pages
             }
             if(config.MusicInfos.Count == 0)
             {
-                MusicChooser.Content = "请先添加音乐再来管理哦";
+                
             }
 
         }
@@ -251,7 +251,7 @@ namespace MultiGameLauncher.Views.Pages
                 {
                     MusicHashCode = Tools.RandomHashGenerate()
                 };
-                if (MusicGame != null)
+                if (!string.IsNullOrEmpty(MusicGame))
                 {
                     
 
@@ -273,11 +273,11 @@ namespace MultiGameLauncher.Views.Pages
                         MessageBox.Show($"错误:{ex.Message}", "发生错误");
                     }
                 }
-                else if(MusicGame == null)
+                else
                 {
                     try
                     {
-                        newmusicconfig.MusicShowName = $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}";
+                        newmusicconfig.MusicShowName = $"{Path.GetFileNameWithoutExtension($"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}")}";
                         newmusicconfig.MusicPath = $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}";
                         config.MusicInfos.Add(newmusicconfig);
                         Json.WriteJson(Variables.Configpath, config);
@@ -316,7 +316,7 @@ namespace MultiGameLauncher.Views.Pages
         private void ReNameMusic_Click(object sender, RoutedEventArgs e)
         {
             var newname = Tools.OpenInputWindow("请输入新音乐名");
-            if(newname != null)
+            if(!string.IsNullOrEmpty(newname))
             {
                 config.MusicInfos[Tools.FindHashcodeinGameinfosint(config, MusicChooser.Tag.ToString())].MusicShowName = newname;
                 Json.WriteJson(Variables.Configpath, config);

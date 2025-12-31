@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.0.1\n";
+        public readonly static string Version = "Release 1.3.1.1\n";
         public static string ShowVersion = Version.Substring(0, Version.Length - 1);
         public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
@@ -500,7 +500,10 @@ namespace MultiGameLauncher
             {
                 return win.Results;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
         public static void ExtractExeIconToPng(string exePath, string pngPath)
         {
