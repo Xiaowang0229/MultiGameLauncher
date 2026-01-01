@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public class Variables //变量集
     {
-        public readonly static string Version = "Release 1.3.1.1\n";
+        public readonly static string Version = "Release 1.3.2.0\n";
         public static string ShowVersion = Version.Substring(0, Version.Length - 1);
         public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
@@ -473,16 +473,17 @@ namespace MultiGameLauncher
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var proc = Variables.GameProcess[index];
             await proc.WaitForExitAsync();
-            var time = Variables.PlayingTimeintList[index];
-            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
-            toast0.Show();
+            StopMonitingGameStatus(index);
+            
         }
-        public static void StopMonitingGameStatus(int index)
+        private static void StopMonitingGameStatus(int index)
         {
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
+            var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            toast0.Show();
             config.GameInfos[index].GamePlayedMinutes += time;
             Json.WriteJson(Variables.Configpath, config);
 
@@ -490,8 +491,20 @@ namespace MultiGameLauncher
             Variables.GameProcessStatus[index] = false;
             Variables.PlayingTimeintList[index] = 0;
             Variables.MainWindowHideStatus = false;
+            Page currentPage = win.RootFrame.Content as Page;
             win.Show();
-            
+            if (currentPage is Launch launchpage)
+            {
+                if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
+                {
+                    launchpage.BackgroundImage.Visibility = Visibility.Hidden;
+                    launchpage.BackgroundVideo.Visibility = Visibility.Visible;
+                    launchpage.BackgroundVideo.Play();
+                }
+            }
+            win.Topmost = true;
+            win.Topmost = false;
+
         }
         public static string? OpenInputWindow(string Title)
         {
@@ -588,26 +601,6 @@ namespace MultiGameLauncher
                 // 递归处理子控件
                 RefreshAllImageCaches(child);
             }
-        }
-        public static bool HasProperty(this object obj, string propertyName, bool ignoreCase = true)
-        {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            if (string.IsNullOrWhiteSpace(propertyName)) return false;
-
-            // 场景1：ExpandoObject 或其他实现 IDictionary<string, object> 的动态对象（如 Json 动态反序列化）
-            if (obj is IDictionary<string, object> dict)
-            {
-                return ignoreCase
-                    ? dict.Keys.Any(k => k.Equals(propertyName, StringComparison.OrdinalIgnoreCase))
-                    : dict.ContainsKey(propertyName);
-            }
-
-            // 场景2：普通对象，使用反射查找公共实例属性
-            var type = obj.GetType();
-            var flags = BindingFlags.Public | BindingFlags.Instance;
-            if (ignoreCase) flags |= BindingFlags.IgnoreCase;
-
-            return type.GetProperty(propertyName, flags) != null;
         }
         
 

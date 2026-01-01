@@ -208,7 +208,7 @@ namespace MultiGameLauncher.Views.Pages
                 Tools.StartMonitingGameStatus(RootTabControl.SelectedIndex);
 
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-                Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
+                
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
                 {
                     //BackgroundVideo.Source = new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4");
@@ -367,7 +367,6 @@ namespace MultiGameLauncher.Views.Pages
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-                Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
                 LaunchTile.Visibility = Visibility.Visible;
                 StopTile.Visibility = Visibility.Hidden;
             }
@@ -620,7 +619,6 @@ namespace MultiGameLauncher.Views.Pages
                     LaunchTile.Visibility = Visibility.Hidden;
                     StopTile.Visibility = Visibility.Visible;
                     await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-                    Tools.StopMonitingGameStatus(RootTabControl.SelectedIndex);
                     LaunchTile.Visibility = Visibility.Visible;
                     StopTile.Visibility = Visibility.Hidden;
                 }
