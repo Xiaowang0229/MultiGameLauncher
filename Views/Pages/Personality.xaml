@@ -108,6 +108,30 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
+                <Label Content="设置闹钟:" FontSize="16" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="SetAlarm" Margin="10" Width="120" Click="SetAlarm_Click" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock FontFamily="Microsoft YaHei UI" Text="设置闹钟"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <StackPanel x:Name="AlarmStackPanel" Orientation="Horizontal" Visibility="Hidden">
+                    <Label x:Name="AlarmMode" Content="闹钟模式：" VerticalAlignment="Center"/>
+                    <Label x:Name="AlarmContent" Content="闹钟信息" VerticalAlignment="Center"/>
+                    
+                    <Button x:Name="DisableAlarm" Margin="10" Width="120" Click="DisableAlarm_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Margin="2">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock FontFamily="Microsoft YaHei UI" Text="停止闹钟"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>

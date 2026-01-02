@@ -137,6 +137,21 @@ namespace MultiGameLauncher.Views.Pages
                 
             }
 
+            if(Variables.UsingRealTimeAlarm != null)
+            {
+                AlarmStackPanel.Visibility = Visibility.Visible;
+                if(Variables.UsingRealTimeAlarm == true)
+                {
+                    AlarmMode.Content = "真实时间模式：";
+                    AlarmContent.Content = Variables.AlarmRealTime;
+                }
+                if (Variables.UsingRealTimeAlarm != true)
+                {
+                    AlarmMode.Content = "倒计时模式：";
+                    AlarmContent.Content = Variables.AlarmTime.TotalMinutes.ToString() + "分钟";
+                }
+            }
+
         }
 
         private void Menuitem_Click(object sender, RoutedEventArgs e)
@@ -322,6 +337,30 @@ namespace MultiGameLauncher.Views.Pages
                 Json.WriteJson(Variables.Configpath, config);
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 //win.Show();
+                win.RootFrame.Navigate(new Personality());
+            }
+        }
+
+        private void SetAlarm_Click(object sender, RoutedEventArgs e)
+        {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new AlarmPage());
+        }
+
+        private void DisableAlarm_Click(object sender, RoutedEventArgs e)
+        {
+            if(Variables.UsingRealTimeAlarm == true)
+            {
+                Variables.RealTimeAlarm.Stop();
+                Variables.UsingRealTimeAlarm = null;
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.RootFrame.Navigate(new Personality());
+            }
+            else
+            {
+                Variables.AlarmCTS.Cancel();
+                Variables.UsingRealTimeAlarm = null;
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Personality());
             }
         }

@@ -46,6 +46,10 @@ namespace MultiGameLauncher
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Musics");
                 
             }
+            if(!File.Exists($"{Environment.CurrentDirectory}\\Alarm.png"))
+            {
+                Tools.ConvertToPngAndSave(ApplicationResources.Alarm, $"{Environment.CurrentDirectory}\\Alarm.png");
+            }
 
             for (int i = 0; i < config.GameInfos.Count; i++)
             {
@@ -113,7 +117,9 @@ namespace MultiGameLauncher
                 var win = new MainWindow();
                 win.Show();
                 Tools.IntializeTaskbar();
-                
+                Variables.RealTimeAlarm.Interval = TimeSpan.FromSeconds(1);
+                Variables.RealTimeAlarm.Tick += Tools.AlarmTick;
+                Variables.RealTimeAlarm.Start();
                 
                 /*if( config.MusicInfos)
                 {

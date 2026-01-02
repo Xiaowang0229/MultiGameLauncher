@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -30,6 +31,7 @@ namespace MultiGameLauncher.Views.Pages
         private bool isMusicPlaying = false;
         public int TabIndex = 0;
         public DispatcherTimer musicupdater = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(750) };
+        private bool MusicLoop = false;
 
         public Launch()
         {
@@ -296,11 +298,15 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             LaunchTile.Tag = launchConfig.Launchpath;
+            ChangeGameBlockText(config.GameInfos[0].ShowName);
 
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Visibility = Visibility.Hidden;
                 StopTile.Visibility = Visibility.Visible;
+                await Tools.WaitMonitingGameExitAsync(0);
+                LaunchTile.Visibility = Visibility.Visible;
+                StopTile.Visibility = Visibility.Hidden;
             }
 
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
@@ -346,6 +352,15 @@ namespace MultiGameLauncher.Views.Pages
                 Variables.RootMusicPlayer.Init(Audio);
                 if(config.PlayMusicStarted)
                 {
+                    PlayingControls.Visibility = Visibility.Visible;
+                    var inanimation = new ThicknessAnimation
+                    {
+                        From = new Thickness(0, 0, 2000, 0),
+                        To = new Thickness(0, 0, 0, 0),
+                        Duration = TimeSpan.FromMilliseconds(500),
+                        EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                    };
+                    PlayingControls.BeginAnimation(MarginProperty, inanimation);
                     var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
                     PlayButton.Background = accentBrush;
                     PlayLabel.Content = "";
@@ -381,7 +396,7 @@ namespace MultiGameLauncher.Views.Pages
 
             // 将 FlowDocument 设置到 XAML 中的控件（假设你的 XAML 有名为 viewer 的 FlowDocumentScrollViewer）
             LogText.Document = document;
-
+            ChangeGameBlockText(launchConfig.ShowName);
 
         }
 
@@ -389,8 +404,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (MusicPageUnload != true)
             {
-                musicplayingindex += 1;
-                if (musicplayingindex <= config.MusicInfos.Count - 1)
+                if(MusicLoop)
                 {
                     Variables.RootMusicPlayer.Dispose();
                     Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
@@ -398,14 +412,26 @@ namespace MultiGameLauncher.Views.Pages
                     Variables.RootMusicPlayer.Play();
                     PopUpMusicTips();
                 }
-                else
+                else if(MusicLoop != true)
                 {
-                    musicplayingindex = 0;
-                    Variables.RootMusicPlayer.Dispose();
-                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
-                    Variables.RootMusicPlayer.Init(Audio);
-                    Variables.RootMusicPlayer.Play();
-                    PopUpMusicTips();
+                    musicplayingindex += 1;
+                    if (musicplayingindex <= config.MusicInfos.Count - 1)
+                    {
+                        Variables.RootMusicPlayer.Dispose();
+                        Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                        Variables.RootMusicPlayer.Init(Audio);
+                        Variables.RootMusicPlayer.Play();
+                        PopUpMusicTips();
+                    }
+                    else
+                    {
+                        musicplayingindex = 0;
+                        Variables.RootMusicPlayer.Dispose();
+                        Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                        Variables.RootMusicPlayer.Init(Audio);
+                        Variables.RootMusicPlayer.Play();
+                        PopUpMusicTips();
+                    }
                 }
             }
             if (MusicPageUnload == true)
@@ -418,24 +444,28 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (MusicPageUnload != true)
             {
-                musicplayingindex += 1;
-                if (musicplayingindex <= config.MusicInfos.Count - 1)
-                {
-                    Variables.RootMusicPlayer.Dispose();
-                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
-                    Variables.RootMusicPlayer.Init(Audio);
-                    Variables.RootMusicPlayer.Play();
-                    PopUpMusicTips();
-                }
-                else
-                {
-                    musicplayingindex = 0;
-                    Variables.RootMusicPlayer.Dispose();
-                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
-                    Variables.RootMusicPlayer.Init(Audio);
-                    Variables.RootMusicPlayer.Play();
-                    PopUpMusicTips();
-                }
+                
+                
+                    
+                    musicplayingindex += 1;
+                    if (musicplayingindex <= config.MusicInfos.Count - 1)
+                    {
+                        Variables.RootMusicPlayer.Dispose();
+                        Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                        Variables.RootMusicPlayer.Init(Audio);
+                        Variables.RootMusicPlayer.Play();
+                        PopUpMusicTips();
+                    }
+                    else
+                    {
+                        musicplayingindex = 0;
+                        Variables.RootMusicPlayer.Dispose();
+                        Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                        Variables.RootMusicPlayer.Init(Audio);
+                        Variables.RootMusicPlayer.Play();
+                        PopUpMusicTips();
+                    }
+                
             }
             if (MusicPageUnload == true)
             {
@@ -584,6 +614,7 @@ namespace MultiGameLauncher.Views.Pages
                 MainTitle.Text = launchConfig.MainTitle;
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
                 MainTitle.Foreground = launchConfig.MainTitleFontColor;
+                ChangeGameBlockText(launchConfig.ShowName);
                 LaunchTile.Tag = launchConfig.Launchpath;
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
                 {
@@ -693,12 +724,21 @@ namespace MultiGameLauncher.Views.Pages
             Variables.RootMusicPlayer.Stop();
         }
 
-        private void MusicController_Click(object sender, RoutedEventArgs e)
+        private async void MusicController_Click(object sender, RoutedEventArgs e)
         {
 
             if(isMusicPlaying)
             {
-                
+                var outanimation = new ThicknessAnimation
+                {
+                    From = new Thickness(0,0,0,0),
+                    To = new Thickness(0, 0, -100, 0),
+                    Duration = TimeSpan.FromMilliseconds(100),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                };
+                PlayingControls.BeginAnimation(MarginProperty,outanimation);
+                await Task.Delay(150);
+                PlayingControls.Visibility = Visibility.Hidden;
                 Variables.RootMusicPlayer.Pause();
                 isMusicPlaying = false;
                 PlayButton.Background = new SolidColorBrush(System.Windows.Media.Colors.Gray);
@@ -707,6 +747,16 @@ namespace MultiGameLauncher.Views.Pages
             }
             else
             {
+                
+                PlayingControls.Visibility = Visibility.Visible;
+                var inanimation = new ThicknessAnimation
+                {
+                    From = new Thickness(0, 0, 2000, 0),
+                    To = new Thickness(0, 0, 0, 0),
+                    Duration = TimeSpan.FromMilliseconds(500),
+                    EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseInOut }
+                };
+                PlayingControls.BeginAnimation(MarginProperty, inanimation);
                 isMusicPlaying = true;
                 Variables.RootMusicPlayer.Play();
                 var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
@@ -719,6 +769,53 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        
+        private void ChangeGameBlockText(string gamename)
+        {
+            CurrentGameStart.Text = "当前游戏：" + gamename;
+            CurrentGameStop.Text = "当前游戏：" + gamename;
+        }
+
+        private async void ReplayController_Click(object sender, RoutedEventArgs e)
+        {
+
+            PlayStopped();
+            ReplayBorderChangeColor();
+
+        }
+
+        private async void ReplayBorderChangeColor()
+        {
+            var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+            ReplayBorder.Background = accentBrush;
+            await Task.Delay(100);
+            ReplayBorder.Background = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void LoopController_Click(object sender, RoutedEventArgs e)
+        {
+            if(MusicLoop)
+            {
+                MusicLoop = false;
+                LoopBorder.Background = new SolidColorBrush(Colors.Gray);
+            }
+            else
+            {
+                MusicLoop = true;
+                var accentBrush = this.TryFindResource("MahApps.Brushes.Accent") as SolidColorBrush;
+                LoopBorder.Background = accentBrush;
+            }
+        }
+
+
+
+        private void ReplayController_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void ReplayController_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ReplayBorder.Background = new SolidColorBrush(Colors.Gray);
+        }
     }
 }

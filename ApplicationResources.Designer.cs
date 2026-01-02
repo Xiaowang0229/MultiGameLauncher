@@ -63,6 +63,16 @@ namespace MultiGameLauncher {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        public static byte[] Alarm {
+            get {
+                object obj = ResourceManager.GetObject("Alarm", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         public static byte[] ApplicationIcon {
             get {
                 object obj = ResourceManager.GetObject("ApplicationIcon", resourceCulture);

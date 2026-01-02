@@ -85,6 +85,7 @@
 
         <ffme:MediaElement LoopingBehavior="Play"  Visibility="Hidden" x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" MediaOpened="BackgroundVideo_MediaOpened" />
         <Image x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Rectangle Fill="White" Opacity="0.25" />
         <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="0,0,0,650" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <StackPanel Background="{DynamicResource MahApps.Brushes.Accent}" Orientation="Horizontal" HorizontalAlignment="Right" Width="1200" Margin="0,580,0,0" >
             <Border Margin="10,10,10,10"
@@ -121,14 +122,38 @@
 
             <Label x:Name="Welcome" FontSize="22" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
         </StackPanel>
-        <ui:Tile x:Name="StopTile" Title="终止进程" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="#FFC83E3E" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="Stop_Click" Visibility="Hidden">
-            <iconPacks:PackIconModern Width="40" Height="40" Kind="Stop" />
-        </ui:Tile>
-        <ui:Tile x:Name="LaunchTile" Title="启动游戏" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Background="Green" HorizontalTitleAlignment="Right" Height="95" Width="250" Margin="950,580,0,0" Click="LaunchTile_Click">
-            <StackPanel>
-                <iconPacks:PackIconModern Width="40" Height="40" Kind="ControlPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            </StackPanel>
-        </ui:Tile>
+        <Button x:Name="StopTile"  ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"   Height="95" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Stop_Click" Visibility="Hidden" Background="{x:Null}" BorderBrush="{x:Null}" MinWidth="220">
+            <Border
+Height="80"
+CornerRadius="10"
+Background="{DynamicResource MahApps.Brushes.Dialog.Background.Accent}"
+HorizontalAlignment="Center"
+VerticalAlignment="Top" Margin="0,0,0,5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" FontWeight="Bold" Margin="40,10,10,10" VerticalAlignment="Center"/>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,40,10">
+                        <TextBlock Text="结束游戏" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock x:Name="CurrentGameStart" Text="当前游戏：xxxx" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Button>
+        <Button x:Name="LaunchTile" HorizontalAlignment="Right" VerticalAlignment="Bottom" ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" Click="LaunchTile_Click" BorderBrush="{x:Null}" Background="{x:Null}" MinWidth="220">
+            <Border
+Height="80"
+CornerRadius="10"
+Background="{DynamicResource MahApps.Brushes.Dialog.Background.Accent}"
+HorizontalAlignment="Center"
+VerticalAlignment="Top" Margin="0,0,0,5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" FontWeight="Bold" Margin="40,10,10,10" VerticalAlignment="Center"/>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,40,10">
+                        <TextBlock Text="启动游戏" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock x:Name="CurrentGameStop" Text="当前游戏：xxxx" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Button>
         <StackPanel x:Name="sp_ani">
 
 
@@ -202,23 +227,58 @@
                 </StackPanel>
 
 
-                <StackPanel VerticalAlignment="Bottom" Width="405">
-                    <Button x:Name="MusicController" FontWeight="Bold" HorizontalAlignment="Right" Click="MusicController_Click" Background="{x:Null}" BorderBrush="{x:Null}" >
+                <StackPanel VerticalAlignment="Bottom" Width="405" >
+                    
+                    <StackPanel x:Name="PlayingControls" Visibility="Hidden">
+                        <Button x:Name="LoopController" FontWeight="Bold" HorizontalAlignment="Right"  Background="{x:Null}" BorderBrush="{x:Null}" Click="LoopController_Click" >
+                            <Grid>
+                                <Border
+                                    x:Name="LoopBorder"
+Width="30"
+Height="30"
+CornerRadius="15"
+Background="Gray"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+ToolTip="音乐播放">
+                                </Border>
+                                <Label  Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label  Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="ReplayController" FontWeight="Bold" HorizontalAlignment="Right"  Background="{x:Null}" BorderBrush="{x:Null}" Click="ReplayController_Click" >
+                            <Grid>
+                                <Border x:Name="ReplayBorder"
+
+Width="30"
+Height="30"
+CornerRadius="15"
+Background="Gray"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+ToolTip="音乐播放"/>
+                                <Label  Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="MusicController" FontWeight="Bold" HorizontalAlignment="Right" Click="MusicController_Click" Background="{x:Null}" BorderBrush="{x:Null}"  >
                         <Grid>
                             <Border
-    x:Name="PlayButton"
-    Width="30"
-    Height="30"
-    CornerRadius="15"
-    Background="Gray"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
-    ToolTip="音乐播放">
+x:Name="PlayButton"
+Width="30"
+Height="30"
+CornerRadius="15"
+Background="Gray"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+ToolTip="音乐播放">
                             </Border>
                             <Label x:Name="PlayLabel" Content="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
                 </StackPanel>
+                
+                    
             </StackPanel>
 
         </StackPanel>
