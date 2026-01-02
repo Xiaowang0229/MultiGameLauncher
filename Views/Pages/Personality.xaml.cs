@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using Color = System.Windows.Media.Color;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 
 
 namespace MultiGameLauncher.Views.Pages
@@ -319,8 +320,8 @@ namespace MultiGameLauncher.Views.Pages
             if(MessageBox.Show($"确实要删除{MusicChooser.Content}吗?,操作不可逆！","警告",MessageBoxButton.YesNo,MessageBoxImage.Warning)==MessageBoxResult.Yes)
             {
                 var deleteitem = MusicChooser.Tag;
-                File.Delete(config.MusicInfos[Tools.FindHashcodeinGameinfosint(config,MusicChooser.Tag.ToString())].MusicPath);
-                config.MusicInfos.RemoveAt(Tools.FindHashcodeinGameinfosint(config, MusicChooser.Tag.ToString()));
+                File.Delete(config.MusicInfos[Tools.FindHashcodeinMusicinfosint(config,MusicChooser.Tag.ToString())].MusicPath);
+                config.MusicInfos.RemoveAt(Tools.FindHashcodeinMusicinfosint(config, MusicChooser.Tag.ToString()));
                 Json.WriteJson(Variables.Configpath, config);
                 MessageBox.Show("操作成功！","提示",MessageBoxButton.OK,MessageBoxImage.Information);
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();

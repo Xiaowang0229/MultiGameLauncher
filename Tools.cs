@@ -37,7 +37,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "Release 1.4.1.0\n";
+        public readonly static string Version = "Release 1.4.1.1\n";
         public static string ShowVersion = Version.Substring(0, Version.Length - 1);
         public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
@@ -254,6 +254,18 @@ namespace MultiGameLauncher
             for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 if (config.GameInfos[i].HashCode == hashcode)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public static int FindHashcodeinMusicinfosint(MainConfig config, string hashcode)
+        {
+            for (int i = 0; i < config.MusicInfos.Count; i++)
+            {
+                if (config.MusicInfos[i].MusicHashCode == hashcode)
                 {
                     return i;
                 }

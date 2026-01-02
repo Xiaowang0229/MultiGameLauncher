@@ -444,9 +444,16 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (MusicPageUnload != true)
             {
-                
-                
-                    
+                if (MusicLoop)
+                {
+                    Variables.RootMusicPlayer.Dispose();
+                    Audio = new AudioFileReader(config.MusicInfos[musicplayingindex].MusicPath);
+                    Variables.RootMusicPlayer.Init(Audio);
+                    Variables.RootMusicPlayer.Play();
+                    PopUpMusicTips();
+                }
+                else if (MusicLoop != true)
+                {
                     musicplayingindex += 1;
                     if (musicplayingindex <= config.MusicInfos.Count - 1)
                     {
@@ -465,7 +472,7 @@ namespace MultiGameLauncher.Views.Pages
                         Variables.RootMusicPlayer.Play();
                         PopUpMusicTips();
                     }
-                
+                }
             }
             if (MusicPageUnload == true)
             {
