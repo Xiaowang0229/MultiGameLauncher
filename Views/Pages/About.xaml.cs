@@ -22,7 +22,7 @@ namespace MultiGameLauncher.Views.Pages
         {
             InitializeComponent();
             IsCheckUpdate = isCheckUpdate;
-            VersionBlock.Content = "\n当前版本:" + Variables.Version;
+            VersionBlock.Content = "当前版本:" + Variables.Version;
             Loaded += (async (s, e) =>
             {
                 try
@@ -81,41 +81,10 @@ namespace MultiGameLauncher.Views.Pages
             if (IsCheckUpdate)
             {
                 CheckupdateButton.IsEnabled = false;
-                try
-                {
-                    CheckProgress.Visibility = Visibility.Visible;
-                    using var client = new HttpClient();
-                    client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                    var content = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
-                    if (content == Variables.Version)
-                    {
-                        CheckProgress.Visibility = Visibility.Hidden;
-                        MessageBox.Show("当前版本已是最新版本", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                        CheckupdateButton.IsEnabled = true;
-                    }
-                    else
-                    {
-
-
-                        using var log = new HttpClient();
-                        log.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                        var Onlinelog = await log.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLog");
-                        using var link = new HttpClient();
-                        client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                        var OnlineLink = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLink");
-                        CheckProgress.Visibility = Visibility.Hidden;
-                        CheckupdateButton.IsEnabled = true;
-                        MetroWindow win = new UpdatePrepareWindow(Variables.Version, content, Onlinelog, OnlineLink);
-                        win.ShowDialog();
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"检查更新时遇到错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
-                    CheckProgress.Visibility = Visibility.Hidden;
-                    CheckupdateButton.IsEnabled = true;
-                }
+                CheckProgress.Visibility = Visibility.Visible;
+                await Tools.CheckUpdate();
+                CheckProgress.Visibility = Visibility.Hidden;
+                CheckupdateButton.IsEnabled = true;
             }
         }
 
@@ -152,41 +121,11 @@ namespace MultiGameLauncher.Views.Pages
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             CheckupdateButton.IsEnabled = false;
-            try
-            {
-                CheckProgress.Visibility = Visibility.Visible;
-                using var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                var content = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestVersion");
-                if (content == Variables.Version)
-                {
-                    CheckProgress.Visibility = Visibility.Hidden;
-                    MessageBox.Show("当前版本已是最新版本", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CheckupdateButton.IsEnabled = true;
-                }
-                else
-                {
+            CheckProgress.Visibility = Visibility.Visible;
+            await Tools.CheckUpdate(true,true);
+            CheckProgress.Visibility = Visibility.Hidden;
+            CheckupdateButton.IsEnabled = true;
 
-
-                    using var log = new HttpClient();
-                    log.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                    var Onlinelog = await log.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLog");
-                    using var link = new HttpClient();
-                    client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                    var OnlineLink = await client.GetStringAsync("https://raw.bgithub.xyz/Xiaowang0229/UpdateService/refs/heads/main/MultiGameLauncher/LatestLink");
-                    CheckProgress.Visibility = Visibility.Hidden;
-                    CheckupdateButton.IsEnabled = true;
-                    MetroWindow win = new UpdatePrepareWindow(Variables.Version, content, Onlinelog, OnlineLink);
-                    win.ShowDialog();
-
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"检查更新时遇到错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
-                CheckProgress.Visibility = Visibility.Hidden;
-                CheckupdateButton.IsEnabled = true;
-            }
             //MessageBox.Show(content);
 
 

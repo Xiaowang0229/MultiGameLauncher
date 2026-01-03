@@ -135,7 +135,7 @@ namespace MultiGameLauncher.Views.Windows
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = $"{Path.GetTempPath()}Temp.exe",
-                    Arguments = $"\"{OnlineLink.Substring(0, OnlineLink.Length - 1)}\" \"{Environment.ProcessPath}\"",
+                    Arguments = $"\"{OnlineLink}\" \"{Environment.ProcessPath}\"",
                     UseShellExecute = true
                 });
                 Tools.KillTaskBar();

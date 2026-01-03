@@ -5,6 +5,7 @@ using ControlzEx.Theming;
 using FFmpeg.AutoGen;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
@@ -15,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
@@ -37,9 +39,8 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "Release 1.4.1.1\n";
-        public static string ShowVersion = Version.Substring(0, Version.Length - 1);
-        public static string ApplicationTitle = $"Rocket Launcher {ShowVersion}";
+        public readonly static string Version = "Release 1.4.1.2";
+        public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
         public static TaskbarIcon RootTaskBarIcon;
@@ -58,19 +59,11 @@ namespace MultiGameLauncher
         public static DispatcherTimer RealTimeAlarm = new DispatcherTimer();
         public static CancellationTokenSource AlarmCTS = new CancellationTokenSource();
         public static CancellationTokenSource LaunchCTS = new CancellationTokenSource();
+        public static CancellationTokenSource UpdateCTS = new CancellationTokenSource();
     }
 
-
-    public static class Tools //工具集
+    public static class Tools //函数集
     {
-        //public static Process Process = new();
-        public static FrameworkElement OldPage = null;
-        public static ImageSource ApplicationLogo;
-
-        
-
-
-        //函数
         public static void Restart()
         {
             Process.Start(Process.GetCurrentProcess().MainModule.FileName);
@@ -260,7 +253,6 @@ namespace MultiGameLauncher
             }
             return 0;
         }
-
         public static int FindHashcodeinMusicinfosint(MainConfig config, string hashcode)
         {
             for (int i = 0; i < config.MusicInfos.Count; i++)
@@ -705,8 +697,80 @@ namespace MultiGameLauncher
             win.Topmost = true;
             win.Topmost = false;
         }
-    }
+        public async static Task CheckUpdate(bool IsSameVersionShowDialog = false,bool ShowException = false)
+        {
+            var client = new HttpClient();
+            try
+            {
+                var content = await client.GetStringAsync("https://gitee.com/xiaowangupdate/update-service/raw/master/MultiGameLauncher",Variables.UpdateCTS.Token);
+                var updcfg = Json.ReadJson<UpdateConfig>(content);
+                if (updcfg.UpdateVersion != Variables.Version)
+                {
 
+                    try
+                    {
+                        
+                        MetroWindow win2 = new UpdatePrepareWindow(Variables.Version, updcfg.UpdateVersion, updcfg.UpdateLog, updcfg.UpdateLink);
+                        win2.ShowDialog();
+                    }
+                    catch (TaskCanceledException)
+                    {
+
+                    }
+                    catch (Exception ex)
+                    {
+                        if(ShowException)
+                        {
+                            ShowErrorReportMessageBox(ex);
+                        }
+                    }
+                    //await Task.Delay();
+
+
+                }
+                else if(updcfg.UpdateVersion == Variables.Version && IsSameVersionShowDialog)
+                {
+                    MessageBox.Show("当前版本已是最新版本", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                if (ShowException)
+                {
+                    ShowErrorReportMessageBox(ex);
+                }
+            }
+
+        }
+        public static void ShowErrorReportMessageBox(Exception ex)
+        {
+            MessageBox.Show($"程序发生错误：{ex.Message}","错误",MessageBoxButton.OK,MessageBoxImage.Error);
+        }
+        public static void RegisterGlobalExceptionHandlers()
+        {
+            // 捕获 UI 线程未处理的异常
+            Application.Current.DispatcherUnhandledException += (s, e) =>
+            {
+                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+
+            // 捕获非 UI 线程未处理的异常
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                MessageBox.Show(e.ExceptionObject.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+
+            // 捕获 Task 线程未处理的异常
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+        }
+    }
 
     public class LaunchConfig
     {
@@ -720,9 +784,10 @@ namespace MultiGameLauncher
         public string Launchpath { get; set; }
         public string Arguments { get; set; }
 
-    }
 
-    public class MainConfig //主体配置项
+
+    }
+    public class MainConfig
     {
         //OOBE状态
         public bool OOBEStatus { get; set; }
@@ -754,12 +819,19 @@ namespace MultiGameLauncher
         //音乐配置项，勿动
         public List<MusicConfig> MusicInfos { get; set; }
     }
-
     public class MusicConfig
     {
         public string MusicPath { get; set; }
         public string MusicShowName { get; set; }
         public string MusicHashCode { get; set; }
+    }
+    public class UpdateConfig
+    {
+        public string UpdateVersion { get; set; }
+        public string UpdateLog { get; set; }
+        public string UpdateLink { get; set; }
+        
+        
     }
 
 

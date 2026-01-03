@@ -21,8 +21,6 @@ namespace MultiGameLauncher
         {
             InitializeComponent();
 
-            RootWindow.Title = $"Rocket Launcher {Variables.ShowVersion}";
-
 
 
 
