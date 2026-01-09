@@ -346,7 +346,7 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -360,7 +360,7 @@ namespace MultiGameLauncher.Views.Pages
 
                 newconfig.Launchpath = dialog.FileName;
                 LaunchPathView.Content = dialog.FileName;
-                string a = Tools.OpenInputWindow("请输入参数，无可置空");
+                string a = await Tools.OpenInputWindow("请输入参数，无可置空");
                 if (a != null)
                 {
                     newconfig.Arguments = a;
@@ -420,9 +420,9 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        private void ChangeApplicationName_Click(object sender, RoutedEventArgs e)
+        private async void ChangeApplicationName_Click(object sender, RoutedEventArgs e)
         {
-            string a = Tools.OpenInputWindow("请输入新程序名");
+            string a = await Tools.OpenInputWindow("请输入新程序名");
             if (a != null)
             {
                 newconfig.ShowName = a;
@@ -435,9 +435,9 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        private void ChangeTitle_Click(object sender, RoutedEventArgs e)
+        private async void ChangeTitle_Click(object sender, RoutedEventArgs e)
         {
-            string a = Tools.OpenInputWindow("请输入新标题文本");
+            string a =await Tools.OpenInputWindow("请输入新标题文本");
             if (a != null)
             {
                 newconfig.MainTitle = a;

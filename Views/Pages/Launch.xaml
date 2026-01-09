@@ -80,7 +80,7 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        <Image x:Name="BackgroundImage"/>
+        <Image x:Name="BackgroundImage" />
         <ffme:MediaElement LoopingBehavior="Play"  Visibility="Hidden" x:Name="BackgroundVideo" Stretch="UniformToFill" IsMuted="true"  MediaFailed="BackgroundVideo_MediaFailed" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaEnded="BackgroundVideo_MediaEnded" MediaOpened="BackgroundVideo_MediaOpened" />
         <Rectangle Fill="White" Opacity="0.25"/>
         <ui:MetroTabControl SelectedIndex="0" x:Name="RootTabControl" Margin="10,5,10,10" VerticalAlignment="Top" HorizontalAlignment="Center" Background="#FF894343"/>
@@ -136,8 +136,8 @@ HorizontalTitleAlignment="Right" Height="200" Width="200" Click="NewLaunchTile_C
         </StackPanel>
         <Grid Background="{DynamicResource MahApps.Brushes.Accent}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" >
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,10">
-                <Label x:Name="Welcome" FontSize="20" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
-                <Image Height="64" Width="64" x:Name="UserHead" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonDown="UserHead_MouseLeftButtonDown" >
+                <Label x:Name="Welcome" FontSize="18" Content="你好，用户！" VerticalAlignment="Center" FontWeight="Bold"/>
+                <Image Height="48" Width="48" x:Name="UserHead" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonDown="UserHead_MouseLeftButtonDown" >
                     <Image.Source>
                         <DrawingImage>
                             <DrawingImage.Drawing>
@@ -159,9 +159,9 @@ HorizontalTitleAlignment="Right" Height="200" Width="200" Click="NewLaunchTile_C
                 </Image>
             </StackPanel>
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal" Margin="10,10,0,10">
-                <Image x:Name="NewGameImage" Height="64" Width="64" Margin="0,0,10,0"/>
+                <Image x:Name="NewGameImage" Height="48" Width="48" Margin="0,0,10,0" MouseLeftButtonDown="NewGameImage_MouseLeftButtonDown"/>
                 <StackPanel VerticalAlignment="Center">
-                    <Label x:Name="NewGameNameBlock" Content="当前游戏：xxxx" FontSize="20" FontWeight="Bold"/>
+                    <Label x:Name="NewGameNameBlock" Content="当前游戏：xxxx" FontSize="18" FontWeight="Bold"/>
                     <Label x:Name="NewGameTimeBlock" Content="游戏时长：xxx 分钟" FontSize="12" Margin="0,-10,0,0"/>
                 </StackPanel>
             </StackPanel>

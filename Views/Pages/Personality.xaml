@@ -6,15 +6,15 @@
       xmlns:local="clr-namespace:MultiGameLauncher.Views.Pages"
       mc:Ignorable="d" 
       xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
-      Title="Personality" Width="1200" Height="675" Loaded="Page_Loaded">
+      Title="Personality" d:DesignWidth="800" d:DesignHeight="450" Loaded="Page_Loaded">
 
     <StackPanel>
         <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani">
-            <StackPanel Margin="10,10,10,10" Tag="ani" HorizontalAlignment="Left" >
+            <StackPanel Margin="10,10,10,10" Orientation="Horizontal" Tag="ani" HorizontalAlignment="Left" >
                 <StackPanel Tag="ani">
                     <StackPanel Margin="10">
-                        <Image Height="192" Width="192" x:Name="UserHead">
+                        <Image Height="128" Width="128" x:Name="UserHead">
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
@@ -36,11 +36,11 @@
                         </Image>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
                         <Label Content="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBox x:Name="UserName" Width="200" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14" LostFocus="UserName_LostFocus"/>
-                        <Button Width="120" Margin="10,0,0,0" Content="确定" Click="Button_Click"/>
+                        <Label x:Name="UserName" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
+                        <Button Width="120" Margin="10,0,0,0" Content="修改" Click="Button_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
                         <Label Content="头像：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -76,37 +76,6 @@
                 <Label Content="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy"/>
                 <Label Visibility="Hidden" x:Name="SystemChangeTip" Content="已经打开跟随系统切换主题，请先到设置->关闭跟随系统切换主题后再重新进入此页" VerticalAlignment="Center" FontSize="14"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
-                <Label Content="管理音乐:" FontSize="16" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <ui:DropDownButton x:Name="MusicChooser" Content="" Width="400" Height="35" HorizontalContentAlignment="Left" FontFamily="Microsoft YaHei UI"/>
-                <Button x:Name="AddMusic" Margin="10" Width="120" Click="AddMusic_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal" Margin="2">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock FontFamily="Microsoft YaHei UI" Text="添加音乐"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                
-                <StackPanel Orientation="Horizontal" x:Name="CostomMusicControl" Visibility="Hidden">
-                    <Button x:Name="ReNameMusic" Margin="10" Width="120" Click="ReNameMusic_Click">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal" Margin="2">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock FontFamily="Microsoft YaHei UI" Text="重命名音乐"/>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="DelMusic" Margin="10" Width="120" Click="DelMusic_Click">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal" Margin="2">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center" Foreground="Red"/>
-                                <TextBlock FontFamily="Microsoft YaHei UI" Text="删除音乐" Foreground="Red"/>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
                 <Label Content="设置闹钟:" FontSize="16" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>

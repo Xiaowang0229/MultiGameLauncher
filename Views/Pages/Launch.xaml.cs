@@ -79,8 +79,8 @@ namespace MultiGameLauncher.Views.Pages
 
 
             });
-            
 
+            LaunchTile.Tag = "false";
 
         }
 
@@ -230,7 +230,7 @@ namespace MultiGameLauncher.Views.Pages
 
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
-                
+                LaunchTile.Tag = "false";
                 ChangeStartStopStatus(true);
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
                 
@@ -361,7 +361,7 @@ namespace MultiGameLauncher.Views.Pages
 
                 if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
                 {
-                    
+                    LaunchTile.Tag = "false";
                     ChangeStartStopStatus(true);
                     await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
                     
@@ -469,7 +469,7 @@ namespace MultiGameLauncher.Views.Pages
                 proc.Kill();
                 ChangeStartStopStatus(false);
             }
-            if(LaunchTile.Tag == "false")//处理开始逻辑
+            else if(LaunchTile.Tag == "false")//处理开始逻辑
             {
                 try
                 {
@@ -490,6 +490,21 @@ namespace MultiGameLauncher.Views.Pages
                 }
             }
 
+        }
+
+        private async void NewGameImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            {
+
+                BackgroundVideo.Stop();
+                BackgroundVideo.Close();
+                await Task.Delay(50);
+
+            }
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new Manage());
+            win.BackButton.Width = 40;
         }
     }
 }

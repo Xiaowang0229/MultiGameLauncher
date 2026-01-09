@@ -130,7 +130,6 @@ namespace MultiGameLauncher.Views.Pages
             StartUpCheckUpdate.IsOn = config.StartUpCheckUpdate;
             ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
             AutoStartWithSystem.IsOn = config.AutoStartUp;
-            PlayMusicStarted.IsOn = config.PlayMusicStarted;
             if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
             {
                 FileInfo fi = new FileInfo(Path.GetTempPath() + "\\Temp.exe");
@@ -216,18 +215,6 @@ namespace MultiGameLauncher.Views.Pages
             win.RootFrame.Navigate(new Settings());
         }
 
-        private void PlayMusicStarted_Toggled(object sender, RoutedEventArgs e)
-        {
-            if(PlayMusicStarted.IsOn)
-            {
-                config.PlayMusicStarted = true;
-                Json.WriteJson(Variables.Configpath, config);
-            }
-            else
-            {
-                config.PlayMusicStarted = false;
-                Json.WriteJson(Variables.Configpath, config);
-            }
-        }
+        
     }
 }

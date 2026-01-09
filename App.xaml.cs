@@ -101,17 +101,7 @@ namespace MultiGameLauncher
                     }
                     MessageBox.Show(folder);
                 }*/
-                if(config.MusicInfos == null)
-                {
-                    config.MusicInfos = new List<MusicConfig>();
-                    Json.WriteJson(Variables.Configpath, config);
-                }
-
-                if(config.PlayMusicStarted == null)
-                {
-                    config.PlayMusicStarted = false;
-                    Json.WriteJson(Variables.Configpath, config);
-                }
+                
 
                 var win = new MainWindow();
                 win.Show();

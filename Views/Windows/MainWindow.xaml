@@ -9,15 +9,16 @@
                 FontFamily="Microsoft Yahei UI"
                 TitleCharacterCasing="Normal"
                 ShowTitleBar="True"
-                TitleAlignment="Center"
+                TitleAlignment="Left"
                 TitleBarHeight="30"
+                WindowTitleBrush="{DynamicResource MahApps.Brushes.Accent}"
                 
                 
         mc:Ignorable="d"
                 ShowSystemMenu="True"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="{x:Static local:Variables.ApplicationTitle}" Height="480" Width="810" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing">
+        Title="{x:Static local:Variables.ApplicationTitle}" Height="480" Width="800" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing">
     <ui:MetroWindow.LeftWindowCommands>
         <ui:WindowCommands>
             <StackPanel Orientation="Horizontal">

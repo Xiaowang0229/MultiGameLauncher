@@ -6,6 +6,7 @@ using FFmpeg.AutoGen;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
@@ -214,9 +215,7 @@ namespace MultiGameLauncher
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
                 ChangeThemeWithSystem = false,
-                PlayMusicStarted = false,
-                GameInfos = new List<LaunchConfig>(),
-                MusicInfos = new List<MusicConfig>()
+                GameInfos = new List<LaunchConfig>()
             };
             Json.WriteJson(Variables.Configpath, config);
             //ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
@@ -250,17 +249,7 @@ namespace MultiGameLauncher
             }
             return 0;
         }
-        public static int FindHashcodeinMusicinfosint(MainConfig config, string hashcode)
-        {
-            for (int i = 0; i < config.MusicInfos.Count; i++)
-            {
-                if (config.MusicInfos[i].MusicHashCode == hashcode)
-                {
-                    return i;
-                }
-            }
-            return 0;
-        }
+        
         public static void IntializeTaskbar()
         {
             MainConfig config = new MainConfig();
@@ -529,12 +518,22 @@ namespace MultiGameLauncher
             win.Topmost = false;
 
         }
-        public static string? OpenInputWindow(string Title)
+        public static async Task<string?> OpenInputWindow(string Title)
         {
-            var win = new InputWindow(Title);
+            /*var win = new InputWindow(Title);
             if (win.ShowDialog() == true)
             {
                 return win.Results;
+            }
+            else
+            {
+                return null;
+            }*/
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            var result = await win.ShowInputAsync($"{Title}","");
+            if (!string.IsNullOrEmpty(result))
+            {
+                return result;
             }
             else
             {
@@ -807,21 +806,11 @@ namespace MultiGameLauncher
         //主题跟随系统
         public bool ChangeThemeWithSystem { get; set; }
 
-        //启动时播放音乐
-        public bool PlayMusicStarted { get; set; }
-
         //游戏配置项，勿动
         public List<LaunchConfig> GameInfos { get; set; }
 
-        //音乐配置项，勿动
-        public List<MusicConfig> MusicInfos { get; set; }
     }
-    public class MusicConfig
-    {
-        public string MusicPath { get; set; }
-        public string MusicShowName { get; set; }
-        public string MusicHashCode { get; set; }
-    }
+    
     public class UpdateConfig
     {
         public string UpdateVersion { get; set; }
