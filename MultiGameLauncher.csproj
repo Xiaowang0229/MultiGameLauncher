@@ -110,21 +110,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="7.0.2" />
     <PackageReference Include="FFME.Windows" Version="4.4.350" />
+    <PackageReference Include="FFmpeg.AutoGen" Version="4.4.0" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
-    <PackageReference Include="IconExtractor.dll" Version="1.0.2" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1" />
     <PackageReference Include="Markdig" Version="0.44.0" />
     <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
-    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="HuaZi.Library">
       <HintPath>..\HuaZi.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="IconExtractor">
+      <HintPath>IconExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -10,40 +10,14 @@
                 TitleCharacterCasing="Normal"
                 ShowTitleBar="True"
                 TitleAlignment="Center"
+                TitleBarHeight="30"
                 
                 
         mc:Ignorable="d"
                 ShowSystemMenu="True"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="{x:Static local:Variables.ApplicationTitle}" Height="710" Width="1210" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing" MinWidth="1210" MinHeight="710" MaxWidth="1210" MaxHeight="710">
-
-    <Window.Resources>
-        <Storyboard x:Key="SlideOutStoryboard">
-            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                    From="0,0,0,0"
-                    To="-2000,0,0,0"
-                    Duration="0:0:0.5">
-                <ThicknessAnimation.EasingFunction>
-                    <PowerEase Power="5" EasingMode="EaseOut"/>
-                </ThicknessAnimation.EasingFunction>
-            </ThicknessAnimation>
-        </Storyboard>
-
-        <!-- 新页面滑入动画（从右滑入） -->
-        <Storyboard x:Key="SlideInStoryboard">
-            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                    From="-2000,0,0,0"
-                    To="0,0,0,0"
-                    Duration="0:0:0.5">
-                <ThicknessAnimation.EasingFunction>
-                    <PowerEase Power="5" EasingMode="EaseOut"/>
-                </ThicknessAnimation.EasingFunction>
-            </ThicknessAnimation>
-        </Storyboard>
-    </Window.Resources>
-    
-
+        Title="{x:Static local:Variables.ApplicationTitle}" Height="480" Width="810" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing">
     <ui:MetroWindow.LeftWindowCommands>
         <ui:WindowCommands>
             <StackPanel Orientation="Horizontal">
@@ -96,12 +70,12 @@
                     </Image.Source>
                 </Image>
             </StackPanel>
-            
         </ui:WindowCommands>
     </ui:MetroWindow.LeftWindowCommands>
+
     <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
-   NavigationUIVisibility="Hidden"
-        Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
+NavigationUIVisibility="Hidden"
+     Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
 
     </Frame>
 

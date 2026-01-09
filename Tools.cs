@@ -10,8 +10,6 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
 using MultiGameLauncher.Views.Windows;
-using NAudio;
-using NAudio.Wave;
 using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -39,7 +37,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "Release 1.4.1.2";
+        public readonly static string Version = "V2.0.0.0-Beta.1";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -52,8 +50,7 @@ namespace MultiGameLauncher
         public static string VersionLog;
         public static string EULAString;
         public static bool MainWindowHideStatus = false;
-        public static IWavePlayer RootMusicPlayer=new WaveOutEvent();
-        public static  bool? UsingRealTimeAlarm = null;
+        public static bool? UsingRealTimeAlarm = null;
         public static TimeSpan AlarmTime = new TimeSpan();
         public static string AlarmRealTime;
         public static DispatcherTimer RealTimeAlarm = new DispatcherTimer();
