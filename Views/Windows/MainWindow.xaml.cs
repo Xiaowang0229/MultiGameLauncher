@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Pages;
 using System.IO;
 using System.Threading.Tasks;
@@ -185,6 +186,10 @@ namespace MultiGameLauncher
             await Tools.StartAlarmMonitingAsync();
         }
 
-        
+        public void ShowUpdatePreparing()
+        {
+            var dialog = new CustomDialog(this.MetroDialogOptions) { Content = "启动时不会使用流量，请稍候……", Title = "启动更新中" };
+            this.ShowMetroDialogAsync(dialog);
+        }
     }
 }

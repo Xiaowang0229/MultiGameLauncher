@@ -157,7 +157,7 @@ namespace MultiGameLauncher.Views.Pages
                     LaunchPathView.Content = currentgameinfo.Launchpath + " " + currentgameinfo.Arguments;
                     ApplicationNameBlock.Content = currentgameinfo.ShowName;
                     MainTitleBlock.Content = currentgameinfo.MainTitle;
-                    PlayedTimeBlock.Content = currentgameinfo.GamePlayedMinutes.ToString() + "分钟";
+                    //PlayedTimeBlock.Content = currentgameinfo.GamePlayedMinutes.ToString() + "分钟";
                     ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
 
                     sp_ani.Visibility = Visibility.Visible;

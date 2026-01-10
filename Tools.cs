@@ -2,23 +2,17 @@
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
 using ControlzEx.Theming;
-using FFmpeg.AutoGen;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
-using MultiGameLauncher.Views.Windows;
-using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -27,7 +21,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TsudaKageyu;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
@@ -38,7 +31,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "V2.0.0.0-Beta.1";
+        public readonly static string Version = "V2.0.0.0";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -62,6 +55,8 @@ namespace MultiGameLauncher
 
     public static class Tools //函数集
     {
+        private static bool DownloadStatus;
+
         public static void Restart()
         {
             Process.Start(Process.GetCurrentProcess().MainModule.FileName);
@@ -703,24 +698,45 @@ namespace MultiGameLauncher
                 if (updcfg.UpdateVersion != Variables.Version)
                 {
 
-                    try
-                    {
-                        
-                        MetroWindow win2 = new UpdatePrepareWindow(Variables.Version, updcfg.UpdateVersion, updcfg.UpdateLog, updcfg.UpdateLink);
-                        win2.ShowDialog();
-                    }
-                    catch (TaskCanceledException)
-                    {
+                    
 
-                    }
-                    catch (Exception ex)
-                    {
-                        if(ShowException)
+                        
+                        var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                        var settings = new MetroDialogSettings
                         {
-                            ShowErrorReportMessageBox(ex);
+                            AffirmativeButtonText = "取消",
+                            NegativeButtonText = "确定"
+                        };
+                        var results = await win.ShowMessageAsync("更新可用", $"当前版本:{Variables.Version},最新版本:{updcfg.UpdateVersion},请问是否更新？", MessageDialogStyle.AffirmativeAndNegative,settings);
+                        if (results == MessageDialogResult.Negative)
+                        {
+                            win.ShowUpdatePreparing();
+                            if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
+                            {
+                                File.Delete(Path.GetTempPath() + "\\Temp.exe");
+                            }
+                            try
+                            {
+
+                            File.Copy($"{Environment.CurrentDirectory}\\UpdateAPI.exe", Path.GetTempPath() + "\\Temp.exe");
+                                Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = $"{Path.GetTempPath()}Temp.exe",
+                                    Arguments = $"\"{updcfg.UpdateLink}\" \"{Environment.ProcessPath}\"",
+                                    UseShellExecute = true
+                                });
+                                Tools.KillTaskBar();
+                                Environment.Exit(0);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"准备更新时发生错误：{ex.Message}", "错误", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                                Environment.Exit(0);
+                            }
+
                         }
-                    }
-                    //await Task.Delay();
+                    
+                    
 
 
                 }
