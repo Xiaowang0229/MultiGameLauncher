@@ -1,4 +1,5 @@
 ﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
@@ -79,7 +80,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -155,7 +156,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 File.Copy(dialog.FileName, Environment.CurrentDirectory+$"\\Backgrounds\\{newconfig.HashCode}\\Background"+Path.GetExtension(dialog.FileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
-                MessageBox.Show($"设置成功，路径为:{dialog.FileName}","提示",MessageBoxButton.OK,MessageBoxImage.Information);*/
+                */
 
 
             }
@@ -242,7 +243,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 Json.WriteJson(Variables.Configpath, config);
 
-                MessageBox.Show($"操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
 
                 if (Iscreatenewgame == true)
                 {
@@ -258,13 +259,14 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
             else
             {
-                MessageBox.Show("请将启动路径，程序名称和主标题填写完整，以便正常写入Json文件进行程序启动！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Tools.GetShowingWindow().ShowMessageAsync("错误", $"请将带星号的必填项填写完整！");
             }
         }
 
-        private void DeleteBackground_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBackground_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("确定删除背景吗？此操作不可逆", "提示", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var qdr = await Tools.ShowQuestionDialogMetro("确定删除背景吗？此操作不可逆", "警告");
+            if (qdr)
             {
                 IsBackGroundChange = false;
                 DeleteBackground.Visibility = Visibility.Hidden;
@@ -294,7 +296,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Tools.GetShowingWindow().ShowMessageAsync("图标应用时错误", $"{ex.Message}");
                 }
             }
         }

@@ -64,7 +64,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 

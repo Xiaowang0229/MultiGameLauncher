@@ -58,7 +58,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -126,7 +126,7 @@ namespace MultiGameLauncher.Views.Pages
             CheckProgress.Visibility = Visibility.Hidden;
             CheckupdateButton.IsEnabled = true;
 
-            //MessageBox.Show(content);
+            
 
 
         }

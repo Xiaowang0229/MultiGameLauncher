@@ -1,4 +1,5 @@
 ﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Pages.OOBE;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
@@ -63,7 +64,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+
                 }
 
 
@@ -194,11 +195,12 @@ namespace MultiGameLauncher.Views.Pages
             win.RootFrame.Navigate(new OOBEImport(true));
         }
 
-        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (RootDropper.Content != "请选择对象")
             {
-                if (MessageBox.Show($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                var qdr = await Tools.ShowQuestionDialogMetro($"警告：操作不可逆，请确认您是否要删除当前项目:{RootDropper.Content}", "警告");
+                if (qdr)
                 {
                     //config.GameInfos.RemoveAll(x => x.HashCode == RootDropper.Tag);
                     var deleteitemindex = newconfig.HashCode;
@@ -209,7 +211,7 @@ namespace MultiGameLauncher.Views.Pages
                     Variables.PlayingTimeRecorder.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Json.WriteJson(Variables.Configpath, config);
                     Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\", true);
-                    MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
                     if (config.GameInfos.Count == 0)
                     {
                         Tools.KillTaskBar();
@@ -226,7 +228,7 @@ namespace MultiGameLauncher.Views.Pages
             }
             else
             {
-                MessageBox.Show($"请选择对象后再进行当前操作", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Tools.GetShowingWindow().ShowMessageAsync("错误", $"请先选择对象后再进行当前操作！");
             }
         }
 
@@ -282,17 +284,17 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-                //MessageBox.Show(config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Launchpath);
+                
                 Json.WriteJson(Variables.Configpath, config);
                 this.IsEnabled = true;
                 await Task.Delay(100);
-                MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Manage());
             }
             else
             {
-                MessageBox.Show("请将带星号的必填项填写完整，以便正常写入Json文件进行程序启动！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Tools.GetShowingWindow().ShowMessageAsync("错误", $"请把带星号的必填项填写完整！");
             }
 
         }
@@ -326,13 +328,14 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 File.Copy(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
-                MessageBox.Show($"设置成功，路径为:{dialog.FileName}", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
 
 
             }
             else
             {
-                if (MessageBox.Show($"您什么也没有设置，请问是否清除已有的背景？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                var qdr = await Tools.ShowQuestionDialogMetro($"请问是否清空已有背景？", "警告");
+                if (qdr)
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4"))
                     {
@@ -367,7 +370,8 @@ namespace MultiGameLauncher.Views.Pages
 
 
                 }
-                if (MessageBox.Show("是否使用exe内的图标替换旧图标？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                var qdr = await Tools.ShowQuestionDialogMetro("是否使用exe内的图标替换旧图标？", "警告");
+                if (qdr)
                 {
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png"))
                     {
@@ -379,7 +383,7 @@ namespace MultiGameLauncher.Views.Pages
                     win.RootFrame.Navigate(new Manage());
                 }
 
-                //MessageBox.Show("1");
+                
                 try
                 {
                     Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
@@ -477,9 +481,10 @@ namespace MultiGameLauncher.Views.Pages
             win.RootFrame.Navigate(new Manage());
         }
 
-        private void DeleteTime_Click(object sender, RoutedEventArgs e)
+        private async void DeleteTime_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show($"您确定要清空游玩的时间吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            var qdr = await Tools.ShowQuestionDialogMetro("您确定要清空游玩的时间吗？", "警告");
+            if (qdr)
             {
                 newconfig.GamePlayedMinutes = 0;
                 config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
@@ -513,7 +518,7 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Tools.GetShowingWindow().ShowMessageAsync("图标应用时错误", $"{ex.Message}");
                 }
 
             }

@@ -10,7 +10,7 @@
 
     <Grid>
 
-        <Label Content="管理" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="管理" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
 
         <StackPanel>
             <StackPanel  Orientation="Horizontal" Margin="10,74,10,0">

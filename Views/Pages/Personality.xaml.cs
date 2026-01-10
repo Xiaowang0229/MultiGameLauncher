@@ -1,6 +1,7 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -59,7 +60,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -69,11 +70,11 @@ namespace MultiGameLauncher.Views.Pages
         private void ColorPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+            
             try
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme + "." + Tools.GetColorName((Color)RootColor.SelectedValue));
-                //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+                
                 config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
                 Json.WriteJson(Variables.Configpath, config);
             }
@@ -83,7 +84,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
+            
             if (Darkmode.IsOn)
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
@@ -105,7 +106,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             }
-            UserName.Content = config.Username;
+            UserName.Content ="用户名：" + config.Username;
 
             if (config.ChangeThemeWithSystem)
             {
@@ -159,7 +160,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.Username = result;
                 Json.WriteJson(Variables.Configpath, config);
-                UserName.Content = result;
+                UserName.Content = "用户名：" + result;
             }
         }
 
@@ -180,14 +181,14 @@ namespace MultiGameLauncher.Views.Pages
             {
                 if (openFileDialog.FileName == Environment.CurrentDirectory + @"\Head.png")
                 {
-                    MessageBox.Show("不能选择同一张头像", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"不能选择当前头像！");
                 }
                 else if (openFileDialog.FileName != Environment.CurrentDirectory + @"\Head.png")
                 {
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
                     Tools.RefreshAllImageCaches(this);
-                    MessageBox.Show("操作成功,为了保证您的游戏体验,重启后生效！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
 
                 }
             }
@@ -195,9 +196,10 @@ namespace MultiGameLauncher.Views.Pages
 
         
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("确定还原默认头像吗", "警告", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            var qdr = await Tools.ShowQuestionDialogMetro("确定还原默认头像吗", "警告");
+            if (qdr)
             {
                 File.Delete(Environment.CurrentDirectory + @"\Head.png");
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();

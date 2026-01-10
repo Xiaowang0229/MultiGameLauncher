@@ -1,5 +1,6 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Markdig;
 using System.Diagnostics;
 using System.IO;
@@ -74,7 +75,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -316,7 +317,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
                 /*Tools.Process.StartInfo = new ProcessStartInfo
                 {
@@ -324,7 +325,7 @@ namespace MultiGameLauncher.Views.Pages
                     Arguments = launchConfig.Arguments,
                     UseShellExecute = true
                 };*/
-                //MessageBox.Show($"{Variables.GameProcessStatus[RootTabControl.SelectedIndex]}");
+                
 
                 MainTitle.Text = launchConfig.MainTitle;
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
@@ -423,7 +424,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void BackgroundVideo_MediaFailed(object sender, Unosquare.FFME.Common.MediaFailedEventArgs e)
         {
-            MessageBox.Show($"媒体播放失败:{e.ErrorException}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            Tools.GetShowingWindow().ShowMessageAsync("动态背景初始化错误", $"{e.ErrorException}");
         }
 
         private void BackgroundVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
@@ -486,7 +487,7 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"启动游戏时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Tools.GetShowingWindow().ShowMessageAsync("游戏启动时错误", $"{ex.Message}");
                 }
             }
 

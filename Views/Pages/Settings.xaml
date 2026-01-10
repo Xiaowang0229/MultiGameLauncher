@@ -10,7 +10,7 @@
       Title="Settings" Loaded="Page_Loaded">
 
     <StackPanel>
-        <Label Content="设置" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="设置" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani"  Margin="10,0,0,0">
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
                 <Label FontSize="16" Content="启动时检测更新：" Margin="0,0,10,0" VerticalAlignment="Center"/>

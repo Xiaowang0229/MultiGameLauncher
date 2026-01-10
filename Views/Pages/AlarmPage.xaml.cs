@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -62,7 +63,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -280,7 +281,7 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("请输入分钟数！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"请输入分钟数后再点击此按钮！");
                 }
             }
             else if(GameTimeRadio.IsChecked == true)
@@ -297,12 +298,12 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("请输入分钟数！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"请输入分钟数后再点击此按钮！");
                 }
             }
             else
             {
-                MessageBox.Show("请选择后再点击此按钮！","错误",MessageBoxButton.OK,MessageBoxImage.Error);
+                Tools.GetShowingWindow().ShowMessageAsync("错误", $"请选择后再点击此按钮！");
             }
         }
     }

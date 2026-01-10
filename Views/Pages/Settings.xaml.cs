@@ -1,4 +1,5 @@
 ﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
@@ -56,16 +57,17 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
             });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var qdr = await Tools.ShowQuestionDialogMetro("确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆", "警告");
+            if (qdr)
             {
                 Tools.InitalizeConfig();
                 Tools.Restart();
@@ -78,13 +80,13 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.StartUpCheckUpdate = true;
                 Json.WriteJson(Variables.Configpath, config);
-                //MessageBox.Show("设置成功，重启程序后生效","提示",MessageBoxButton.OK,MessageBoxImage.Information);
+                
             }
             else if (StartUpCheckUpdate.IsOn == false)
             {
                 config.StartUpCheckUpdate = false;
                 Json.WriteJson(Variables.Configpath, config);
-                //MessageBox.Show("设置成功，重启程序后生效", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
             }
 
         }
@@ -191,7 +193,7 @@ namespace MultiGameLauncher.Views.Pages
                 {
                     File.Delete(Path.GetTempPath() + "\\Temp.zip");
                 }
-                MessageBox.Show("操作成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 for (int i = 0; i < subFolderNames.Length; i++)
                 {
                     for (int j = 0; j < config.GameInfos.Count; j++)
@@ -209,10 +211,14 @@ namespace MultiGameLauncher.Views.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"操作失败，原因:{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                Tools.GetShowingWindow().ShowMessageAsync("清空缓存时错误", $"{ex.Message}");
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Settings());
+            
+            
+            
+                CacheSizeBlock.Content = "0.0MB";
+
+            
         }
 
         

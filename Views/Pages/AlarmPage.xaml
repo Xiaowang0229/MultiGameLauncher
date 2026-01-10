@@ -10,7 +10,7 @@
       Title="AlarmPage" Loaded="Page_Loaded">
 
     <StackPanel>
-        <Label Content="闹钟" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="闹钟" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani" Margin="10">
             <StackPanel Tag="ani">
                 <RadioButton x:Name="GameTimeRadio" Content="选择游戏时长模式" FontFamily="Microsoft Yahei Ui" FontWeight="Bold" FontSize="18" Background="{x:Null}" Click="GameTimeRadio_Click" Margin="0,0,0,10"/>

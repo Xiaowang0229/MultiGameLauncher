@@ -9,7 +9,7 @@
       Title="Personality" d:DesignWidth="800" d:DesignHeight="450" Loaded="Page_Loaded">
 
     <StackPanel>
-        <Label Content="个性化" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="个性化" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani">
             <StackPanel Margin="10,10,10,10" Orientation="Horizontal" Tag="ani" HorizontalAlignment="Left" >
                 <StackPanel Tag="ani">
@@ -38,8 +38,7 @@
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Tag="ani">
-                        <Label Content="用户名:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <Label x:Name="UserName" Margin="10,0,0,0" FontFamily="Microsoft YaHei UI" FontSize="14"/>
+                        <Label Content="用户名：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="UserName" FontFamily="Microsoft YaHei UI"/>
                         <Button Width="120" Margin="10,0,0,0" Content="修改" Click="Button_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,0,10,10">

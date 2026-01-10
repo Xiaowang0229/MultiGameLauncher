@@ -95,11 +95,11 @@ namespace MultiGameLauncher
                     {
                         if (hashcode.HashCode == folder)
                         {
-                            MessageBox.Show("相同");
+                            
                             continue outerloop;
                         }
                     }
-                    MessageBox.Show(folder);
+                    
                 }*/
                 
 

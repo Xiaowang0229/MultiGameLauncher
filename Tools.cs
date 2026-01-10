@@ -4,10 +4,12 @@ global using Page = System.Windows.Controls.Page;
 using ControlzEx.Theming;
 using Hardcodet.Wpf.TaskbarNotification;
 using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
+using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -632,7 +634,7 @@ namespace MultiGameLauncher
         {
             if(Variables.UsingRealTimeAlarm == true)
             {
-                //MessageBox.Show(Variables.AlarmRealTime, DateTime.Now.ToString("HH:mm"));
+                
                 if (CheckTime(Variables.AlarmRealTime))
                 {
                     Variables.UsingRealTimeAlarm = null;
@@ -730,8 +732,8 @@ namespace MultiGameLauncher
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show($"准备更新时发生错误：{ex.Message}", "错误", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-                                Environment.Exit(0);
+                            GetShowingWindow().ShowMessageAsync("启动更新时发现错误", $"{ex.Message}");
+                            Environment.Exit(0);
                             }
 
                         }
@@ -742,7 +744,7 @@ namespace MultiGameLauncher
                 }
                 else if(updcfg.UpdateVersion == Variables.Version && IsSameVersionShowDialog)
                 {
-                    MessageBox.Show("当前版本已是最新版本", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Tools.GetShowingWindow().ShowMessageAsync("提示", $"当前版本已是最新版本:{updcfg.UpdateVersion}！");
                 }
             }
             catch (TaskCanceledException)
@@ -751,36 +753,92 @@ namespace MultiGameLauncher
             }
             catch (Exception ex)
             {
-                if (ShowException)
-                {
-                    ShowErrorReportMessageBox(ex);
-                }
+                Tools.GetShowingWindow().ShowMessageAsync("启动更新时错误", $"{ex.Message}");
             }
 
         }
-        public static void ShowErrorReportMessageBox(Exception ex)
-        {
-            MessageBox.Show($"程序发生错误：{ex.Message}","错误",MessageBoxButton.OK,MessageBoxImage.Error);
-        }
+        
         public static void RegisterGlobalExceptionHandlers()
         {
             // 捕获 UI 线程未处理的异常
             Application.Current.DispatcherUnhandledException += (s, e) =>
             {
-                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                GetShowingWindow().ShowMessageAsync("UI 线程出错",e.Exception.ToString());
+                //KillTaskBar();
+                Environment.Exit(0);
+                
             };
 
             // 捕获非 UI 线程未处理的异常
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                MessageBox.Show(e.ExceptionObject.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                GetShowingWindow().ShowMessageAsync("程序主线程出错",e.ExceptionObject.ToString());
+                //KillTaskBar();
+                Environment.Exit(0);
             };
 
             // 捕获 Task 线程未处理的异常
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                GetShowingWindow().ShowMessageAsync("Task 线程出错", e.Exception.ToString());
+                //KillTaskBar();
+                Environment.Exit(0);
             };
+        }
+
+        public static MetroWindow? GetMainWindow()
+        {
+            try
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                return win;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static MetroWindow? GetShowingWindow()
+        {
+            try
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                return win;
+            }
+            catch
+            {
+                try
+                {
+                    var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                    return win;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async static Task<bool> ShowQuestionDialogMetro(string content, string title)
+        {
+            var win = GetShowingWindow();
+            var settings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "取消",
+                NegativeButtonText = "确定"
+            };
+            var results = await win.ShowMessageAsync($"{title}", $"{content}", MessageDialogStyle.AffirmativeAndNegative, settings);
+            if (results == MessageDialogResult.Negative)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

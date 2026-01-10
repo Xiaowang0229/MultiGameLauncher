@@ -10,7 +10,7 @@
       Title="About" d:DesignWidth="800" d:DesignHeight="450" Loaded="Page_Loaded">
 
     <StackPanel>
-        <Label Content="关于" HorizontalAlignment="Left" Height="69" Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="48" FontWeight="Bold"/>
+        <Label Content="关于" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani" Margin="10,0,10,10">
             <StackPanel Orientation="Horizontal" Tag="ani" HorizontalAlignment="Left">
                 <Grid Height="96" Width="96">

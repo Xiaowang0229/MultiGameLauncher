@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
+using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
@@ -56,7 +57,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    
                 }
 
 
@@ -74,7 +75,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
             if (UserName.Text == "")
             {
-                MessageBox.Show("用户名不可置空！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Tools.GetShowingWindow().ShowMessageAsync("错误", $"用户名不可置空！");
 
             }
 
@@ -96,7 +97,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             {
                 if (openFileDialog.FileName == Environment.CurrentDirectory + @"\Head.png")
                 {
-                    MessageBox.Show("不能选择同一张头像", "错误", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"不得选择同一张头像！");
                 }
                 else if (openFileDialog.FileName != Environment.CurrentDirectory + @"\Head.png")
                 {
@@ -120,7 +121,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             try
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme + "." + Tools.GetColorName((Color)RootColor.SelectedValue));
-                //MessageBox.Show(Tools.GetColorName((Color)RootColor.SelectedValue));
+                
                 config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
                 Json.WriteJson(Variables.Configpath, config);
             }
@@ -157,9 +158,10 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("确定还原默认头像吗", "警告", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            var qdr = await Tools.ShowQuestionDialogMetro("确定还原默认头像吗", "警告");
+            if (qdr)
             {
                 File.Delete(Environment.CurrentDirectory + @"\Head.png");
                 var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
@@ -193,19 +195,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 File.Copy(dialog.FileName, $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
 
-                try
-                {
-                    Variables.MusicList.Clear();
-                    var musicdir = Directory.GetFiles(Environment.CurrentDirectory + $"\\Musics");
-                    for (int i = 0; i < musicdir.Length; i++)
-                    {
-                        Variables.MusicList.Add(musicdir[i]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"错误:{ex.Message}", "发生错误");
-                }
+                
             }
         }
 
