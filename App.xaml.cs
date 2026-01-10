@@ -19,8 +19,8 @@ namespace MultiGameLauncher
         private MainConfig config;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+
             Tools.RegisterGlobalExceptionHandlers();
-            
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Variables.EULAString = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.EULA.md");
             Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
@@ -40,11 +40,7 @@ namespace MultiGameLauncher
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds");
             }
-            if (!Directory.Exists(Environment.CurrentDirectory + $"\\Musics"))
-            {
-                Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Musics");
-                
-            }
+            
             if(!File.Exists($"{Environment.CurrentDirectory}\\Alarm.png"))
             {
                 Tools.ConvertToPngAndSave(ApplicationResources.Alarm, $"{Environment.CurrentDirectory}\\Alarm.png");
@@ -105,6 +101,7 @@ namespace MultiGameLauncher
 
                 var win = new MainWindow();
                 win.Show();
+
                 Tools.IntializeTaskbar();
                 Variables.RealTimeAlarm.Interval = TimeSpan.FromSeconds(1);
                 Variables.RealTimeAlarm.Tick += Tools.AlarmTick;

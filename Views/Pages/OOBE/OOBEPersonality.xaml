@@ -75,33 +75,6 @@
                 <Label Content="打开黑暗模式:" FontSize="16" Margin="10,5,10,0"/>
                 <ui:ToggleSwitch x:Name="Darkmode" Height="28" FontFamily="Microsoft YaHei UI" Toggled="ToggleSwitch_Toggled" ui:HeaderedControlHelper.HeaderFontWeight="Heavy" Margin="10,0,0,0"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tag="ani">
-                <Label Content="管理音乐:" FontSize="16" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button x:Name="OpenMusicFolder" Margin="10" Width="120" Click="OpenMusicFolder_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal" Margin="2">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock FontFamily="Microsoft YaHei UI" Text="打开文件夹"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="AddMusic" Margin="10" Width="120" Click="AddMusic_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal" Margin="2">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock FontFamily="Microsoft YaHei UI" Text="添加音乐"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="DelMusic" Margin="10" Width="120" Click="DelMusic_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal" Margin="2">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text=""  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock FontFamily="Microsoft YaHei UI" Text="删除音乐"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-            </StackPanel>
             <StackPanel Tag="ani" FlowDirection="RightToLeft">
                 <Button Width="150" Margin="30,170,10,0" Content="确定" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Click="Button_Click"/>
             </StackPanel>

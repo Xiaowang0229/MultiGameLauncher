@@ -21,7 +21,8 @@
                 ShowSystemMenu="True"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Rocket Launcher" Height="480" Width="800" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing" MinWidth="800" MinHeight="480" MaxWidth="800" MaxHeight="480">
+                
+        Title="Rocket Launcher" Height="480" Width="800" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing" MinWidth="800" MinHeight="480" >
     <ui:MetroWindow.LeftWindowCommands>
         <ui:WindowCommands>
             <StackPanel Orientation="Horizontal">
@@ -77,10 +78,12 @@
         </ui:WindowCommands>
     </ui:MetroWindow.LeftWindowCommands>
 
-    <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
+    
+        <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
 NavigationUIVisibility="Hidden"
      Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
 
-    </Frame>
+        </Frame>
+    
 
 </ui:MetroWindow>

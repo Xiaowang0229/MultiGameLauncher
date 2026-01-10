@@ -13,16 +13,20 @@
         <Label Content="设置" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
         <StackPanel x:Name="sp_ani"  Margin="10,0,0,0">
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <Label FontSize="16" Content="启动时检测更新：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <Label FontSize="16" Content="主程序启动时检测更新：" Margin="0,0,10,0" VerticalAlignment="Center"/>
                 <ui:ToggleSwitch x:Name="StartUpCheckUpdate" Toggled="StartUpCheckUpdate_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <Label FontSize="16" Content="随系统切换主题：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <Label FontSize="16" Content="跟随系统切换主题：" Margin="0,0,10,0" VerticalAlignment="Center"/>
                 <ui:ToggleSwitch x:Name="ChangeThemeWithSystem" Toggled="ChangeThemeWithSystem_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
-                <Label FontSize="16" Content="程序开机自启动：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <Label FontSize="16" Content="主程序开机时自启动：" Margin="0,0,10,0" VerticalAlignment="Center"/>
                 <ui:ToggleSwitch x:Name="AutoStartWithSystem" Toggled="AutoStartWithSystem_Toggled"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
+                <Label FontSize="16" Content="游戏启动时隐藏主窗口：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="LaunchWithMinize" Toggled="LaunchWithMinize_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
                 <Label FontSize="16" Content="删除缓存：" Margin="0,0,10,0" VerticalAlignment="Center"/>

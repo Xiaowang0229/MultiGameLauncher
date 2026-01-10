@@ -449,36 +449,11 @@ namespace MultiGameLauncher.Views.Pages
                 Json.WriteJson(Variables.Configpath, config);
 
             }
-
-            var fontdialog = new System.Windows.Forms.FontDialog();
-            var colorDialog = new ColorDialog();
-
-            if (fontdialog.ShowDialog() == DialogResult.OK)
-            {
-                newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name);
-
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    newconfig.MainTitleFontColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(
-                    colorDialog.Color.A,
-                    colorDialog.Color.R,
-                    colorDialog.Color.G,
-                    colorDialog.Color.B));
-
-
-
-                    config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
-                    Json.WriteJson(Variables.Configpath, config);
-
-
-                }
-                config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
-                Json.WriteJson(Variables.Configpath, config);
-
-            }
+            
 
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());
+
         }
 
         private async void DeleteTime_Click(object sender, RoutedEventArgs e)
@@ -522,6 +497,37 @@ namespace MultiGameLauncher.Views.Pages
                 }
 
             }
+        }
+
+        private void ChangeFont_Click(object sender, RoutedEventArgs e)
+        {
+            var fontdialog = new System.Windows.Forms.FontDialog();
+            var colorDialog = new ColorDialog();
+
+            if (fontdialog.ShowDialog() == DialogResult.OK)
+            {
+                newconfig.MaintitleFontName = new System.Windows.Media.FontFamily(fontdialog.Font.FontFamily.Name);
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    newconfig.MainTitleFontColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(
+                    colorDialog.Color.A,
+                    colorDialog.Color.R,
+                    colorDialog.Color.G,
+                    colorDialog.Color.B));
+
+
+
+                    config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
+                    Json.WriteJson(Variables.Configpath, config);
+
+
+                }
+                config.GameInfos[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)] = newconfig;
+                Json.WriteJson(Variables.Configpath, config);
+
+            }
+
         }
     }
 }

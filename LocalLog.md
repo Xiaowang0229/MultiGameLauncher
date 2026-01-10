@@ -1,6 +1,3 @@
-﻿### Release 1.4.1.2 版本更新日志
-#### 发布时间：26/01/02 23:00:00(UTC+8)
+﻿### Release 2.0.0.0 版本更新日志
 ---
-- 修复了更新Json读写相关问题
-- 修复了更新排版相关问题
-- 修复了标题相关问题
+- 修复了已知漏洞（[#33](https://github.com/Xiaowang0229/MultiGameLauncher/issues/33) - [#38](https://github.com/Xiaowang0229/MultiGameLauncher/issues/38)）

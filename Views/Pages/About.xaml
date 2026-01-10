@@ -73,12 +73,12 @@
             <StackPanel Tag="ani" Orientation="Horizontal">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
-                        <Label x:Name="VersionBlock"  Content="当前版本：" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,10,0"/>
+                        <Label x:Name="VersionBlock"  Content="当前版本：" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <Button x:Name="CheckupdateButton"  Height="40" Width="120" FontFamily="Microsoft YaHei UI" FontSize="16" Click="Button_Click" Margin="0,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontWeight="Bold" FontSize="20" TextAlignment="Center"/>
-                                    <TextBlock Text="检查更新" Margin="10,0,0,0"/>
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontWeight="Bold" FontSize="18" TextAlignment="Center"/>
+                                    <TextBlock VerticalAlignment="Center" Text="检查更新" Margin="10,0,0,0" FontSize="14"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>
@@ -86,8 +86,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  Margin="10,0,0,10">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="版本日志：" FontSize="18" Margin="10,0,0,0"/>
-                            <GroupBox Height="165" Header="版本日志" Width="428">
+                            <GroupBox Height="165" Header="版本日志" Width="428" Margin="5,0,0,0">
                                 <FlowDocumentScrollViewer x:Name="UpdateLog" FontSize="14"/>
                             </GroupBox>
                         </StackPanel>
@@ -95,8 +94,8 @@
                     </StackPanel>
                     <StackPanel>
                         <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
-                            <Label Content="使用此软件时默认您同意了" FontSize="18" Margin="10,0,10,0"/>
-                            <TextBlock FontSize="18" VerticalAlignment="Center">
+                            <Label Content="使用此软件时默认您同意了" FontSize="16" Margin="10,0,10,0"/>
+                            <TextBlock FontSize="16" VerticalAlignment="Center">
 <Hyperlink x:Name="UsingEULABlock" Click="UsingEULABlock_Click">
     使用条款
 </Hyperlink>

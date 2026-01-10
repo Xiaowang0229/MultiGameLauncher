@@ -13,7 +13,7 @@
         <Label Content="管理" HorizontalAlignment="Left"  Margin="13,0,0,0" VerticalAlignment="Top" Width="169" FontSize="36" FontWeight="Bold"/>
 
         <StackPanel>
-            <StackPanel  Orientation="Horizontal" Margin="10,74,10,0">
+            <StackPanel  Orientation="Horizontal" Margin="10,50,10,0">
                 <Label Content="选择管理对象：" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                 <ui:DropDownButton Content="请选择对象" HorizontalContentAlignment="Left" FontFamily="Microsoft YaHei UI" x:Name="RootDropper" Width="442" Height="35" Margin="0,0,10,0" FontSize="14"/>
 
@@ -99,6 +99,14 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                     <TextBlock FontFamily="Microsoft YaHei UI" Text="修改背景图片"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="ChangeFont" Margin="10" Width="150" Height="35" Click="ChangeFont_Click">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock FontFamily="Microsoft YaHei UI" Text="更改标题字体"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>

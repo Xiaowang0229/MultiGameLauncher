@@ -78,7 +78,10 @@ namespace MultiGameLauncher.Views.Pages
 
         private void GameTime_LostFocus(object sender, RoutedEventArgs e)
         {
-            Variables.AlarmTime = TimeSpan.FromMinutes(int.Parse(GameTime.Text));
+            if(!string.IsNullOrEmpty(GameTime.Text))
+            {
+                Variables.AlarmTime = TimeSpan.FromMinutes(int.Parse(GameTime.Text));
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -163,6 +166,9 @@ namespace MultiGameLauncher.Views.Pages
         {
             if(RealTimeRadio.IsChecked == true)
             {
+                MinButton.Content = null;
+                HourButton.Content = null;
+                GameTime.Text = null;
                 RealTimeStackPanel.Visibility = Visibility.Visible;
                 GameTimeStackPanel.Visibility = Visibility.Collapsed;
                 GameTimeRadio.IsChecked = false;
@@ -173,6 +179,9 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (GameTimeRadio.IsChecked == true)
             {
+                MinButton.Content = null;
+                HourButton.Content = null;
+                GameTime.Text = null;
                 GameTimeStackPanel.Visibility = Visibility.Visible;
                 RealTimeStackPanel.Visibility = Visibility.Collapsed;
                 RealTimeRadio.IsChecked = false;
@@ -272,16 +281,24 @@ namespace MultiGameLauncher.Views.Pages
         {
             if(RealTimeRadio.IsChecked == true)
             {
-                if(!(string.IsNullOrEmpty(MinButton.Content.ToString())) && !(string.IsNullOrEmpty(HourButton.Content.ToString())))
+                try
                 {
-                    Variables.UsingRealTimeAlarm = true;
-                    Variables.AlarmRealTime = $"{HourButton.Content.ToString()}:{MinButton.Content.ToString()}";
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    win.RootFrame.Navigate(new Launch());
+                    MessageBox.Show(MinButton.Content.ToString(), HourButton.Content.ToString());
+                    if (!string.IsNullOrEmpty(MinButton.Content.ToString()) && !string.IsNullOrEmpty(HourButton.Content.ToString()))
+                    {
+                        Variables.UsingRealTimeAlarm = true;
+                        Variables.AlarmRealTime = $"{HourButton.Content.ToString()}:{MinButton.Content.ToString()}";
+                        var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                        win.RootFrame.Navigate(new Launch());
+                    }
+                    else
+                    {
+                        Tools.GetShowingWindow().ShowMessageAsync("错误", $"请补全信息后再点击此按钮！");
+                    }
                 }
-                else
+                catch
                 {
-                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"请输入分钟数后再点击此按钮！");
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", $"请补全信息后再点击此按钮！");
                 }
             }
             else if(GameTimeRadio.IsChecked == true)

@@ -16,6 +16,7 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,7 +34,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "V2.0.0.0";
+        public readonly static string Version = "2.0.1.0";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -212,6 +213,7 @@ namespace MultiGameLauncher
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
                 ChangeThemeWithSystem = false,
+                LaunchWithMinize = true,
                 GameInfos = new List<LaunchConfig>()
             };
             Json.WriteJson(Variables.Configpath, config);
@@ -455,9 +457,12 @@ namespace MultiGameLauncher
             var proc = Variables.GameProcess[index];
             proc.Start();
             Variables.GameProcessStatus[index] = true;
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.Hide();
-            Variables.MainWindowHideStatus = true;
+            if(config.LaunchWithMinize)
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                win.Hide();
+                Variables.MainWindowHideStatus = true;
+            }
             Tools.InitializeTaskBarContentMenu();
             Variables.PlayingTimeRecorder[index].Start();
             var toast = new ToastContentBuilder().AddText("程序已启动").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"进程监测已开启").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
@@ -763,9 +768,7 @@ namespace MultiGameLauncher
             // 捕获 UI 线程未处理的异常
             Application.Current.DispatcherUnhandledException += (s, e) =>
             {
-                
-                GetShowingWindow().ShowMessageAsync("UI 线程出错",e.Exception.ToString());
-                //KillTaskBar();
+                MessageBox.Show(e.Exception.ToString(),"错误",MessageBoxButton.OK,MessageBoxImage.Error);
                 Environment.Exit(0);
                 
             };
@@ -773,18 +776,14 @@ namespace MultiGameLauncher
             // 捕获非 UI 线程未处理的异常
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                
-                GetShowingWindow().ShowMessageAsync("程序主线程出错",e.ExceptionObject.ToString());
-                //KillTaskBar();
+                MessageBox.Show(e.ExceptionObject.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Environment.Exit(0);
             };
 
             // 捕获 Task 线程未处理的异常
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                
-                GetShowingWindow().ShowMessageAsync("Task 线程出错", e.Exception.ToString());
-                //KillTaskBar();
+                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Environment.Exit(0);
             };
         }
@@ -883,6 +882,8 @@ namespace MultiGameLauncher
         //游戏配置项，勿动
         public List<LaunchConfig> GameInfos { get; set; }
 
+        //游戏启动时最小化窗口
+        public bool LaunchWithMinize { get; set; }
     }
     
     public class UpdateConfig

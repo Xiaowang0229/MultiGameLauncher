@@ -3,9 +3,11 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Pages;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 
@@ -17,17 +19,87 @@ namespace MultiGameLauncher
 
     public partial class MainWindow : MetroWindow
     {
+        private const int WM_SIZING = 0x0214;
+        private const int WMSZ_LEFT = 1;
+        private const int WMSZ_RIGHT = 2;
+        private const int WMSZ_TOP = 3;
+        private const int WMSZ_TOPLEFT = 4;
+        private const int WMSZ_TOPRIGHT = 5;
+        private const int WMSZ_BOTTOM = 6;
+        private const int WMSZ_BOTTOMLEFT = 8;
+        private const int WMSZ_BOTTOMRIGHT = 7;
 
+        // 你想要保持的比例（宽:高）
+        private readonly double _aspectRatio = 10.0 / 6.0;  // ← 改成你想要的比例
         public MainWindow()
         {
+
+
             InitializeComponent();
 
-
+            
 
 
         }
 
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var hwnd = new WindowInteropHelper(this).Handle;
+            HwndSource.FromHwnd(hwnd)?.AddHook(WndProc);
+        }
 
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == WM_SIZING)
+            {
+                var rect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
+
+                double width = rect.Right - rect.Left;
+                double height = rect.Bottom - rect.Top;
+
+                switch ((int)wParam)
+                {
+                    // 左右边缘拖动 → 调整高度
+                    case WMSZ_LEFT:
+                    case WMSZ_RIGHT:
+                        height = width / _aspectRatio;
+                        rect.Bottom = rect.Top + (int)height;
+                        break;
+
+                    // 上下边缘拖动 → 调整宽度
+                    case WMSZ_TOP:
+                    case WMSZ_BOTTOM:
+                        width = height * _aspectRatio;
+                        rect.Right = rect.Left + (int)width;
+                        break;
+
+                    // 四个角（最常用情况）
+                    case WMSZ_TOPLEFT:
+                    case WMSZ_TOPRIGHT:
+                    case WMSZ_BOTTOMLEFT:
+                    case WMSZ_BOTTOMRIGHT:
+                        // 以宽度为准（也可以改成以高度为准，看你更想要哪个主导）
+                        height = width / _aspectRatio;
+                        rect.Bottom = rect.Top + (int)height;
+                        break;
+                }
+
+                Marshal.StructureToPtr(rect, lParam, true);
+                handled = true;
+            }
+
+            return IntPtr.Zero;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
 
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -35,7 +107,7 @@ namespace MultiGameLauncher
             //RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
             //RootFrame.Navigate();
 
-
+            
         }
 
 

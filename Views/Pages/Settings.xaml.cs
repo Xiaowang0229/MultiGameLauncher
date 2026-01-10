@@ -1,4 +1,5 @@
 ﻿using HuaZi.Library.Json;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -132,6 +133,7 @@ namespace MultiGameLauncher.Views.Pages
             StartUpCheckUpdate.IsOn = config.StartUpCheckUpdate;
             ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
             AutoStartWithSystem.IsOn = config.AutoStartUp;
+            LaunchWithMinize.IsOn = config.LaunchWithMinize;
             if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
             {
                 FileInfo fi = new FileInfo(Path.GetTempPath() + "\\Temp.exe");
@@ -219,6 +221,22 @@ namespace MultiGameLauncher.Views.Pages
                 CacheSizeBlock.Content = "0.0MB";
 
             
+        }
+
+        private void LaunchWithMinize_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (LaunchWithMinize.IsOn)
+            {
+                config.LaunchWithMinize = true;
+                Json.WriteJson(Variables.Configpath, config);
+                Tools.StartThemeMonitoring();
+            }
+            else if (!LaunchWithMinize.IsOn)
+            {
+                config.LaunchWithMinize = false;
+                Json.WriteJson(Variables.Configpath, config);
+                Tools.StopThemeMonitoring();
+            }
         }
 
         
