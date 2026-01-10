@@ -26,11 +26,10 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         public bool SaveGame = false;
 
-        public OOBEImport(bool isCreateNewGame = false, bool isOOBE = false)
+        public OOBEImport(bool isCreateNewGame = false)
         {
             InitializeComponent();
             Iscreatenewgame = isCreateNewGame;
-            IsOOBE = isOOBE;
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             newconfig = new LaunchConfig
             {
@@ -247,8 +246,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
                 if (Iscreatenewgame == true)
                 {
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    win.RootFrame.Navigate(new Manage());
+                    Tools.Restart();
 
                 }
                 else

@@ -61,7 +61,7 @@ namespace MultiGameLauncher.Views.Windows
         {
             if (IsCreateNewGame)
             {
-                RootFrame.Navigate(new OOBEImport());
+                RootFrame.Navigate(new OOBEImport(true));
             }
         }
 

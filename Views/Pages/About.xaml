@@ -86,24 +86,13 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  Margin="10,0,0,10">
                         <StackPanel Orientation="Horizontal">
-                            <GroupBox Height="165" Header="版本日志" Width="428" Margin="5,0,0,0">
+                            <GroupBox Height="200" Header="版本日志" Width="428" Margin="5,0,0,0">
                                 <FlowDocumentScrollViewer x:Name="UpdateLog" FontSize="14"/>
                             </GroupBox>
                         </StackPanel>
                         
                     </StackPanel>
-                    <StackPanel>
-                        <StackPanel   Orientation="Horizontal" Margin="10,0,0,10">
-                            <Label Content="使用此软件时默认您同意了" FontSize="16" Margin="10,0,10,0"/>
-                            <TextBlock FontSize="16" VerticalAlignment="Center">
-<Hyperlink x:Name="UsingEULABlock" Click="UsingEULABlock_Click">
-    使用条款
-</Hyperlink>
-                            </TextBlock>
-
-                        </StackPanel>
-
-                    </StackPanel>
+                    <StackPanel/>
                 </StackPanel>
 
             </StackPanel>

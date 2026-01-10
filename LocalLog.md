@@ -1,3 +1,3 @@
-﻿### Release 2.0.0.0 版本更新日志
+﻿### Release 2.0.1.2 版本更新日志
 ---
-- 修复了已知漏洞（[#33](https://github.com/Xiaowang0229/MultiGameLauncher/issues/33) - [#38](https://github.com/Xiaowang0229/MultiGameLauncher/issues/38)）
+- 修复了未计入的已知问题
