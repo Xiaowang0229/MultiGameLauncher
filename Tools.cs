@@ -705,10 +705,10 @@ namespace MultiGameLauncher
                 if (updcfg.UpdateVersion != Variables.Version)
                 {
 
-                    
 
-                        
-                        var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+
+
+                    var win = GetShowingWindow();
                         var settings = new MetroDialogSettings
                         {
                             AffirmativeButtonText = "取消",
@@ -717,7 +717,6 @@ namespace MultiGameLauncher
                         var results = await win.ShowMessageAsync("更新可用", $"当前版本:{Variables.Version},最新版本:{updcfg.UpdateVersion},请问是否更新？", MessageDialogStyle.AffirmativeAndNegative,settings);
                         if (results == MessageDialogResult.Negative)
                         {
-                            win.ShowUpdatePreparing();
                             if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
                             {
                                 File.Delete(Path.GetTempPath() + "\\Temp.exe");
@@ -768,22 +767,28 @@ namespace MultiGameLauncher
             // 捕获 UI 线程未处理的异常
             Application.Current.DispatcherUnhandledException += (s, e) =>
             {
-                MessageBox.Show(e.Exception.ToString(),"错误",MessageBoxButton.OK,MessageBoxImage.Error);
+
+                GetShowingWindow().ShowMessageAsync("UI 线程出错", e.Exception.ToString());
+                //KillTaskBar();
                 Environment.Exit(0);
-                
+
             };
 
             // 捕获非 UI 线程未处理的异常
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                MessageBox.Show(e.ExceptionObject.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                GetShowingWindow().ShowMessageAsync("程序主线程出错", e.ExceptionObject.ToString());
+                //KillTaskBar();
                 Environment.Exit(0);
             };
 
             // 捕获 Task 线程未处理的异常
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                MessageBox.Show(e.Exception.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                GetShowingWindow().ShowMessageAsync("Task 线程出错", e.Exception.ToString());
+                //KillTaskBar();
                 Environment.Exit(0);
             };
         }
@@ -802,23 +807,17 @@ namespace MultiGameLauncher
         }
         public static MetroWindow? GetShowingWindow()
         {
-            try
+            return Application.Current.Dispatcher.Invoke<MetroWindow>(() =>
             {
-                var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                return win;
-            }
-            catch
-            {
-                try
+                var windows = Application.Current.Windows;
+
+                foreach (Window w in windows)
                 {
-                    var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
-                    return win;
+                    if (w is MainWindow mw) return mw;
+                    if (w is OOBEWindow oobe) return oobe;
                 }
-                catch
-                {
-                    return null;
-                }
-            }
+                return null;
+            });
         }
 
         public async static Task<bool> ShowQuestionDialogMetro(string content, string title)
