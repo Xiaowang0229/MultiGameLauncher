@@ -25,11 +25,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>bin\Debug\</PackageOutputPath>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-
-    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <SelfContained>true</SelfContained>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <TrimMode>none</TrimMode>
   </PropertyGroup>
 
   
@@ -50,9 +45,6 @@
     <None Remove="FFmpeg\avformat-62.dll" />
     <None Remove="FFmpeg\avutil-56.dll" />
     <None Remove="FFmpeg\avutil-60.dll" />
-    <None Remove="FFmpeg\ffmpeg.exe" />
-    <None Remove="FFmpeg\ffplay.exe" />
-    <None Remove="FFmpeg\ffprobe.exe" />
     <None Remove="FFmpeg\postproc-55.dll" />
     <None Remove="FFmpeg\swresample-3.dll" />
     <None Remove="FFmpeg\swresample-6.dll" />
@@ -77,15 +69,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="FFmpeg\avutil-56.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FFmpeg\ffmpeg.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FFmpeg\ffplay.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FFmpeg\ffprobe.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="FFmpeg\postproc-55.dll">
