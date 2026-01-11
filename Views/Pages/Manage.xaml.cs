@@ -177,10 +177,7 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -191,8 +188,11 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new OOBEImport(true));
+            var win = new OOBEWindow(true);
+            win.Show();
+            var winold = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            winold.Close();
+            Tools.KillTaskBar();
         }
 
         private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)

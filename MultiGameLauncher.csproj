@@ -25,6 +25,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>bin\Debug\</PackageOutputPath>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <SelfContained>true</SelfContained>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <TrimMode>none</TrimMode>
   </PropertyGroup>
 
   

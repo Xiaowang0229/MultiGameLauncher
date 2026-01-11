@@ -74,7 +74,9 @@ namespace MultiGameLauncher.Views.Windows
             }
             else if (config.GameInfos.Count != 0)
             {
-                Tools.Restart();
+                var win = new MainWindow();
+                win.Show();
+                Tools.IntializeTaskbar();
             }
             
             
