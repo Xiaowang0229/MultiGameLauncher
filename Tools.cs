@@ -1,4 +1,4 @@
-ï»¿global using Application = System.Windows.Application;
+global using Application = System.Windows.Application;
 global using MessageBox = System.Windows.MessageBox;
 global using Page = System.Windows.Controls.Page;
 using ControlzEx.Theming;
@@ -16,7 +16,6 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,9 +31,9 @@ using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace MultiGameLauncher
 {
-    public static class Variables //å˜é‡é›†
+    public static class Variables //±äÁ¿¼¯
     {
-        public readonly static string Version = "2.0.1.3";
+        public readonly static string Version = "2.0.2.0-Pre.1";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -56,9 +55,8 @@ namespace MultiGameLauncher
         public static CancellationTokenSource UpdateCTS = new CancellationTokenSource();
     }
 
-    public static class Tools //å‡½æ•°é›†
+    public static class Tools //º¯Êı¼¯
     {
-        private static bool DownloadStatus;
 
         public static void Restart()
         {
@@ -101,7 +99,7 @@ namespace MultiGameLauncher
         public static bool ConvertToPngAndSave(byte[] imageBytes, string savePath)
         {
             if (imageBytes == null || imageBytes.Length == 0)
-                throw new ArgumentException("byte[] ä¸èƒ½ä¸ºç©º");
+                throw new ArgumentException("byte[] ²»ÄÜÎª¿Õ");
 
             try
             {
@@ -114,7 +112,7 @@ namespace MultiGameLauncher
             }
             catch (Exception ex)
             {
-                Console.WriteLine("è½¬æ¢å¤±è´¥: " + ex.Message);
+                Console.WriteLine("×ª»»Ê§°Ü: " + ex.Message);
                 return false;
             }
         }
@@ -145,7 +143,7 @@ namespace MultiGameLauncher
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"åŠ è½½å›¾ç‰‡å¤±è´¥: {imagePath}ï¼Œé”™è¯¯: {ex.Message}");
+                Console.WriteLine($"¼ÓÔØÍ¼Æ¬Ê§°Ü: {imagePath}£¬´íÎó: {ex.Message}");
                 return null;
             }
         }
@@ -221,16 +219,16 @@ namespace MultiGameLauncher
         }
         public static string ReadEmbeddedMarkdown(string resourceName)
         {
-            // è·å–å½“å‰æ‰§è¡Œçš„ç¨‹åºé›†
+            // »ñÈ¡µ±Ç°Ö´ĞĞµÄ³ÌĞò¼¯
             var assembly = Assembly.GetExecutingAssembly();
 
-            // è·å–åµŒå…¥èµ„æºçš„æµ
+            // »ñÈ¡Ç¶Èë×ÊÔ´µÄÁ÷
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
                     throw new FileNotFoundException($"Resource {resourceName} not found.");
 
-                // ä½¿ç”¨ StreamReader è¯»å–æµä¸­çš„æ–‡æœ¬
+                // Ê¹ÓÃ StreamReader ¶ÁÈ¡Á÷ÖĞµÄÎÄ±¾
                 using (var reader = new StreamReader(stream, Encoding.UTF8))
                 {
                     return reader.ReadToEnd();
@@ -248,22 +246,22 @@ namespace MultiGameLauncher
             }
             return 0;
         }
-        
+
         public static void IntializeTaskbar()
         {
             MainConfig config = new MainConfig();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            //æœ¬ä½“åˆå§‹åŒ–
+            //±¾Ìå³õÊ¼»¯
             Variables.RootTaskBarIcon = new TaskbarIcon();
             Variables.RootTaskBarIcon.IconSource = ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
-            Variables.RootTaskBarIcon.ToolTipText = $"Rocket Launcher ä¸»ç¨‹åº";
+            Variables.RootTaskBarIcon.ToolTipText = $"Rocket Launcher Ö÷³ÌĞò";
 
-            //åˆ—è¡¨é¡¹åˆå§‹åŒ–
+            //ÁĞ±íÏî³õÊ¼»¯
             var tbcm = new System.Windows.Controls.ContextMenu();
-            var OpenMainWindowItem = new MenuItem { Header = "æ˜¾ç¤ºä¸»çª—å£" };
-            var ControlGameProcess = new MenuItem { Header = "å¿«æ·ç®¡ç†æ¸¸æˆ" };
-            var SettingsItem = new MenuItem { Header = "æ‰“å¼€è®¾ç½®é¡µ" };
-            var ExitApplicationItem = new MenuItem { Header = "é€€å‡ºä¸»ç¨‹åº" };
+            var OpenMainWindowItem = new MenuItem { Header = "ÏÔÊ¾Ö÷´°¿Ú" };
+            var ControlGameProcess = new MenuItem { Header = "¿ì½İ¹ÜÀíÓÎÏ·" };
+            var SettingsItem = new MenuItem { Header = "´ò¿ªÉèÖÃÒ³" };
+            var ExitApplicationItem = new MenuItem { Header = "ÍË³öÖ÷³ÌĞò" };
 
 
 
@@ -277,7 +275,7 @@ namespace MultiGameLauncher
 
 
 
-            //ç»‘å®šäº‹ä»¶
+            //°ó¶¨ÊÂ¼ş
             OpenMainWindowItem.Click += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
@@ -317,7 +315,7 @@ namespace MultiGameLauncher
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 Page currentPage = win.RootFrame.Content as Page;
 
-                
+
                 if (Variables.MainWindowHideStatus)
                 {
                     win.Show();
@@ -325,7 +323,7 @@ namespace MultiGameLauncher
                     Variables.MainWindowHideStatus = false;
                     win.Topmost = true;
                     win.Topmost = false;
-                    if(currentPage is Launch launchpage)
+                    if (currentPage is Launch launchpage)
                     {
                         if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
                         {
@@ -359,14 +357,14 @@ namespace MultiGameLauncher
         }
         public static void InitializeTaskBarContentMenu()
         {
-            //åˆ—è¡¨é¡¹åˆå§‹åŒ–
+            //ÁĞ±íÏî³õÊ¼»¯
             MainConfig config = new MainConfig();
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var tbcm = new System.Windows.Controls.ContextMenu();
-            var OpenMainWindowItem = new MenuItem { Header = "æ˜¾ç¤ºä¸»çª—å£" };
-            var ControlGameProcess = new MenuItem { Header = "å¿«æ·ç®¡ç†æ¸¸æˆ" };
-            var SettingsItem = new MenuItem { Header = "æ‰“å¼€è®¾ç½®é¡µ" };
-            var ExitApplicationItem = new MenuItem { Header = "é€€å‡ºä¸»ç¨‹åº" };
+            var OpenMainWindowItem = new MenuItem { Header = "ÏÔÊ¾Ö÷´°¿Ú" };
+            var ControlGameProcess = new MenuItem { Header = "¿ì½İ¹ÜÀíÓÎÏ·" };
+            var SettingsItem = new MenuItem { Header = "´ò¿ªÉèÖÃÒ³" };
+            var ExitApplicationItem = new MenuItem { Header = "ÍË³öÖ÷³ÌĞò" };
 
             for (int i = 0; i < Variables.GameProcess.Count; i++)
             {
@@ -375,8 +373,8 @@ namespace MultiGameLauncher
                     int index = i;
                     var subitem = new MenuItem
                     {
-                        Header = $"ç»“æŸ {config.GameInfos[i].ShowName}",
-                        //Header = $"ç»“æŸ {Variables.GameProcess[i].ProcessName}",
+                        Header = $"½áÊø {config.GameInfos[i].ShowName}",
+                        //Header = $"½áÊø {Variables.GameProcess[i].ProcessName}",
 
                     };
                     subitem.Click += async (s, e) =>
@@ -416,12 +414,12 @@ namespace MultiGameLauncher
 
 
             Variables.RootTaskBarIcon.ContextMenu = tbcm;
-            //ç»‘å®šäº‹ä»¶
+            //°ó¶¨ÊÂ¼ş
             OpenMainWindowItem.Click += (s, e) =>
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 Page currentPage = win.RootFrame.Content as Page;
-                
+
                 win.Show();
                 win.WindowState = WindowState.Normal;
                 if (currentPage is Launch launchpage)
@@ -457,7 +455,7 @@ namespace MultiGameLauncher
             var proc = Variables.GameProcess[index];
             proc.Start();
             Variables.GameProcessStatus[index] = true;
-            if(config.LaunchWithMinize)
+            if (config.LaunchWithMinize)
             {
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.Hide();
@@ -465,7 +463,7 @@ namespace MultiGameLauncher
             }
             Tools.InitializeTaskBarContentMenu();
             Variables.PlayingTimeRecorder[index].Start();
-            var toast = new ToastContentBuilder().AddText("ç¨‹åºå·²å¯åŠ¨").AddText($"ç¨‹åºåï¼š{config.GameInfos[index].ShowName}").AddText($"è¿›ç¨‹ç›‘æµ‹å·²å¼€å¯").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            var toast = new ToastContentBuilder().AddText("³ÌĞòÒÑÆô¶¯").AddText($"³ÌĞòÃû£º{config.GameInfos[index].ShowName}").AddText($"½ø³Ì¼à²âÒÑ¿ªÆô").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
             toast.Show();
 
 
@@ -482,11 +480,12 @@ namespace MultiGameLauncher
             {
                 await proc.WaitForExitAsync(Variables.LaunchCTS.Token);
             }
-            catch {
+            catch
+            {
                 return;
             }
             StopMonitingGameStatus(index);
-            
+
         }
         private static void StopMonitingGameStatus(int index)
         {
@@ -494,7 +493,7 @@ namespace MultiGameLauncher
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
-            var toast0 = new ToastContentBuilder().AddText("ç¨‹åºå·²ç»“æŸ").AddText($"ç¨‹åºåï¼š{config.GameInfos[index].ShowName}").AddText($"æ¸¸æˆæ—¶é•¿ï¼š{time} åˆ†é’Ÿ,é€€å‡ºç ï¼š{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
+            var toast0 = new ToastContentBuilder().AddText("³ÌĞòÒÑ½áÊø").AddText($"³ÌĞòÃû£º{config.GameInfos[index].ShowName}").AddText($"ÓÎÏ·Ê±³¤£º{time} ·ÖÖÓ,ÍË³öÂë£º{Variables.GameProcess[index].ExitCode}").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
             toast0.Show();
 
             config.GameInfos[index].GamePlayedMinutes += time;
@@ -532,7 +531,7 @@ namespace MultiGameLauncher
                 return null;
             }*/
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            var result = await win.ShowInputAsync($"{Title}","");
+            var result = await win.ShowInputAsync($"{Title}", "");
             if (!string.IsNullOrEmpty(result))
             {
                 return result;
@@ -545,40 +544,40 @@ namespace MultiGameLauncher
         public static void ExtractExeIconToPng(string exePath, string pngPath)
         {
             if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
-                throw new FileNotFoundException("EXE æ–‡ä»¶ä¸å­˜åœ¨", exePath);
+                throw new FileNotFoundException("EXE ÎÄ¼ş²»´æÔÚ", exePath);
 
             if (string.IsNullOrWhiteSpace(pngPath))
-                throw new ArgumentException("PNG è¾“å‡ºè·¯å¾„ä¸èƒ½ä¸ºç©º");
+                throw new ArgumentException("PNG Êä³öÂ·¾¶²»ÄÜÎª¿Õ");
 
-            // ä½¿ç”¨ IconExtractor.dll æå–å›¾æ ‡èµ„æº
+            // Ê¹ÓÃ IconExtractor.dll ÌáÈ¡Í¼±ê×ÊÔ´
             var extractor = new IconExtractor(exePath);
 
             if (extractor.Count == 0)
-                throw new InvalidOperationException($"æŒ‡å®šçš„ EXE æ–‡ä»¶ä¸åŒ…å«ä»»ä½•å›¾æ ‡: {exePath}");
+                throw new InvalidOperationException($"Ö¸¶¨µÄ EXE ÎÄ¼ş²»°üº¬ÈÎºÎÍ¼±ê: {exePath}");
 
-            // é€šå¸¸ç¬¬ 0 ä¸ªå›¾æ ‡å°±æ˜¯ä¸»å›¾æ ‡ï¼ˆæœ€å¤§ã€æœ€æ¸…æ™°çš„é‚£ä¸ªï¼‰
-            // GetIcon(0) è¿”å›çš„æ˜¯åŒ…å«æ‰€æœ‰å°ºå¯¸å˜ä½“ï¼ˆåŒ…æ‹¬ 256x256ï¼‰çš„å®Œæ•´ Icon å¯¹è±¡
+            // Í¨³£µÚ 0 ¸öÍ¼±ê¾ÍÊÇÖ÷Í¼±ê£¨×î´ó¡¢×îÇåÎúµÄÄÇ¸ö£©
+            // GetIcon(0) ·µ»ØµÄÊÇ°üº¬ËùÓĞ³ß´ç±äÌå£¨°üÀ¨ 256x256£©µÄÍêÕû Icon ¶ÔÏó
             using (Icon fullIcon = extractor.GetIcon(0))
             {
-                // ç¡®ä¿è¾“å‡ºç›®å½•å­˜åœ¨
+                // È·±£Êä³öÄ¿Â¼´æÔÚ
                 string dir = Path.GetDirectoryName(pngPath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                // ä¼˜å…ˆå°è¯•æå– 256x256 é«˜æ¸…å°ºå¯¸ï¼ˆç°ä»£ Windows ç¨‹åºå‡ ä¹éƒ½æ”¯æŒï¼‰
+                // ÓÅÏÈ³¢ÊÔÌáÈ¡ 256x256 ¸ßÇå³ß´ç£¨ÏÖ´ú Windows ³ÌĞò¼¸ºõ¶¼Ö§³Ö£©
                 try
                 {
                     using (Icon largeIcon = new Icon(fullIcon, 256, 256))
-                    using (Bitmap bmp = largeIcon.ToBitmap())  // è‡ªåŠ¨ä¿ç•™é€æ˜åº¦
+                    using (Bitmap bmp = largeIcon.ToBitmap())  // ×Ô¶¯±£ÁôÍ¸Ã÷¶È
                     {
                         bmp.Save(pngPath, ImageFormat.Png);
-                        return;  // æˆåŠŸæå– 256x256ï¼Œç›´æ¥è¿”å›
+                        return;  // ³É¹¦ÌáÈ¡ 256x256£¬Ö±½Ó·µ»Ø
                     }
                 }
                 catch
                 {
-                    // å¦‚æœæ²¡æœ‰ 256x256 å°ºå¯¸ï¼Œå›é€€åˆ°å›¾æ ‡è‡ªå¸¦çš„æœ€å¤§å°ºå¯¸
-                    // ToBitmap() ä¼šé€‰æ‹©æœ€ä½³å¯ç”¨å°ºå¯¸å¹¶ä¿ç•™ Alpha é€šé“
+                    // Èç¹ûÃ»ÓĞ 256x256 ³ß´ç£¬»ØÍËµ½Í¼±ê×Ô´øµÄ×î´ó³ß´ç
+                    // ToBitmap() »áÑ¡Ôñ×î¼Ñ¿ÉÓÃ³ß´ç²¢±£Áô Alpha Í¨µÀ
                 }
 
                 using (Bitmap bmp = fullIcon.ToBitmap())
@@ -596,7 +595,7 @@ namespace MultiGameLauncher
             {
                 DependencyObject child = VisualTreeHelper.GetChild(parent, i);
 
-                
+
 
 
 
@@ -604,15 +603,15 @@ namespace MultiGameLauncher
                 {
                     if (imageControl.Source is BitmapImage bitmapImage && bitmapImage.UriSource != null)
                     {
-                        // åˆ›å»ºæ–° BitmapImageï¼Œå¿½ç•¥ç¼“å­˜å¹¶ç«‹å³åŠ è½½
+                        // ´´½¨ĞÂ BitmapImage£¬ºöÂÔ»º´æ²¢Á¢¼´¼ÓÔØ
                         BitmapImage newBitmap = new BitmapImage();
                         newBitmap.BeginInit();
                         newBitmap.UriSource = bitmapImage.UriSource;
-                        newBitmap.CacheOption = BitmapCacheOption.OnLoad;           // ç«‹å³åŠ è½½ä»¥é‡Šæ”¾æ–‡ä»¶é”ï¼ˆå¦‚éœ€ï¼‰
-                        newBitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache; // å…³é”®ï¼šå¿½ç•¥ç°æœ‰ç¼“å­˜
+                        newBitmap.CacheOption = BitmapCacheOption.OnLoad;           // Á¢¼´¼ÓÔØÒÔÊÍ·ÅÎÄ¼şËø£¨ÈçĞè£©
+                        newBitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache; // ¹Ø¼ü£ººöÂÔÏÖÓĞ»º´æ
                         newBitmap.EndInit();
 
-                        // å¯é€‰ï¼šFreeze ä»¥æé«˜æ€§èƒ½ï¼ˆå¤šçº¿ç¨‹å®‰å…¨ï¼‰
+                        // ¿ÉÑ¡£ºFreeze ÒÔÌá¸ßĞÔÄÜ£¨¶àÏß³Ì°²È«£©
                         if (newBitmap.CanFreeze)
                         {
                             newBitmap.Freeze();
@@ -622,30 +621,30 @@ namespace MultiGameLauncher
                     }
                 }
 
-                // é€’å½’å¤„ç†å­æ§ä»¶
+                // µİ¹é´¦Àí×Ó¿Ø¼ş
                 RefreshAllImageCaches(child);
             }
         }
         public static bool CheckTime(string hhmm)
         {
-            if(hhmm == DateTime.Now.ToString("HH:mm"))
+            if (hhmm == DateTime.Now.ToString("HH:mm"))
             {
                 return true;
             }
 
             return false;
         }
-        public static void AlarmTick(object s,EventArgs e)
+        public static void AlarmTick(object s, EventArgs e)
         {
-            if(Variables.UsingRealTimeAlarm == true)
+            if (Variables.UsingRealTimeAlarm == true)
             {
-                
+
                 if (CheckTime(Variables.AlarmRealTime))
                 {
                     Variables.UsingRealTimeAlarm = null;
                     var config = Json.ReadJson<MainConfig>(Variables.Configpath);
                     var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    var toast0 = new ToastContentBuilder().AddText("æç¤º").AddText("æ—¶é—´å·²è¾¾åˆ°ï¼Œè¯·æ‚¨å°½å¿«é€€å‡ºæ¸¸æˆï¼").AddAppLogoOverride(new Uri($"{Environment.CurrentDirectory}\\Alarm.png"));
+                    var toast0 = new ToastContentBuilder().AddText("ÌáÊ¾").AddText("Ê±¼äÒÑ´ïµ½£¬ÇëÄú¾¡¿ìÍË³öÓÎÏ·£¡").AddAppLogoOverride(new Uri($"{Environment.CurrentDirectory}\\Alarm.png"));
                     toast0.Show();
                     Variables.RealTimeAlarm.Stop();
                     win.Show();
@@ -672,13 +671,14 @@ namespace MultiGameLauncher
             {
                 await Task.Delay(Variables.AlarmTime, Variables.AlarmCTS.Token);
             }
-            catch {
+            catch
+            {
                 return;
             }
             Variables.UsingRealTimeAlarm = null;
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            var toast0 = new ToastContentBuilder().AddText("æç¤º").AddText("æ—¶é—´å·²è¾¾åˆ°ï¼Œè¯·æ‚¨å°½å¿«é€€å‡ºæ¸¸æˆï¼").AddAppLogoOverride(new Uri($"{Environment.CurrentDirectory}\\Alarm.png"));
+            var toast0 = new ToastContentBuilder().AddText("ÌáÊ¾").AddText("Ê±¼äÒÑ´ïµ½£¬ÇëÄú¾¡¿ìÍË³öÓÎÏ·£¡").AddAppLogoOverride(new Uri($"{Environment.CurrentDirectory}\\Alarm.png"));
             toast0.Show();
             win.Show();
             win.WindowState = WindowState.Normal;
@@ -695,12 +695,12 @@ namespace MultiGameLauncher
             win.Topmost = true;
             win.Topmost = false;
         }
-        public async static Task CheckUpdate(bool IsSameVersionShowDialog = false,bool ShowException = false)
+        public async static Task CheckUpdate(bool IsSameVersionShowDialog = false, bool ShowException = false)
         {
             var client = new HttpClient();
             try
             {
-                var content = await client.GetStringAsync("https://gitee.com/xiaowangupdate/update-service/raw/master/MultiGameLauncher",Variables.UpdateCTS.Token);
+                var content = await client.GetStringAsync("https://gitee.com/xiaowangupdate/update-service/raw/master/MultiGameLauncher", Variables.UpdateCTS.Token);
                 var updcfg = Json.ReadJson<UpdateConfig>(content);
                 if (updcfg.UpdateVersion != Variables.Version)
                 {
@@ -709,46 +709,46 @@ namespace MultiGameLauncher
 
 
                     var win = GetShowingWindow();
-                        var settings = new MetroDialogSettings
+                    var settings = new MetroDialogSettings
+                    {
+                        AffirmativeButtonText = "È¡Ïû",
+                        NegativeButtonText = "È·¶¨"
+                    };
+                    var results = await win.ShowMessageAsync("¸üĞÂ¿ÉÓÃ", $"µ±Ç°°æ±¾:{Variables.Version},×îĞÂ°æ±¾:{updcfg.UpdateVersion},ÇëÎÊÊÇ·ñ¸üĞÂ£¿", MessageDialogStyle.AffirmativeAndNegative, settings);
+                    if (results == MessageDialogResult.Negative)
+                    {
+                        if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
                         {
-                            AffirmativeButtonText = "å–æ¶ˆ",
-                            NegativeButtonText = "ç¡®å®š"
-                        };
-                        var results = await win.ShowMessageAsync("æ›´æ–°å¯ç”¨", $"å½“å‰ç‰ˆæœ¬:{Variables.Version},æœ€æ–°ç‰ˆæœ¬:{updcfg.UpdateVersion},è¯·é—®æ˜¯å¦æ›´æ–°ï¼Ÿ", MessageDialogStyle.AffirmativeAndNegative,settings);
-                        if (results == MessageDialogResult.Negative)
+                            File.Delete(Path.GetTempPath() + "\\Temp.exe");
+                        }
+                        try
                         {
-                            if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
-                            {
-                                File.Delete(Path.GetTempPath() + "\\Temp.exe");
-                            }
-                            try
-                            {
 
                             File.Copy($"{Environment.CurrentDirectory}\\UpdateAPI.exe", Path.GetTempPath() + "\\Temp.exe");
-                                Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = $"{Path.GetTempPath()}Temp.exe",
-                                    Arguments = $"\"{updcfg.UpdateLink}\" \"{Environment.ProcessPath}\"",
-                                    UseShellExecute = true
-                                });
-                                Tools.KillTaskBar();
-                                Environment.Exit(0);
-                            }
-                            catch (Exception ex)
+                            Process.Start(new ProcessStartInfo
                             {
-                            GetShowingWindow().ShowMessageAsync("å¯åŠ¨æ›´æ–°æ—¶å‘ç°é”™è¯¯", $"{ex.Message}");
+                                FileName = $"{Path.GetTempPath()}Temp.exe",
+                                Arguments = $"\"{updcfg.UpdateLink}\" \"{Environment.ProcessPath}\"",
+                                UseShellExecute = true
+                            });
+                            Tools.KillTaskBar();
                             Environment.Exit(0);
-                            }
-
                         }
-                    
-                    
+                        catch (Exception ex)
+                        {
+                            GetShowingWindow().ShowMessageAsync("Æô¶¯¸üĞÂÊ±·¢ÏÖ´íÎó", $"{ex.Message}");
+                            Environment.Exit(0);
+                        }
+
+                    }
+
+
 
 
                 }
-                else if(updcfg.UpdateVersion == Variables.Version && IsSameVersionShowDialog)
+                else if (updcfg.UpdateVersion == Variables.Version && IsSameVersionShowDialog)
                 {
-                    Tools.GetShowingWindow().ShowMessageAsync("æç¤º", $"å½“å‰ç‰ˆæœ¬å·²æ˜¯æœ€æ–°ç‰ˆæœ¬:{updcfg.UpdateVersion}ï¼");
+                    Tools.GetShowingWindow().ShowMessageAsync("ÌáÊ¾", $"µ±Ç°°æ±¾ÒÑÊÇ×îĞÂ°æ±¾:{updcfg.UpdateVersion}£¡");
                 }
             }
             catch (TaskCanceledException)
@@ -757,37 +757,60 @@ namespace MultiGameLauncher
             }
             catch (Exception ex)
             {
-                Tools.GetShowingWindow().ShowMessageAsync("å¯åŠ¨æ›´æ–°æ—¶é”™è¯¯", $"{ex.Message}");
+                Tools.GetShowingWindow().ShowMessageAsync("Æô¶¯¸üĞÂÊ±´íÎó", $"{ex.Message}");
             }
 
         }
-        
+
         public static void RegisterGlobalExceptionHandlers()
         {
-            // æ•è· UI çº¿ç¨‹æœªå¤„ç†çš„å¼‚å¸¸
+            // ²¶»ñ UI Ïß³ÌÎ´´¦ÀíµÄÒì³£
             Application.Current.DispatcherUnhandledException += (s, e) =>
             {
-
-                GetShowingWindow().ShowMessageAsync("UI çº¿ç¨‹å‡ºé”™", e.Exception.ToString());
-                //KillTaskBar();
-                Environment.Exit(0);
+                var win = GetShowingWindow();
+                if(win != null)
+                {
+                    GetShowingWindow().ShowMessageAsync("³ÌĞò³ö´í", e.Exception.ToString());
+                }
+                else
+                {
+                    MessageBox.Show($"·¢Éú´íÎó£º{e.Exception}","´íÎó",MessageBoxButton.OK,MessageBoxImage.Error);
+                }
+                    //KillTaskBar();
+                    Environment.Exit(0);
 
             };
 
-            // æ•è·é UI çº¿ç¨‹æœªå¤„ç†çš„å¼‚å¸¸
+            // ²¶»ñ·Ç UI Ïß³ÌÎ´´¦ÀíµÄÒì³£
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
 
-                GetShowingWindow().ShowMessageAsync("ç¨‹åºä¸»çº¿ç¨‹å‡ºé”™", e.ExceptionObject.ToString());
+                var win = GetShowingWindow();
+                if (win != null)
+                {
+                    GetShowingWindow().ShowMessageAsync("³ÌĞò³ö´í", e.ExceptionObject.ToString());
+                }
+                else
+                {
+                    MessageBox.Show($"·¢Éú´íÎó£º{e.ExceptionObject}", "´íÎó", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 //KillTaskBar();
                 Environment.Exit(0);
             };
 
-            // æ•è· Task çº¿ç¨‹æœªå¤„ç†çš„å¼‚å¸¸
+            // ²¶»ñ Task Ïß³ÌÎ´´¦ÀíµÄÒì³£
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
 
-                GetShowingWindow().ShowMessageAsync("Task çº¿ç¨‹å‡ºé”™", e.Exception.ToString());
+                var win = GetShowingWindow();
+                if (win != null)
+                {
+                    GetShowingWindow().ShowMessageAsync("³ÌĞò³ö´í", e.Exception.ToString());
+                }
+                else
+                {
+                    MessageBox.Show($"·¢Éú´íÎó£º{e.Exception}", "´íÎó", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 //KillTaskBar();
                 Environment.Exit(0);
             };
@@ -815,6 +838,7 @@ namespace MultiGameLauncher
                 {
                     if (w is MainWindow mw) return mw;
                     if (w is OOBEWindow oobe) return oobe;
+                    
                 }
                 return null;
             });
@@ -825,8 +849,8 @@ namespace MultiGameLauncher
             var win = GetShowingWindow();
             var settings = new MetroDialogSettings
             {
-                AffirmativeButtonText = "å–æ¶ˆ",
-                NegativeButtonText = "ç¡®å®š"
+                AffirmativeButtonText = "È¡Ïû",
+                NegativeButtonText = "È·¶¨"
             };
             var results = await win.ShowMessageAsync($"{title}", $"{content}", MessageDialogStyle.AffirmativeAndNegative, settings);
             if (results == MessageDialogResult.Negative)
@@ -857,41 +881,41 @@ namespace MultiGameLauncher
     }
     public class MainConfig
     {
-        //OOBEçŠ¶æ€
+        //OOBE×´Ì¬
         public bool OOBEStatus { get; set; }
 
-        //ç”¨æˆ·å
+        //ÓÃ»§Ãû
         public string Username { get; set; }
 
-        //ä¸»é¢˜(é¢œè‰²)
+        //Ö÷Ìâ(ÑÕÉ«)
         public string ThemeColor { get; set; }
 
-        //ä¸»é¢˜(æ·±æµ…)
+        //Ö÷Ìâ(ÉîÇ³)
         public string ThemeMode { get; set; }
 
-        //è‡ªåŠ¨æ›´æ–°
+        //×Ô¶¯¸üĞÂ
         public bool StartUpCheckUpdate { get; set; }
 
-        //å¼€æœºè‡ªå¯
+        //¿ª»ú×ÔÆô
         public bool AutoStartUp { get; set; }
 
-        //ä¸»é¢˜è·Ÿéšç³»ç»Ÿ
+        //Ö÷Ìâ¸úËæÏµÍ³
         public bool ChangeThemeWithSystem { get; set; }
 
-        //æ¸¸æˆé…ç½®é¡¹ï¼Œå‹¿åŠ¨
+        //ÓÎÏ·ÅäÖÃÏî£¬Îğ¶¯
         public List<LaunchConfig> GameInfos { get; set; }
 
-        //æ¸¸æˆå¯åŠ¨æ—¶æœ€å°åŒ–çª—å£
+        //ÓÎÏ·Æô¶¯Ê±×îĞ¡»¯´°¿Ú
         public bool LaunchWithMinize { get; set; }
     }
-    
+
     public class UpdateConfig
     {
         public string UpdateVersion { get; set; }
         public string UpdateLog { get; set; }
         public string UpdateLink { get; set; }
-        
-        
+
+
     }
 
 

@@ -14,7 +14,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
     {
         private List<StackPanel> animationSP = new();
         private bool IsViewEULAMode;
-        public OOBEEULA(bool isViewEULAMode=false)
+        public OOBEEULA(bool isViewEULAMode = false)
         {
             InitializeComponent();
             IsViewEULAMode = isViewEULAMode;
@@ -64,12 +64,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
             });
-            
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

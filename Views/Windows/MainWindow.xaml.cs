@@ -4,7 +4,6 @@ using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Pages;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -37,7 +36,7 @@ namespace MultiGameLauncher
 
             InitializeComponent();
 
-            
+
 
 
         }
@@ -107,7 +106,7 @@ namespace MultiGameLauncher
             //RootWindow.Icon = Tools.ConvertByteArrayToImageSource(ApplicationResources.ApplicationIcon);
             //RootFrame.Navigate();
 
-            
+
         }
 
 
@@ -228,8 +227,8 @@ namespace MultiGameLauncher
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
-            
+
+
 
             foreach (var i in Variables.GameProcessStatus)
             {

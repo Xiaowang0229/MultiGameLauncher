@@ -1,15 +1,12 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using Color = System.Windows.Media.Color;
-using ContextMenu = System.Windows.Controls.ContextMenu;
 
 
 namespace MultiGameLauncher.Views.Pages
@@ -60,7 +57,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -70,11 +67,11 @@ namespace MultiGameLauncher.Views.Pages
         private void ColorPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            
+
             try
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme + "." + Tools.GetColorName((Color)RootColor.SelectedValue));
-                
+
                 config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
                 Json.WriteJson(Variables.Configpath, config);
             }
@@ -84,7 +81,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            
+
             if (Darkmode.IsOn)
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
@@ -106,7 +103,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 UserHead.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + @"\Head.png");
             }
-            UserName.Content ="用户名：" + config.Username;
+            UserName.Content = "用户名：" + config.Username;
 
             if (config.ChangeThemeWithSystem)
             {
@@ -126,13 +123,13 @@ namespace MultiGameLauncher.Views.Pages
                 RestoreHead.Visibility = Visibility.Visible;
             }
 
-            
-            
 
-            if(Variables.UsingRealTimeAlarm != null)
+
+
+            if (Variables.UsingRealTimeAlarm != null)
             {
                 AlarmStackPanel.Visibility = Visibility.Visible;
-                if(Variables.UsingRealTimeAlarm == true)
+                if (Variables.UsingRealTimeAlarm == true)
                 {
                     AlarmMode.Content = "真实时间模式：";
                     AlarmContent.Content = Variables.AlarmRealTime;
@@ -146,7 +143,7 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        
+
 
         private void ChooseBackground_Click(object sender, RoutedEventArgs e)
         {
@@ -155,8 +152,8 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var result =await Tools.OpenInputWindow("输入新的用户名");
-            if(result != null)
+            var result = await Tools.OpenInputWindow("输入新的用户名");
+            if (result != null)
             {
                 config.Username = result;
                 Json.WriteJson(Variables.Configpath, config);
@@ -188,13 +185,13 @@ namespace MultiGameLauncher.Views.Pages
                     File.Delete(Environment.CurrentDirectory + @"\Head.png");
                     File.Copy(openFileDialog.FileName, Environment.CurrentDirectory + @"\Head.png");
                     Tools.RefreshAllImageCaches(this);
-                    
+
 
                 }
             }
         }
 
-        
+
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
@@ -216,7 +213,7 @@ namespace MultiGameLauncher.Views.Pages
             });
         }
 
-        
+
 
         private void SetAlarm_Click(object sender, RoutedEventArgs e)
         {
@@ -226,7 +223,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void DisableAlarm_Click(object sender, RoutedEventArgs e)
         {
-            if(Variables.UsingRealTimeAlarm == true)
+            if (Variables.UsingRealTimeAlarm == true)
             {
                 Variables.RealTimeAlarm.Stop();
                 Variables.UsingRealTimeAlarm = null;

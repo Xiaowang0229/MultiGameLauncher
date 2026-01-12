@@ -1,5 +1,4 @@
 ﻿using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -58,7 +57,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -81,13 +80,13 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.StartUpCheckUpdate = true;
                 Json.WriteJson(Variables.Configpath, config);
-                
+
             }
             else if (StartUpCheckUpdate.IsOn == false)
             {
                 config.StartUpCheckUpdate = false;
                 Json.WriteJson(Variables.Configpath, config);
-                
+
             }
 
         }
@@ -195,7 +194,7 @@ namespace MultiGameLauncher.Views.Pages
                 {
                     File.Delete(Path.GetTempPath() + "\\Temp.zip");
                 }
-                
+
                 for (int i = 0; i < subFolderNames.Length; i++)
                 {
                     for (int j = 0; j < config.GameInfos.Count; j++)
@@ -215,12 +214,12 @@ namespace MultiGameLauncher.Views.Pages
             {
                 Tools.GetShowingWindow().ShowMessageAsync("清空缓存时错误", $"{ex.Message}");
             }
-            
-            
-            
-                CacheSizeBlock.Content = "0.0MB";
 
-            
+
+
+            CacheSizeBlock.Content = "0.0MB";
+
+
         }
 
         private void LaunchWithMinize_Toggled(object sender, RoutedEventArgs e)
@@ -239,6 +238,6 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        
+
     }
 }

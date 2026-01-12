@@ -1,10 +1,8 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Windows;
 using System.Windows.Threading;
 using Unosquare.FFME;
@@ -30,18 +28,18 @@ namespace MultiGameLauncher
                 Tools.InitalizeConfig();
             }
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            if(config.OOBEStatus != true)
+            if (config.OOBEStatus != true)
             {
                 Tools.InitalizeConfig();
             }
             //读取逻辑
-            
+
             if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds"))
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds");
             }
-            
-            if(!File.Exists($"{Environment.CurrentDirectory}\\Alarm.png"))
+
+            if (!File.Exists($"{Environment.CurrentDirectory}\\Alarm.png"))
             {
                 Tools.ConvertToPngAndSave(ApplicationResources.Alarm, $"{Environment.CurrentDirectory}\\Alarm.png");
             }
@@ -82,7 +80,7 @@ namespace MultiGameLauncher
 
 
             //主加载逻辑
-            if (config.OOBEStatus && config.GameInfos.Count != 0 )
+            if (config.OOBEStatus && config.GameInfos.Count != 0)
             {
 
                 /*outerloop: foreach (var folder in subFolderNames)
@@ -97,7 +95,7 @@ namespace MultiGameLauncher
                     }
                     
                 }*/
-                
+
 
                 var win = new MainWindow();
                 win.Show();
@@ -106,8 +104,8 @@ namespace MultiGameLauncher
                 Variables.RealTimeAlarm.Interval = TimeSpan.FromSeconds(1);
                 Variables.RealTimeAlarm.Tick += Tools.AlarmTick;
                 Variables.RealTimeAlarm.Start();
-                
-                
+
+
             }
             else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
             {
@@ -116,7 +114,7 @@ namespace MultiGameLauncher
             }
             else
             {
-                Tools.InitalizeConfig();    
+                Tools.InitalizeConfig();
                 var win = new OOBEWindow();
                 win.Show();
             }
@@ -126,13 +124,13 @@ namespace MultiGameLauncher
                 Tools.CheckUpdate();
 
             }
-            
+
 
         }
 
-        
 
-        
+
+
     }
 
 }

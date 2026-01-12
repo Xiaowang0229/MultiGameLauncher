@@ -1,9 +1,6 @@
-﻿using MahApps.Metro.Controls;
-using Markdig;
+﻿using Markdig;
 using MultiGameLauncher.Views.Pages.OOBE;
-using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -58,7 +55,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -122,16 +119,16 @@ namespace MultiGameLauncher.Views.Pages
         {
             CheckupdateButton.IsEnabled = false;
             CheckProgress.Visibility = Visibility.Visible;
-            await Tools.CheckUpdate(true,true);
+            await Tools.CheckUpdate(true, true);
             CheckProgress.Visibility = Visibility.Hidden;
             CheckupdateButton.IsEnabled = true;
 
-            
+
 
 
         }
 
-        
+
 
         private void MahMetro_Click(object sender, RoutedEventArgs e)
         {

@@ -1,6 +1,5 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls.Dialogs;
-using MultiGameLauncher.Views.Pages.OOBE;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
@@ -78,7 +77,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
             for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 var menuitem = new System.Windows.Controls.MenuItem();
@@ -177,7 +176,7 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        
+
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -211,7 +210,7 @@ namespace MultiGameLauncher.Views.Pages
                     Variables.PlayingTimeRecorder.RemoveAt(Tools.FindHashcodeinGameinfosint(config, deleteitemindex));
                     Json.WriteJson(Variables.Configpath, config);
                     Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\", true);
-                    
+
                     if (config.GameInfos.Count == 0)
                     {
                         Tools.KillTaskBar();
@@ -284,11 +283,11 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-                
+
                 Json.WriteJson(Variables.Configpath, config);
                 this.IsEnabled = true;
                 await Task.Delay(100);
-                
+
                 var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 win.RootFrame.Navigate(new Manage());
             }
@@ -328,7 +327,7 @@ namespace MultiGameLauncher.Views.Pages
                 }
                 File.Copy(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName));
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
-                
+
 
 
             }
@@ -383,7 +382,7 @@ namespace MultiGameLauncher.Views.Pages
                     win.RootFrame.Navigate(new Manage());
                 }
 
-                
+
                 try
                 {
                     Variables.GameProcess[Tools.FindHashcodeinGameinfosint(config, newconfig.HashCode)].Kill();
@@ -441,7 +440,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void ChangeTitle_Click(object sender, RoutedEventArgs e)
         {
-            string a =await Tools.OpenInputWindow("请输入新标题文本");
+            string a = await Tools.OpenInputWindow("请输入新标题文本");
             if (a != null)
             {
                 newconfig.MainTitle = a;
@@ -449,7 +448,7 @@ namespace MultiGameLauncher.Views.Pages
                 Json.WriteJson(Variables.Configpath, config);
 
             }
-            
+
 
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());

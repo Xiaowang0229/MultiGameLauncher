@@ -1,18 +1,9 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
 using TextBox = System.Windows.Controls.TextBox;
@@ -63,7 +54,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -78,7 +69,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void GameTime_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(!string.IsNullOrEmpty(GameTime.Text))
+            if (!string.IsNullOrEmpty(GameTime.Text))
             {
                 Variables.AlarmTime = TimeSpan.FromMinutes(int.Parse(GameTime.Text));
             }
@@ -86,9 +77,9 @@ namespace MultiGameLauncher.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Variables.UsingRealTimeAlarm != null)
+            if (Variables.UsingRealTimeAlarm != null)
             {
-                if(Variables.UsingRealTimeAlarm == true)
+                if (Variables.UsingRealTimeAlarm == true)
                 {
                     RealTimeRadio.IsChecked = true;
                     RealTimeStackPanel.Visibility = Visibility.Visible;
@@ -96,7 +87,7 @@ namespace MultiGameLauncher.Views.Pages
                     MinButton.Content = Variables.AlarmRealTime.Substring(3, 2);
                     HourButton.Content = Variables.AlarmRealTime.Substring(0, 2);
                 }
-                else if(Variables.UsingRealTimeAlarm == false)
+                else if (Variables.UsingRealTimeAlarm == false)
                 {
                     GameTimeRadio.IsChecked = true;
                     RealTimeStackPanel.Visibility = Visibility.Collapsed;
@@ -104,34 +95,34 @@ namespace MultiGameLauncher.Views.Pages
                     GameTime.Text = Variables.AlarmTime.TotalMinutes.ToString();
                 }
             }
-            
 
-                for (int i = 0; i < 24; i++)
+
+            for (int i = 0; i < 24; i++)
+            {
+                if (i < 10)
                 {
-                    if (i < 10)
+                    var item = new MenuItem
                     {
-                        var item = new MenuItem
-                        {
-                            Header = "0" + i.ToString()
-                        };
-                        item.Click += HourItemClick;
-                        HourButton.Items.Add(item);
-                    }
-                    else
-                    {
-                        var item = new MenuItem
-                        {
-                            Header = i.ToString()
-                        };
-                        item.Click += HourItemClick;
-                        HourButton.Items.Add(item);
-                    }
-
-
+                        Header = "0" + i.ToString()
+                    };
+                    item.Click += HourItemClick;
+                    HourButton.Items.Add(item);
                 }
+                else
+                {
+                    var item = new MenuItem
+                    {
+                        Header = i.ToString()
+                    };
+                    item.Click += HourItemClick;
+                    HourButton.Items.Add(item);
+                }
+
+
+            }
             for (int i = 0; i < 60; i++)
             {
-                if(i < 10)
+                if (i < 10)
                 {
                     var item = new MenuItem
                     {
@@ -164,7 +155,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void RealTimeRadio_Click(object sender, RoutedEventArgs e)
         {
-            if(RealTimeRadio.IsChecked == true)
+            if (RealTimeRadio.IsChecked == true)
             {
                 MinButton.Content = null;
                 HourButton.Content = null;
@@ -223,7 +214,7 @@ namespace MultiGameLauncher.Views.Pages
                 if (!Regex.IsMatch(text, @"^[0-9\.]+$"))
                 {
                     e.CancelCommand();
-                    
+
                 }
             }
             else
@@ -275,11 +266,11 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-        
+
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if(RealTimeRadio.IsChecked == true)
+            if (RealTimeRadio.IsChecked == true)
             {
                 try
                 {
@@ -301,9 +292,9 @@ namespace MultiGameLauncher.Views.Pages
                     Tools.GetShowingWindow().ShowMessageAsync("错误", $"请补全信息后再点击此按钮！");
                 }
             }
-            else if(GameTimeRadio.IsChecked == true)
+            else if (GameTimeRadio.IsChecked == true)
             {
-                if(!string.IsNullOrEmpty(GameTime.Text))
+                if (!string.IsNullOrEmpty(GameTime.Text))
                 {
                     Variables.AlarmCTS.Cancel();
                     Variables.AlarmCTS = new CancellationTokenSource();

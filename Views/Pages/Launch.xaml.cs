@@ -1,17 +1,9 @@
 ﻿using HuaZi.Library.Json;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Markdig;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
@@ -23,12 +15,10 @@ namespace MultiGameLauncher.Views.Pages
     public partial class Launch : Page
     {
         private List<StackPanel> animationSP = new();
-        private bool _isTipAnimating = false;
         private MainConfig config;
         private LaunchConfig launchConfig;
-        private int musicplayingindex = 0;
-        private bool MusicPageUnload = false;
-        private bool isMusicPlaying = false;
+
+
         public int TabIndex = 0;
 
         public Launch()
@@ -52,7 +42,7 @@ namespace MultiGameLauncher.Views.Pages
                             }
                     }
 
-                    
+
 
                     var animation = new ThicknessAnimation
                     {
@@ -62,20 +52,20 @@ namespace MultiGameLauncher.Views.Pages
                         EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
                     };
 
-                    
+
                     foreach (var aniSP in animationSP)
                     {
                         aniSP.BeginAnimation(MarginProperty, animation);
                         await Task.Delay(50);
                     }
-                    MainTitle.BeginAnimation(MarginProperty,animation);
+                    MainTitle.BeginAnimation(MarginProperty, animation);
                     //Variables.RootMusicPlayer.Init(new AudioFileReader());
 
                 }
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -85,7 +75,7 @@ namespace MultiGameLauncher.Views.Pages
 
         }
 
-        
+
 
         private async void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
@@ -163,9 +153,9 @@ namespace MultiGameLauncher.Views.Pages
             win.BackButton.Width = 40;
         }
 
-        
 
-        
+
+
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -186,7 +176,7 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Text = launchConfig.MainTitle;
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
-            ChangeGameBlockText(launchConfig.ShowName,launchConfig.GamePlayedMinutes.ToString());
+            ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 ChangeStartStopStatus(true);
@@ -227,28 +217,28 @@ namespace MultiGameLauncher.Views.Pages
                 
                 ChangeStartStopStatus(true);
             }*/
-            
+
 
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Tag = "false";
                 ChangeStartStopStatus(true);
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-                
+
                 ChangeStartStopStatus(false);
             }
 
             Welcome.Content = "欢迎，" + config.Username;
-            
-            ChangeGameBlockText(launchConfig.ShowName,launchConfig.GamePlayedMinutes.ToString());
+
+            ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
 
         }
 
-        
 
-        
 
-        
+
+
+
 
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
         {
@@ -270,7 +260,7 @@ namespace MultiGameLauncher.Views.Pages
                             }
                     }
 
-                    
+
 
 
                     var animationout = new ThicknessAnimation
@@ -280,7 +270,7 @@ namespace MultiGameLauncher.Views.Pages
                         Duration = TimeSpan.FromMilliseconds(500),
                         EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
                     };
-                    MainTitle.BeginAnimation(MarginProperty,null);
+                    MainTitle.BeginAnimation(MarginProperty, null);
                     MainTitle.BeginAnimation(MarginProperty, animationout);
                     foreach (var aniSP in animationSP)
                     {
@@ -291,7 +281,7 @@ namespace MultiGameLauncher.Views.Pages
 
                     await Task.Delay(TimeSpan.FromMilliseconds(250));
 
-                    
+
 
 
 
@@ -303,7 +293,7 @@ namespace MultiGameLauncher.Views.Pages
                         Duration = TimeSpan.FromMilliseconds(500),
                         EasingFunction = new PowerEase { Power = 5, EasingMode = EasingMode.EaseOut }
                     };
-                    
+
 
                     foreach (var aniSP in animationSP)
                     {
@@ -317,7 +307,7 @@ namespace MultiGameLauncher.Views.Pages
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
                 /*Tools.Process.StartInfo = new ProcessStartInfo
                 {
@@ -325,12 +315,12 @@ namespace MultiGameLauncher.Views.Pages
                     Arguments = launchConfig.Arguments,
                     UseShellExecute = true
                 };*/
-                
+
 
                 MainTitle.Text = launchConfig.MainTitle;
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
                 MainTitle.Foreground = launchConfig.MainTitleFontColor;
-                ChangeGameBlockText(launchConfig.ShowName,launchConfig.GamePlayedMinutes.ToString());
+                ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
                 {
                     BackgroundImage.Visibility = Visibility.Hidden;
@@ -365,13 +355,13 @@ namespace MultiGameLauncher.Views.Pages
                     LaunchTile.Tag = "false";
                     ChangeStartStopStatus(true);
                     await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-                    
+
                     ChangeStartStopStatus(false);
                 }
 
                 if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
                 {
-                    
+
                     ChangeStartStopStatus(false);
                 }
             }
@@ -409,8 +399,8 @@ namespace MultiGameLauncher.Views.Pages
             {
                 try
                 {
-                    BackgroundVideo.Pause();           
-                    await Task.Delay(10);               
+                    BackgroundVideo.Pause();
+                    await Task.Delay(10);
                     BackgroundVideo.Position = TimeSpan.Zero;
                     BackgroundVideo.Play();
                 }
@@ -435,7 +425,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-        private void ChangeGameBlockText(string gamename,string gametime)
+        private void ChangeGameBlockText(string gamename, string gametime)
         {
             NewGameNameBlock.Content = $"当前游戏：{gamename}";
             NewGameTimeBlock.Content = $"游戏总时长：{gametime}分钟";
@@ -448,7 +438,7 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ChangeStartStopStatus(bool ChangeMode)
         {
-            if(ChangeMode)
+            if (ChangeMode)
             {
                 NewLaunchLabel.Content = "";
                 LaunchTile.Title = "结束游戏";
@@ -464,13 +454,13 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void NewLaunchTile_Click(object sender, RoutedEventArgs e)
         {
-            if(LaunchTile.Tag == "true")//处理结束逻辑
+            if (LaunchTile.Tag == "true")//处理结束逻辑
             {
                 var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                 proc.Kill();
                 ChangeStartStopStatus(false);
             }
-            else if(LaunchTile.Tag == "false")//处理开始逻辑
+            else if (LaunchTile.Tag == "false")//处理开始逻辑
             {
                 try
                 {

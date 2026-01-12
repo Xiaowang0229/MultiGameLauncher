@@ -79,7 +79,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -242,7 +242,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 Json.WriteJson(Variables.Configpath, config);
 
-                
+
 
                 if (Iscreatenewgame == true)
                 {
@@ -314,9 +314,9 @@ namespace MultiGameLauncher.Views.Pages.OOBE
 
         private async void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
-        
+
     }
 }

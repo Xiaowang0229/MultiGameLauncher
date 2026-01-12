@@ -57,7 +57,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -121,7 +121,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             try
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.DetectTheme(Application.Current).BaseColorScheme + "." + Tools.GetColorName((Color)RootColor.SelectedValue));
-                
+
                 config.ThemeColor = Tools.GetColorName((Color)RootColor.SelectedValue);
                 Json.WriteJson(Variables.Configpath, config);
             }
@@ -195,7 +195,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 }
                 File.Copy(dialog.FileName, $"{Environment.CurrentDirectory}\\Musics\\{Path.GetFileName(dialog.FileName)}");
 
-                
+
             }
         }
 

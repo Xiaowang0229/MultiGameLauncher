@@ -1,6 +1,7 @@
-锘縰sing HuaZi.Library.Json;
+using HuaZi.Library.Json;
 using MahApps.Metro.Controls;
 using MultiGameLauncher.Views.Pages.OOBE;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -8,7 +9,7 @@ using System.Windows.Media.Animation;
 namespace MultiGameLauncher.Views.Windows
 {
     /// <summary>
-    /// OOBEWindow.xaml 鐨勪氦浜掗�昏緫
+    /// OOBEWindow.xaml 的交互逻辑
     /// </summary>
     public partial class OOBEWindow : MetroWindow
     {
@@ -53,7 +54,7 @@ namespace MultiGameLauncher.Views.Windows
             (e.Key == Key.Left && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) ||
             (e.Key == Key.Right && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)))
             {
-                e.Handled = true;  // 鏍囪浜嬩欢宸插鐞嗭紝闃绘榛樿瀵艰埅
+                e.Handled = true;  // 标记事件已处理，阻止默认导航
             }
         }
 
@@ -67,20 +68,28 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+           
+
+
+
+            
+
+
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (config.GameInfos.Count == 0)
             {
                 Application.Current.Shutdown();
             }
-            else if (config.GameInfos.Count != 0)
+            else if (config.GameInfos.Count == 1)
+            {
+                Tools.Restart();
+            }
+            else if (config.GameInfos.Count != 0 && config.GameInfos.Count != 1)
             {
                 var win = new MainWindow();
                 win.Show();
-                Tools.IntializeTaskbar();
-            }
-            
-            
 
+            }
         }
     }
 }
