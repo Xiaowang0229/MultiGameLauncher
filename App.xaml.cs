@@ -21,8 +21,7 @@ namespace MultiGameLauncher
             Tools.RegisterGlobalExceptionHandlers();
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Variables.EULAString = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.EULA.md");
-            Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
-            Library.LoadFFmpeg();
+            
             if (!File.Exists(Variables.Configpath))
             {
                 Tools.InitalizeConfig();
@@ -82,7 +81,8 @@ namespace MultiGameLauncher
             //主加载逻辑
             if (config.OOBEStatus && config.GameInfos.Count != 0)
             {
-
+                Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
+                Library.LoadFFmpeg();
                 /*outerloop: foreach (var folder in subFolderNames)
                 {
                     foreach (var hashcode in config.GameInfos)
@@ -109,6 +109,8 @@ namespace MultiGameLauncher
             }
             else if (config.GameInfos.Count == 0 && config.OOBEStatus == true)
             {
+                Library.FFmpegDirectory = Environment.CurrentDirectory + "\\FFmpeg";
+                Library.LoadFFmpeg();
                 var win = new OOBEWindow(true);
                 win.Show();
             }

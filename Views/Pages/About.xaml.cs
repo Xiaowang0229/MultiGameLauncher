@@ -153,5 +153,11 @@ namespace MultiGameLauncher.Views.Pages
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new OOBEEULA(true));
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            win.RootFrame.Navigate(new EULA());
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Windows.Services.Maps;
 
 namespace MultiGameLauncher.Views.Windows
 {
@@ -13,7 +14,7 @@ namespace MultiGameLauncher.Views.Windows
     /// </summary>
     public partial class OOBEWindow : MetroWindow
     {
-        private bool IsCreateNewGame;
+        private bool IsCreateNewGame = false;
         private MainConfig config;
         private bool IsOOBE;
         public OOBEWindow(bool iscreatenewgame = false)
@@ -71,21 +72,24 @@ namespace MultiGameLauncher.Views.Windows
 
 
 
-            if (!IsCreateNewGame)
-            {
-                Tools.Restart();
-            }
+            
 
 
 
 
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            if (config.GameInfos.Count == 1 && !IsCreateNewGame)
+            {
+                Tools.Restart();
+                return;
+            }
+
             if (config.GameInfos.Count == 0)
             {
                 Application.Current.Shutdown();
             }
             
-            else if (config.GameInfos.Count != 0 && config.GameInfos.Count != 1)
+            else if (config.GameInfos.Count != 0)
             {
                 var win = new MainWindow();
                 win.Show();

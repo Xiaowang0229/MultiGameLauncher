@@ -66,7 +66,12 @@
                 </Grid>
                 <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
                     <TextBlock Foreground="{DynamicResource MahApps.Brushes.Accent}"  TextWrapping="Wrap" Text="Rocket Launcher" Margin="0,0,0,10" FontSize="28" FontWeight="Bold" />
-                    <TextBlock  TextWrapping="Wrap" Text="聚合式多游戏管理启动平台 版权所有 ©Rocket Launcher 开发组" FontSize="14" Foreground="#FF6C6C6C" Margin="3,0,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBlock  TextWrapping="Wrap" VerticalAlignment="Center" Text="聚合式多游戏管理启动平台 版权所有 ©Rocket Launcher 开发组" FontSize="14" Foreground="#FF6C6C6C" Margin="3,0,0,0" />
+                        <Button Cursor="Hand" Margin="10,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}"  Foreground="#FF004AFF" FontWeight="Bold" Click="Button_Click_1">
+                            <Underline>用户协议</Underline>
+                        </Button>
+                    </StackPanel>
 
                 </StackPanel>
             </StackPanel>
