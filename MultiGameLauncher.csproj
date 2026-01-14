@@ -25,6 +25,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>bin\Debug\</PackageOutputPath>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <CETCompat>false</CETCompat>
   </PropertyGroup>
 
   
