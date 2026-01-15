@@ -85,7 +85,7 @@ namespace MultiGameLauncher.Views.Windows
             {
                 var win = new MainWindow();
                 win.Show();
-                Tools.InitalizeConfig();
+                Tools.IntializeTaskbar();
 
             }
         }
