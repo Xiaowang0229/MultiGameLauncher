@@ -69,14 +69,6 @@ namespace MultiGameLauncher.Views.Windows
 
         private void RootWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
-
-
-            
-
-
-
-
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (config.GameInfos.Count == 1 && !IsCreateNewGame)
             {
@@ -93,6 +85,7 @@ namespace MultiGameLauncher.Views.Windows
             {
                 var win = new MainWindow();
                 win.Show();
+                Tools.InitalizeConfig();
 
             }
         }
