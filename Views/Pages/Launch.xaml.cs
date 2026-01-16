@@ -177,23 +177,21 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.FontFamily = launchConfig.MaintitleFontName;
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
-            {
-                ChangeStartStopStatus(true);
-                await Tools.WaitMonitingGameExitAsync(0);
-                ChangeStartStopStatus(false);
-            }
+            
 
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
                 BackgroundVideo.Visibility = Visibility.Visible;
                 BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-
+                BackgroundVideo.Play();
 
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
             {
+                BackgroundVideo.Stop();
+                Tools.RefreshAllImageCaches(this);
+                BackgroundVideo.Close();
                 Tools.RefreshAllImageCaches(this);
                 BackgroundVideo.Visibility = Visibility.Hidden;
                 BackgroundImage.Visibility = Visibility.Visible;
@@ -231,6 +229,13 @@ namespace MultiGameLauncher.Views.Pages
             Welcome.Content = "欢迎，" + config.Username;
 
             ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
+
+            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            {
+                ChangeStartStopStatus(true);
+                await Tools.WaitMonitingGameExitAsync(0);
+                ChangeStartStopStatus(false);
+            }
 
         }
 
@@ -326,6 +331,7 @@ namespace MultiGameLauncher.Views.Pages
                     BackgroundImage.Visibility = Visibility.Hidden;
                     BackgroundVideo.Visibility = Visibility.Visible;
                     BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
+                    BackgroundVideo.Play();
 
                 }
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -456,9 +462,11 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (LaunchTile.Tag == "true")//处理结束逻辑
             {
+                config = Json.ReadJson<MainConfig>(Variables.Configpath);
                 var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                 proc.Kill();
                 ChangeStartStopStatus(false);
+                NewGameTimeBlock.Content = $"游戏时长:{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
             }
             else if (LaunchTile.Tag == "false")//处理开始逻辑
             {

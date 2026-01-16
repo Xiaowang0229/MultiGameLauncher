@@ -78,12 +78,16 @@
         </ui:WindowCommands>
     </ui:MetroWindow.LeftWindowCommands>
 
-    
+    <Grid>
         <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
-NavigationUIVisibility="Hidden"
+NavigationUIVisibility="Hidden" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
      Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
 
         </Frame>
-    
+        <StackPanel Visibility="Hidden" x:Name="Tip" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" >
+            <ui:ProgressRing HorizontalAlignment="Left" Height="40"  VerticalAlignment="Top" Width="40"/>
+            <Label Content="请稍候，正在配置文件" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
 
 </ui:MetroWindow>

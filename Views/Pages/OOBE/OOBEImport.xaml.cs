@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace MultiGameLauncher.Views.Pages.OOBE
@@ -205,7 +206,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 this.IsEnabled = false;
                 if (IsBackGroundChange)
                 {
-
+                    if (!Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}")) Directory.CreateDirectory(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}");
                     if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png"))
                     {
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
@@ -214,7 +215,8 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                     {
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
                     }
-                    File.Copy(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                    this.IsEnabled = false;
+                    await Tools.CopyFileAsync(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
 
                 }
                 BackgroundCopyTip.Visibility = Visibility.Hidden;
@@ -288,7 +290,12 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                     {
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                     }
-                    File.Copy(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    win.Tip.Visibility = Visibility.Visible;
+                    this.IsEnabled = false;
+                    Tools.CopyFileAsync(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
+                    win.Tip.Visibility = Visibility.Hidden;
+                    this.IsEnabled = false;
                     Tools.RefreshAllImageCaches(this);
                     ApplicationIcon.Source = Tools.LoadImageFromPath(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Icon.png");
                 }
