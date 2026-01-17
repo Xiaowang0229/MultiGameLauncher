@@ -462,10 +462,11 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (LaunchTile.Tag == "true")//处理结束逻辑
             {
-                config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                
                 var proc = Variables.GameProcess[RootTabControl.SelectedIndex];
                 proc.Kill();
                 ChangeStartStopStatus(false);
+                config = Json.ReadJson<MainConfig>(Variables.Configpath);
                 NewGameTimeBlock.Content = $"游戏时长:{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
             }
             else if (LaunchTile.Tag == "false")//处理开始逻辑
