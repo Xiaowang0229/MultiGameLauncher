@@ -33,7 +33,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "3.0.0-hotfix.3";
+        public readonly static string Version = "3.0.0-hotfix.4";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -451,6 +451,7 @@ namespace MultiGameLauncher
         }
         public async static void StartMonitingGameStatus(int index)
         {
+            ToastNotificationManagerCompat.History.Clear();
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var proc = Variables.GameProcess[index];
             proc.Start();
@@ -476,15 +477,34 @@ namespace MultiGameLauncher
             Variables.LaunchCTS = new CancellationTokenSource();
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             var proc = Variables.GameProcess[index];
+
+
             try
             {
                 await proc.WaitForExitAsync(Variables.LaunchCTS.Token);
+                StopMonitingGameStatus(index);
             }
-            catch
+            catch(TaskCanceledException)
+            {
+
+            }
+            catch (InvalidOperationException)
+            {
+
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
+            catch (Exception ex)
             {
                 return;
             }
-            StopMonitingGameStatus(index);
+                
+
+            
+            
+            
 
         }
         private static void StopMonitingGameStatus(int index)
@@ -783,15 +803,10 @@ namespace MultiGameLauncher
             // 捕获 UI 线程未处理的异常
             Application.Current.DispatcherUnhandledException += (s, e) =>
             {
-                var win = GetShowingWindow();
-                if(win != null)
-                {
-                    GetShowingWindow().ShowMessageAsync("程序出错", e.Exception.ToString());
-                }
-                else
-                {
+                
+                
                     MessageBox.Show($"发生错误：{e.Exception}","错误",MessageBoxButton.OK,MessageBoxImage.Error);
-                }
+                
                     //KillTaskBar();
                     Environment.Exit(0);
 
@@ -801,15 +816,10 @@ namespace MultiGameLauncher
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
 
-                var win = GetShowingWindow();
-                if (win != null)
-                {
-                    GetShowingWindow().ShowMessageAsync("程序出错", e.ExceptionObject.ToString());
-                }
-                else
-                {
+               
+                
                     MessageBox.Show($"发生错误：{e.ExceptionObject}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                
                 //KillTaskBar();
                 Environment.Exit(0);
             };
@@ -818,15 +828,9 @@ namespace MultiGameLauncher
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
 
-                var win = GetShowingWindow();
-                if (win != null)
-                {
-                    GetShowingWindow().ShowMessageAsync("程序出错", e.Exception.ToString());
-                }
-                else
-                {
+                
                     MessageBox.Show($"发生错误：{e.Exception}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                
                 //KillTaskBar();
                 Environment.Exit(0);
             };

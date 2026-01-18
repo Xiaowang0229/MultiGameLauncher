@@ -184,7 +184,6 @@ namespace MultiGameLauncher.Views.Pages
                 BackgroundImage.Visibility = Visibility.Hidden;
                 BackgroundVideo.Visibility = Visibility.Visible;
                 BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                BackgroundVideo.Play();
 
             }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -217,14 +216,14 @@ namespace MultiGameLauncher.Views.Pages
             }*/
 
 
-            if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+            /*if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
                 LaunchTile.Tag = "false";
                 ChangeStartStopStatus(true);
                 await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
 
                 ChangeStartStopStatus(false);
-            }
+            }*/
 
             Welcome.Content = "欢迎，" + config.Username;
 
@@ -232,6 +231,7 @@ namespace MultiGameLauncher.Views.Pages
 
             if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
             {
+                
                 ChangeStartStopStatus(true);
                 await Tools.WaitMonitingGameExitAsync(0);
                 ChangeStartStopStatus(false);
@@ -240,18 +240,16 @@ namespace MultiGameLauncher.Views.Pages
         }
 
 
-
-
-
-
-
         private async void RootTabItemSelectionChanged(object sender, EventArgs e)
         {
 
             if (RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
             {
+                Variables.LaunchCTS.Cancel();
+                Variables.LaunchCTS = new CancellationTokenSource();
                 TabIndex = RootTabControl.SelectedIndex;
                 RootTabControl.Tag = ((System.Windows.Controls.TabItem)sender).Tag.ToString();
+                
                 launchConfig = config.GameInfos.FirstOrDefault(x => x.HashCode == ((System.Windows.Controls.TabItem)sender).Tag.ToString());
                 try
                 {
@@ -314,14 +312,8 @@ namespace MultiGameLauncher.Views.Pages
                 {
 
                 }
-                /*Tools.Process.StartInfo = new ProcessStartInfo
-                {
-                    FileName = launchConfig.Launchpath,
-                    Arguments = launchConfig.Arguments,
-                    UseShellExecute = true
-                };*/
 
-
+                
                 MainTitle.Text = launchConfig.MainTitle;
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
                 MainTitle.Foreground = launchConfig.MainTitleFontColor;
@@ -331,7 +323,6 @@ namespace MultiGameLauncher.Views.Pages
                     BackgroundImage.Visibility = Visibility.Hidden;
                     BackgroundVideo.Visibility = Visibility.Visible;
                     BackgroundVideo.Open(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"));
-                    BackgroundVideo.Play();
 
                 }
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.png"))
@@ -355,17 +346,22 @@ namespace MultiGameLauncher.Views.Pages
                     }
                     catch { }
                 }
-
-                if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == true)
+                if (Variables.GameProcessStatus[RootTabControl.SelectedIndex])
                 {
                     LaunchTile.Tag = "false";
                     ChangeStartStopStatus(true);
-                    await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
-
-                    ChangeStartStopStatus(false);
+                   
+                    
+                        await Tools.WaitMonitingGameExitAsync(RootTabControl.SelectedIndex);
+                    
+                    
+                    
+                        ChangeStartStopStatus(false);
+                    
+                    
                 }
 
-                if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
+                else if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
                 {
 
                     ChangeStartStopStatus(false);
@@ -483,6 +479,14 @@ namespace MultiGameLauncher.Views.Pages
                     }
 
                     ChangeStartStopStatus(false);
+                }
+                catch(InvalidOperationException)
+                {
+
+                }
+                catch(OperationCanceledException)
+                {
+
                 }
                 catch (Exception ex)
                 {
