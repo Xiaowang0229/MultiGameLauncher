@@ -1,11 +1,14 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls.Dialogs;
+using Ookii.Dialogs.Wpf;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using TaskDialog = Ookii.Dialogs.Wpf.TaskDialog;
+using TaskDialogButton = Ookii.Dialogs.Wpf.TaskDialogButton;
 
 namespace MultiGameLauncher.Views.Pages
 {
@@ -88,8 +91,8 @@ namespace MultiGameLauncher.Views.Pages
 
             }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Settings());
-            win.BackButton.Width = 40;
+            win.RootFrame.Navigate(new TileClick(new Settings(), FluentIcons.Common.Icon.Settings));
+            
         }
 
         private async void UserTile_Click(object sender, RoutedEventArgs e)
@@ -103,8 +106,8 @@ namespace MultiGameLauncher.Views.Pages
 
             }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Personality());
-            win.BackButton.Width = 40;
+            win.RootFrame.Navigate(new TileClick(new Personality(), FluentIcons.Common.Icon.PaintBucketBrush));
+            
         }
 
         private async void AboutTile_Click(object sender, RoutedEventArgs e)
@@ -119,8 +122,8 @@ namespace MultiGameLauncher.Views.Pages
 
             }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new About());
-            win.BackButton.Width = 40;
+            win.RootFrame.Navigate(new TileClick(new About(), FluentIcons.Common.Icon.Info));
+            
         }
 
         private async void ManageTile_Click(object sender, RoutedEventArgs e)
@@ -134,24 +137,32 @@ namespace MultiGameLauncher.Views.Pages
 
             }
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Manage());
-            win.BackButton.Width = 40;
-        }
-
-        private async void UpdateTile_Click(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
+            win.RootFrame.Navigate(new TileClick(new Manage(), FluentIcons.Common.Icon.List));
+            /*var mb = new TaskDialog
             {
+                WindowTitle = "错误",
+                MainIcon = Ookii.Dialogs.Wpf.TaskDialogIcon.Error,
+                MainInstruction = "程序发生错误，您可将下方内容截图并上报错误",
+                Content = $"1",
+                ButtonStyle = TaskDialogButtonStyle.CommandLinks
 
-                BackgroundVideo.Stop();
-                BackgroundVideo.Close();
-                await Task.Delay(50);
+            };
+            mb.Buttons.Add(new TaskDialogButton
+            {
+                Text = "a",
+                CommandLinkNote = "b"
+            });
+            mb.Buttons.Add(new TaskDialogButton
+            {
+                ButtonType = ButtonType.Ok
+            });
 
-            }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new About(true));
-            win.BackButton.Width = 40;
+            mb.ShowDialog();*/
+            
+
         }
+
+        
 
 
 

@@ -88,32 +88,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-        private void Library_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://github.com/Xiaowang0229/MultiGameLauncher",
-                UseShellExecute = true
-            });
-        }
-
-        private void Issue_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://github.com/Xiaowang0229/MultiGameLauncher/issues/new",
-                UseShellExecute = true
-            });
-        }
-
-        private void Afdian_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://afdian.com/a/csharpfadian",
-                UseShellExecute = true
-            });
-        }
+        
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -148,11 +123,6 @@ namespace MultiGameLauncher.Views.Pages
             });
         }
 
-        private void UsingEULABlock_Click(object sender, RoutedEventArgs e)
-        {
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new OOBEEULA(true));
-        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
