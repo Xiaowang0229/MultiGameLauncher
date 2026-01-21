@@ -99,7 +99,7 @@ namespace MultiGameLauncher.Views.Pages
                 Json.WriteJson(Variables.Configpath, config);
                 Tools.StartThemeMonitoring();
             }
-            else if (ChangeThemeWithSystem.IsOn == false)
+            else
             {
                 config.ChangeThemeWithSystem = false;
                 Json.WriteJson(Variables.Configpath, config);
@@ -130,7 +130,10 @@ namespace MultiGameLauncher.Views.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             StartUpCheckUpdate.IsOn = config.StartUpCheckUpdate;
-            ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
+            if(config.ChangeThemeWithSystem)
+            {
+                ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
+            }
             AutoStartWithSystem.IsOn = config.AutoStartUp;
             LaunchWithMinize.IsOn = config.LaunchWithMinize;
             if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
@@ -228,13 +231,11 @@ namespace MultiGameLauncher.Views.Pages
             {
                 config.LaunchWithMinize = true;
                 Json.WriteJson(Variables.Configpath, config);
-                Tools.StartThemeMonitoring();
             }
             else if (!LaunchWithMinize.IsOn)
             {
                 config.LaunchWithMinize = false;
                 Json.WriteJson(Variables.Configpath, config);
-                Tools.StopThemeMonitoring();
             }
         }
 

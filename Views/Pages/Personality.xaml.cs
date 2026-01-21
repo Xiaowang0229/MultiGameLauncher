@@ -86,12 +86,14 @@ namespace MultiGameLauncher.Views.Pages
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
                 config.ThemeMode = "Dark";
+                config.ChangeThemeWithSystem = false;
                 Json.WriteJson(Variables.Configpath, config);
             }
             else
             {
                 ThemeManager.Current.ChangeTheme(Application.Current, "Light." + ThemeManager.Current.DetectTheme(Application.Current).ColorScheme);
                 config.ThemeMode = "Light";
+                config.ChangeThemeWithSystem = false;
                 Json.WriteJson(Variables.Configpath, config);
             }
         }
