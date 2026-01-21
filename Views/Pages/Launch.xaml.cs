@@ -306,6 +306,7 @@ namespace MultiGameLauncher.Views.Pages
                     }
                     MainTitle.BeginAnimation(MarginProperty, null);
                     MainTitle.BeginAnimation(MarginProperty, animationin);
+
                 }
                 catch (InvalidOperationException) { }
                 catch (Exception ex)
@@ -442,13 +443,13 @@ namespace MultiGameLauncher.Views.Pages
         {
             if (ChangeMode)
             {
-                NewLaunchLabel.Content = "";
+
                 LaunchTile.Title = "结束游戏";
                 LaunchTile.Tag = "true";
             }
             else
             {
-                NewLaunchLabel.Content = "";
+
                 LaunchTile.Title = "开始游戏";
                 LaunchTile.Tag = "false";
             }
