@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //±‰¡øºØ
     {
-        public readonly static string Version = "3.0.0-hotfix.9";
+        public readonly static string Version = "3.0.0-hotfix.10";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
