@@ -1,6 +1,7 @@
 ﻿using HuaZi.Library.Json;
 using MahApps.Metro.Controls.Dialogs;
 using Ookii.Dialogs.Wpf;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,82 +83,66 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void SettingsTile_Click(object sender, RoutedEventArgs e)
         {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            await win.ShowTileLoadingAsync(FluentIcons.Common.Icon.Settings, new Settings());
+            win.BackButton.Width = 40;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
 
                 BackgroundVideo.Stop();
                 BackgroundVideo.Close();
-                await Task.Delay(50);
 
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new TileClick(new Settings(), FluentIcons.Common.Icon.Settings));
             
+
         }
 
         private async void UserTile_Click(object sender, RoutedEventArgs e)
         {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            await win.ShowTileLoadingAsync(FluentIcons.Common.Icon.PaintBucketBrush, new Personality());
+            win.BackButton.Width = 40;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
 
                 BackgroundVideo.Stop();
                 BackgroundVideo.Close();
-                await Task.Delay(50);
 
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new TileClick(new Personality(), FluentIcons.Common.Icon.PaintBucketBrush));
             
+
         }
 
         private async void AboutTile_Click(object sender, RoutedEventArgs e)
         {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            await win.ShowTileLoadingAsync(FluentIcons.Common.Icon.Info, new About());
+            win.BackButton.Width = 40;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
 
                 BackgroundVideo.Stop();
                 BackgroundVideo.Close();
-                await Task.Delay(50);
 
 
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new TileClick(new About(), FluentIcons.Common.Icon.Info));
             
+
         }
 
         private async void ManageTile_Click(object sender, RoutedEventArgs e)
         {
+            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            await win.ShowTileLoadingAsync(FluentIcons.Common.Icon.List, new Manage());
+            win.BackButton.Width = 40;
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
 
                 BackgroundVideo.Stop();
                 BackgroundVideo.Close();
-                await Task.Delay(50);
 
             }
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new TileClick(new Manage(), FluentIcons.Common.Icon.List));
-            /*var mb = new TaskDialog
-            {
-                WindowTitle = "错误",
-                MainIcon = Ookii.Dialogs.Wpf.TaskDialogIcon.Error,
-                MainInstruction = "程序发生错误，您可将下方内容截图并上报错误",
-                Content = $"1",
-                ButtonStyle = TaskDialogButtonStyle.CommandLinks
-
-            };
-            mb.Buttons.Add(new TaskDialogButton
-            {
-                Text = "a",
-                CommandLinkNote = "b"
-            });
-            mb.Buttons.Add(new TaskDialogButton
-            {
-                ButtonType = ButtonType.Ok
-            });
-
-            mb.ShowDialog();*/
+            
             
 
         }
@@ -189,7 +174,13 @@ namespace MultiGameLauncher.Views.Pages
             MainTitle.Foreground = launchConfig.MainTitleFontColor;
             ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
             
-
+            if(!File.Exists(launchConfig.Launchpath))
+            {
+                Tools.GetShowingWindow().ShowMessageAsync("错误","启动程序目标文件不存在，将无法启动该程序！\r\n请到管理页删除该程序或重新指定启动目标");
+                LaunchTile.IsEnabled = false;
+                LaunchTile.Title = "启动游戏(已禁用)";
+                LaunchFluentIcon.Icon = FluentIcons.Common.Icon.ErrorCircle;
+            }
             if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
             {
                 BackgroundImage.Visibility = Visibility.Hidden;
@@ -246,6 +237,8 @@ namespace MultiGameLauncher.Views.Pages
                 ChangeStartStopStatus(true);
                 await Tools.WaitMonitingGameExitAsync(0);
                 ChangeStartStopStatus(false);
+                config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                NewGameTimeBlock.Content = $"游戏时长:{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
             }
 
         }
@@ -256,6 +249,7 @@ namespace MultiGameLauncher.Views.Pages
 
             if (RootTabControl.Tag != ((System.Windows.Controls.TabItem)sender).Tag.ToString())
             {
+                config = Json.ReadJson<MainConfig>(Variables.Configpath);
                 Variables.LaunchCTS.Cancel();
                 Variables.LaunchCTS = new CancellationTokenSource();
                 TabIndex = RootTabControl.SelectedIndex;
@@ -330,6 +324,17 @@ namespace MultiGameLauncher.Views.Pages
                 MainTitle.FontFamily = launchConfig.MaintitleFontName;
                 MainTitle.Foreground = launchConfig.MainTitleFontColor;
                 ChangeGameBlockText(launchConfig.ShowName, launchConfig.GamePlayedMinutes.ToString());
+                if (!File.Exists(launchConfig.Launchpath))
+                {
+                    Tools.GetShowingWindow().ShowMessageAsync("错误", "启动程序目标文件不存在，将无法启动该程序！\r\n请到管理页删除该程序或重新指定启动目标");
+                    LaunchTile.IsEnabled = false;
+                    LaunchTile.Title = "启动游戏(已禁用)";
+                    LaunchFluentIcon.Icon = FluentIcons.Common.Icon.ErrorCircle;
+                }
+                else
+                {
+                    LaunchFluentIcon.Icon = FluentIcons.Common.Icon.Games;
+                }
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{launchConfig.HashCode}\\Background.mp4"))
                 {
                     BackgroundImage.Visibility = Visibility.Hidden;
@@ -369,8 +374,9 @@ namespace MultiGameLauncher.Views.Pages
                     
                     
                         ChangeStartStopStatus(false);
-                    
-                    
+                    config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                    NewGameTimeBlock.Content = $"游戏时长:{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
+
                 }
 
                 else if (Variables.GameProcessStatus[RootTabControl.SelectedIndex] == false)
@@ -452,11 +458,13 @@ namespace MultiGameLauncher.Views.Pages
 
         private void ChangeStartStopStatus(bool ChangeMode)
         {
+            config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (ChangeMode)
             {
 
                 LaunchTile.Title = "结束游戏";
                 LaunchTile.Tag = "true";
+                NewGameTimeBlock.Content = $"游戏总时长：{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
             }
             else
             {

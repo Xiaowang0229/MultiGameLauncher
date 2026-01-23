@@ -69,7 +69,7 @@ namespace MultiGameLauncher.Views.Pages
             var qdr = await Tools.ShowQuestionDialogMetro("确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆", "警告");
             if (qdr)
             {
-                Tools.InitalizeConfig();
+                Tools.InitalizeConfig(true);
                 Tools.Restart();
             }
         }
@@ -134,6 +134,7 @@ namespace MultiGameLauncher.Views.Pages
             {
                 ChangeThemeWithSystem.IsOn = config.ChangeThemeWithSystem;
             }
+            DisableTileLoadingScreen.IsOn = config.DisableTileLoadingScreen;
             AutoStartWithSystem.IsOn = config.AutoStartUp;
             LaunchWithMinize.IsOn = config.LaunchWithMinize;
             if (File.Exists(Path.GetTempPath() + "\\Temp.exe"))
@@ -239,6 +240,18 @@ namespace MultiGameLauncher.Views.Pages
             }
         }
 
-
+        private void DisableTileLoadingScreen_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (DisableTileLoadingScreen.IsOn)
+            {
+                config.DisableTileLoadingScreen = true;
+                Json.WriteJson(Variables.Configpath, config);
+            }
+            else if (!DisableTileLoadingScreen.IsOn)
+            {
+                config.DisableTileLoadingScreen = false;
+                Json.WriteJson(Variables.Configpath, config);
+            }
+        }
     }
 }

@@ -3,7 +3,10 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MultiGameLauncher.Views.Pages;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -11,6 +14,9 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 
 namespace MultiGameLauncher
@@ -21,7 +27,7 @@ namespace MultiGameLauncher
 
     public partial class MainWindow : MetroWindow
     {
-
+        private static CancellationTokenSource TileLoadingTokenSource = new CancellationTokenSource();
         public MainWindow()
         {
 
@@ -37,18 +43,17 @@ namespace MultiGameLauncher
 
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-
-
+            ShowTileLoadingAsync(FluentIcons.Common.Icon.Home,new Launch());
         }
 
 
         private async void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
 
+            
             //Animation
             var newPage = (FrameworkElement)RootFrame.Content;
 
-            if (!(newPage is TileClick))
             {
                 newPage.BeginAnimation(MarginProperty, null);
 
@@ -66,20 +71,7 @@ namespace MultiGameLauncher
 
                 newPage.BeginAnimation(MarginProperty, slideIn);
             }
-            else
-            {
-                // 获取窗口的中心点
-                Point windowCenter = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
-
-                // 获取控件的中心点
-                Point controlCenter = new Point(newPage.RenderSize.Width / 2, newPage.RenderSize.Height / 2);
-
-                // 计算控件相对窗口中心的偏移量
-                double offsetX = windowCenter.X - controlCenter.X;
-                double offsetY = windowCenter.Y - controlCenter.Y;
-
-                
-            }
+            
 
 
 
@@ -91,7 +83,7 @@ namespace MultiGameLauncher
 
         private async void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-
+            
 
 
 
@@ -154,6 +146,91 @@ namespace MultiGameLauncher
         {
             var dialog = new CustomDialog(this.MetroDialogOptions) { Content = "启动时不会使用流量，请稍候……", Title = "启动更新中" };
             this.ShowMetroDialogAsync(dialog);
+        }
+
+        public async Task ShowTileLoadingAsync(FluentIcons.Common.Icon LoadingSymbolIcon, Page TargetPage)
+        {
+            var cfg = Json.ReadJson<MainConfig>(Variables.Configpath);
+            if(cfg.DisableTileLoadingScreen != true)
+            {
+                TileLoadingTokenSource.Cancel();
+                TileLoadingTokenSource = new CancellationTokenSource();
+                var AnimationDuration = TimeSpan.FromMilliseconds(150);
+                try
+                {
+                    TileLoadingIcon.Visibility = Visibility.Hidden;
+                    TileLoading.Opacity = 0;
+                    TileLoading.Visibility = Visibility.Visible;
+                    var Gridin = new DoubleAnimation
+                    {
+                        From = 0,
+                        To = 1,
+                        Duration = AnimationDuration,
+
+                    };
+
+
+                    TileLoading.BeginAnimation(OpacityProperty, null);
+                    TileLoadingIcon.BeginAnimation(OpacityProperty, null);
+
+                    TileLoading.Visibility = Visibility.Visible;
+                    TileLoading.BeginAnimation(OpacityProperty, Gridin);
+                    await Task.Delay(AnimationDuration, TileLoadingTokenSource.Token);
+                    TileLoadingIcon.Icon = LoadingSymbolIcon;
+                    TileLoadingIcon.Visibility = Visibility.Visible;
+                    var animationin = new DoubleAnimation
+                    {
+                        From = 0.0,
+                        To = 1.0,
+                        Duration = AnimationDuration,
+
+                    };
+                    TileLoadingIcon.BeginAnimation(OpacityProperty, animationin);
+                    RootFrame.Navigate(TargetPage);
+                    await Task.Delay(TimeSpan.FromSeconds(0.75), TileLoadingTokenSource.Token);
+                    var animationout = new DoubleAnimation
+                    {
+                        From = 1.0,
+                        To = 0.0,
+                        Duration = AnimationDuration,
+                    };
+                    TileLoadingIcon.BeginAnimation(OpacityProperty, animationout);
+                    await Task.Delay(AnimationDuration, TileLoadingTokenSource.Token);
+                    TileLoadingIcon.Visibility = Visibility.Hidden;
+                    var Gridout = new DoubleAnimation
+                    {
+
+                        From = 1,
+                        To = 0,
+                        Duration = AnimationDuration,
+
+
+                    };
+                    TileLoading.BeginAnimation(OpacityProperty, Gridout);
+                    await Task.Delay(AnimationDuration, TileLoadingTokenSource.Token);
+                    TileLoading.Visibility = Visibility.Hidden;
+
+                }
+                catch (TaskCanceledException)
+                {
+                    
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    TileLoadingIcon.Visibility = Visibility.Hidden;
+                    TileLoading.Visibility = Visibility.Hidden;
+                }
+            }
+            else
+            {
+                RootFrame.Navigate(TargetPage);
+            }
+
         }
     }
 }

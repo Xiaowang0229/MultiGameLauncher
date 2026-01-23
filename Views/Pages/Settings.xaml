@@ -29,6 +29,10 @@
                 <ui:ToggleSwitch x:Name="LaunchWithMinize" Toggled="LaunchWithMinize_Toggled"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
+                <Label FontSize="16" Content="不使用磁贴应用加载屏幕：" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <ui:ToggleSwitch x:Name="DisableTileLoadingScreen" Toggled="DisableTileLoadingScreen_Toggled"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Tag="ani" Margin="10,5,0,0">
                 <Label FontSize="16" Content="删除缓存：" Margin="0,0,10,0" VerticalAlignment="Center"/>
                 <Button Width="120" Content="删除缓存" Click="Button_Click_1"/>
                 <Label x:Name="CacheSizeBlock" FontSize="16" Content="缓存大小" Margin="5,0,10,0" VerticalAlignment="Center"/>

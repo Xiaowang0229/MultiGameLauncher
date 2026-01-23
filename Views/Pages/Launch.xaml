@@ -130,7 +130,7 @@ HorizontalTitleAlignment="Right" Height="200" Width="200" Click="ManageTile_Clic
 ui:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
 Background="{DynamicResource MahApps.Brushes.Dialog.Background.Accent}"
 HorizontalTitleAlignment="Right" Height="200" Width="200" Click="NewLaunchTile_Click">
-                        <ic:FluentIcon Icon="Games" IconSize="Size48" Width="48" Height="48" FontSize="48"/>
+                        <ic:FluentIcon x:Name="LaunchFluentIcon" Icon="Games" IconSize="Size48" Width="48" Height="48" FontSize="48"/>
                     </ui:Tile>
                 </StackPanel>
             </StackPanel>

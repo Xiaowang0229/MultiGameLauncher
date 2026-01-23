@@ -24,12 +24,12 @@ namespace MultiGameLauncher
             
             if (!File.Exists(Variables.Configpath))
             {
-                Tools.InitalizeConfig();
+                Tools.InitalizeConfig(true);
             }
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (config.OOBEStatus != true)
             {
-                Tools.InitalizeConfig();
+                Tools.InitalizeConfig(true);
             }
             //读取逻辑
 
@@ -116,7 +116,7 @@ namespace MultiGameLauncher
             }
             else
             {
-                Tools.InitalizeConfig();
+                Tools.InitalizeConfig(true);
                 var win = new OOBEWindow();
                 win.Show();
             }

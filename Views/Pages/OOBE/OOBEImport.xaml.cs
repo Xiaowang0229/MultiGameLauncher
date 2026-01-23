@@ -259,7 +259,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
             }
             else
             {
-                Tools.GetShowingWindow().ShowMessageAsync("错误", $"请将带星号的必填项填写完整！");
+                Tools.GetOOBEWindow().ShowMessageAsync("错误", $"请将带星号的必填项填写完整！");
             }
         }
 

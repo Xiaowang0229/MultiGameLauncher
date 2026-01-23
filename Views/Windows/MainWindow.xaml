@@ -15,7 +15,7 @@
                 TitleAlignment="Left"
                 TitleBarHeight="30"
                 WindowTitleBrush="{DynamicResource MahApps.Brushes.Accent}"
-                
+                xmlns:icon="clr-namespace:FluentIcons.Wpf;assembly=FluentIcons.Wpf"
                 
         mc:Ignorable="d"
                 ShowSystemMenu="True"
@@ -81,13 +81,17 @@
     <Grid>
         <Frame InputMethod.IsInputMethodEnabled="False" x:Name="RootFrame"
 NavigationUIVisibility="Hidden" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-     Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Source="\Views\Pages\Launch.xaml" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
+     Navigated="RootFrame_Navigated" Margin="0,0,0,-10" Navigating="RootFrame_Navigating" PreviewKeyDown="RootFrame_PreviewKeyDown">
 
         </Frame>
         <StackPanel Visibility="Hidden" x:Name="Tip" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" >
-            <ui:ProgressRing HorizontalAlignment="Left" Height="40"  VerticalAlignment="Top" Width="40"/>
-            <Label Content="请稍候，正在配置文件" VerticalAlignment="Center"/>
+            <ui:ProgressRing HorizontalAlignment="Left" Height="40"  VerticalAlignment="Top" Width="40" Visibility="Hidden"/>
+            <Label Content="请稍候，正在配置文件" VerticalAlignment="Center" Visibility="Hidden"/>
         </StackPanel>
+
+        <Grid Background="{DynamicResource MahApps.Brushes.AccentBase}" x:Name="TileLoading" Visibility="Hidden">
+            <icon:FluentIcon HorizontalAlignment="Center" VerticalAlignment="Center" Height="64" Width="64" FontSize="64" x:Name="TileLoadingIcon"/>
+        </Grid>
     </Grid>
 
 </ui:MetroWindow>

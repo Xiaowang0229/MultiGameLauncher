@@ -220,8 +220,11 @@ namespace MultiGameLauncher.Views.Pages
                         win2.Close();
                         return;
                     }
-                    var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    win.RootFrame.Navigate(new Manage());
+                    await Tools.GetShowingWindow().ShowMessageAsync("提示", "需要重启以完成此更改！", MessageDialogStyle.Affirmative, new MetroDialogSettings
+                    {
+                        AffirmativeButtonText = "重启"
+                    });
+                    Tools.Restart();
 
                 }
             }

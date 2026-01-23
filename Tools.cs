@@ -30,14 +30,12 @@ using Image = System.Drawing.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
 using TaskDialog = Ookii.Dialogs.Wpf.TaskDialog;
 using TaskDialogButton = Ookii.Dialogs.Wpf.TaskDialogButton;
-using Clipboard = System.Windows.Clipboard;
-
 
 namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "3.0.0-hotfix.5";
+        public readonly static string Version = "3.0.0-hotfix.9";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -61,7 +59,7 @@ namespace MultiGameLauncher
 
     public static class Tools //函数集
     {
-
+        
         public static void Restart()
         {
             Process.Start(Process.GetCurrentProcess().MainModule.FileName);
@@ -204,7 +202,7 @@ namespace MultiGameLauncher
             config.ThemeMode = theme;
             Json.WriteJson(Variables.Configpath, config);
         }
-        public static void InitalizeConfig()
+        public static void InitalizeConfig(bool Confirm)
         {
             var config = new MainConfig
             {
@@ -215,6 +213,7 @@ namespace MultiGameLauncher
                 AutoStartUp = false,
                 StartUpCheckUpdate = true,
                 ChangeThemeWithSystem = false,
+                DisableTileLoadingScreen = false,
                 LaunchWithMinize = true,
                 GameInfos = new List<LaunchConfig>()
             };
@@ -517,7 +516,9 @@ namespace MultiGameLauncher
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
-            if(Variables.GameProcess[index].ExitCode == 0)
+            config.GameInfos[index].GamePlayedMinutes += time;
+            Json.WriteJson(Variables.Configpath, config);
+            if (Variables.GameProcess[index].ExitCode == 0)
             {
                 var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode} (正常退出)").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
                 toast0.Show();
@@ -536,8 +537,7 @@ namespace MultiGameLauncher
 
                 
 
-            config.GameInfos[index].GamePlayedMinutes += time;
-            Json.WriteJson(Variables.Configpath, config);
+            
 
             Tools.InitializeTaskBarContentMenu();
             Variables.GameProcessStatus[index] = false;
@@ -597,7 +597,7 @@ namespace MultiGameLauncher
 
             // 通常第 0 个图标就是主图标（最大、最清晰的那个）
             // GetIcon(0) 返回的是包含所有尺寸变体（包括 256x256）的完整 Icon 对象
-            using (Icon fullIcon = extractor.GetIcon(0))
+            using (System.Drawing.Icon fullIcon = extractor.GetIcon(0))
             {
                 // 确保输出目录存在
                 string dir = Path.GetDirectoryName(pngPath);
@@ -607,7 +607,7 @@ namespace MultiGameLauncher
                 // 优先尝试提取 256x256 高清尺寸（现代 Windows 程序几乎都支持）
                 try
                 {
-                    using (Icon largeIcon = new Icon(fullIcon, 256, 256))
+                    using (System.Drawing.Icon largeIcon = new System.Drawing.Icon(fullIcon, 256, 256))
                     using (Bitmap bmp = largeIcon.ToBitmap())  // 自动保留透明度
                     {
                         bmp.Save(pngPath, ImageFormat.Png);
@@ -1003,6 +1003,18 @@ namespace MultiGameLauncher
                 return null;
             }
         }
+        public static OOBEWindow? GetOOBEWindow()
+        {
+            try
+            {
+                var win = System.Windows.Application.Current.Windows.OfType<OOBEWindow>().FirstOrDefault();
+                return win;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public static MetroWindow? GetShowingWindow()
         {
             return Application.Current.Dispatcher.Invoke<MetroWindow>(() =>
@@ -1047,6 +1059,8 @@ namespace MultiGameLauncher
             win.Tip.Visibility = Visibility.Hidden;
             win.BackButton.Width = 40;
         }
+
+        
     }
 
     public class LaunchConfig
@@ -1092,6 +1106,9 @@ namespace MultiGameLauncher
 
         //游戏启动时最小化窗口
         public bool LaunchWithMinize { get; set; }
+
+        //不使用磁贴加载动画
+        public bool DisableTileLoadingScreen { get; set; }
     }
 
     public class UpdateConfig
