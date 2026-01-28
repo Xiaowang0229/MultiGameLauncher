@@ -456,7 +456,7 @@ namespace MultiGameLauncher.Views.Pages
 
 
 
-        private void ChangeStartStopStatus(bool ChangeMode)
+        private async void ChangeStartStopStatus(bool ChangeMode)
         {
             config = Json.ReadJson<MainConfig>(Variables.Configpath);
             if (ChangeMode)
@@ -464,6 +464,7 @@ namespace MultiGameLauncher.Views.Pages
 
                 LaunchTile.Title = "结束游戏";
                 LaunchTile.Tag = "true";
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
                 NewGameTimeBlock.Content = $"游戏总时长：{config.GameInfos[RootTabControl.SelectedIndex].GamePlayedMinutes}分钟";
             }
             else

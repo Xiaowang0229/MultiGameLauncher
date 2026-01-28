@@ -43,7 +43,8 @@ namespace MultiGameLauncher
 
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            ShowTileLoadingAsync(FluentIcons.Common.Icon.Home,new Launch());
+            await Task.Delay(250);
+            await ShowTileLoadingAsync(FluentIcons.Common.Icon.Home,new Launch());
         }
 
 
@@ -153,6 +154,8 @@ namespace MultiGameLauncher
             var cfg = Json.ReadJson<MainConfig>(Variables.Configpath);
             if(cfg.DisableTileLoadingScreen != true)
             {
+                TileLoading.BeginAnimation(OpacityProperty, null);
+                TileLoadingIcon.BeginAnimation(OpacityProperty, null);
                 TileLoadingTokenSource.Cancel();
                 TileLoadingTokenSource = new CancellationTokenSource();
                 var AnimationDuration = TimeSpan.FromMilliseconds(150);
@@ -160,7 +163,6 @@ namespace MultiGameLauncher
                 {
                     TileLoadingIcon.Visibility = Visibility.Hidden;
                     TileLoading.Opacity = 0;
-                    TileLoading.Visibility = Visibility.Visible;
                     var Gridin = new DoubleAnimation
                     {
                         From = 0,
@@ -170,8 +172,7 @@ namespace MultiGameLauncher
                     };
 
 
-                    TileLoading.BeginAnimation(OpacityProperty, null);
-                    TileLoadingIcon.BeginAnimation(OpacityProperty, null);
+                    
 
                     TileLoading.Visibility = Visibility.Visible;
                     TileLoading.BeginAnimation(OpacityProperty, Gridin);
@@ -232,5 +233,8 @@ namespace MultiGameLauncher
             }
 
         }
+
+        
+
     }
 }

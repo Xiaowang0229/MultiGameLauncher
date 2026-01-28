@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "3.0.0-hotfix.10";
+        public readonly static string Version = "3.0.0-hotfix.12";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -776,7 +776,10 @@ namespace MultiGameLauncher
                         }
                         catch (Exception ex)
                         {
-                            GetShowingWindow().ShowMessageAsync("启动更新时发现错误", $"{ex.Message}");
+                            if(ShowException)
+                            {
+                                GetShowingWindow().ShowMessageAsync("检测更新时发现错误", $"{ex.Message}");
+                            }
                             Environment.Exit(0);
                         }
 
@@ -797,7 +800,10 @@ namespace MultiGameLauncher
             }
             catch (Exception ex)
             {
-                Tools.GetShowingWindow().ShowMessageAsync("启动更新时错误", $"{ex.Message}");
+                if (ShowException)
+                {
+                    GetShowingWindow().ShowMessageAsync("检测更新时发现错误", $"{ex.Message}");
+                }
             }
 
         }
