@@ -32,6 +32,9 @@ namespace MultiGameLauncher
         {
 
 
+            
+            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            
             InitializeComponent();
 
 
@@ -43,6 +46,7 @@ namespace MultiGameLauncher
 
         private async void RootWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            
             await Task.Delay(250);
             await ShowTileLoadingAsync(FluentIcons.Common.Icon.Home,new Launch());
         }
@@ -234,7 +238,12 @@ namespace MultiGameLauncher
 
         }
 
-        
-
+        private void RootWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(this.RootFrame.Content is Launch l)
+            {
+                l.ChangeTitleSize(this.Height,this.Width);
+            }
+        }
     }
 }

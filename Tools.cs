@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "3.0.0-hotfix.260205";
+        public readonly static string Version = "3.0.0-hotfix.26020504";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -505,12 +505,14 @@ namespace MultiGameLauncher
             var config = Json.ReadJson<MainConfig>(Variables.Configpath);
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
-            config.GameInfos[index].GamePlayedMinutes += time;
+            var totaltime = config.GameInfos[index].GamePlayedMinutes + time;
+            config.GameInfos[index].GamePlayedMinutes = totaltime;
             Json.WriteJson(Variables.Configpath, config);
             if (Variables.GameProcess[index].ExitCode == 0)
             {
                 var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode} (正常退出)").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
                 toast0.Show();
+                
             }
             else if (Variables.GameProcess[index].ExitCode == -1)
             {
@@ -540,7 +542,7 @@ namespace MultiGameLauncher
                 config = Json.ReadJson<MainConfig>(Variables.Configpath);
                 if (launchpage.RootTabControl.SelectedIndex == index)
                 {
-                    launchpage.NewGameTimeBlock.Content = $"游戏总时长：{time}分钟";
+                    launchpage.NewGameTimeBlock.Content = $"游戏总时长：{totaltime}分钟";
                 }
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
                 {
@@ -1118,6 +1120,8 @@ namespace MultiGameLauncher
 
         //不使用磁贴加载动画
         public bool DisableTileLoadingScreen { get; set; }
+
+
     }
 
     public class UpdateConfig

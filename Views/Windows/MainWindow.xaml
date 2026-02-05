@@ -21,8 +21,8 @@
                 ShowSystemMenu="True"
         xmlns:ui="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                
-        Title="Rocket Launcher" Height="480" Width="800" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing" MinWidth="800" MinHeight="480" MaxWidth="800" MaxHeight="480" >
+                SizeChanged="RootWindow_SizeChanged"
+        Title="Rocket Launcher" Height="480" Width="800" Loaded="RootWindow_Loaded" WindowStartupLocation="CenterScreen" ShowSystemMenuOnRightClick="True" Closing="RootWindow_Closing" MinHeight="480" MinWidth="800" SaveWindowPosition="True">
     <ui:MetroWindow.LeftWindowCommands>
         <ui:WindowCommands>
             <StackPanel Orientation="Horizontal">

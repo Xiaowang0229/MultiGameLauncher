@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Theming;
 using HuaZi.Library.Json;
+using Microsoft.Toolkit.Uwp.Notifications;
 using MultiGameLauncher.Views.Windows;
 using System.Diagnostics;
 using System.IO;
@@ -15,13 +16,28 @@ namespace MultiGameLauncher
     public partial class App : Application
     {
         private MainConfig config;
+
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            ToastNotificationManagerCompat.OnActivated += toastArgs =>
+            {
 
+                Dispatcher.Invoke(() =>
+                {
+                    OnLaunch();
+                });
+            };
+            OnLaunch();
+
+
+        }
+
+        private void OnLaunch()
+        {
             Tools.RegisterGlobalExceptionHandlers();
             Variables.VersionLog = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.LocalLog.md");
             Variables.EULAString = Tools.ReadEmbeddedMarkdown("MultiGameLauncher.EULA.md");
-            
+
             if (!File.Exists(Variables.Configpath))
             {
                 Tools.InitalizeConfig(true);
@@ -126,10 +142,7 @@ namespace MultiGameLauncher
                 Tools.CheckUpdate();
 
             }
-
-
         }
-
 
 
 

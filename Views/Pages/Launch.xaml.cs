@@ -155,6 +155,8 @@ namespace MultiGameLauncher.Views.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            var win = Tools.GetMainWindow();
+            ChangeTitleSize(win.Height,win.Width);
             for (int i = 0; i < config.GameInfos.Count; i++)
             {
                 var menuitem = new TabItem();
@@ -530,6 +532,12 @@ namespace MultiGameLauncher.Views.Pages
             var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             win.RootFrame.Navigate(new Manage());
             win.BackButton.Width = 40;
+        }
+
+        public void ChangeTitleSize(double height, double width)
+        {
+            MainTitleStackPanel.Margin =new Thickness((width/20)+40,(height/20)+40,width/20,height/20);
+            sp_ani.Margin = new Thickness(((width / 20))+40, height / 20, width / 20, (height / 20)+70);
         }
     }
 }
