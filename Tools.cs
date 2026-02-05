@@ -10,6 +10,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using MultiGameLauncher.Views.Pages;
 using MultiGameLauncher.Views.Windows;
+using Ookii.Dialogs.Wpf;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -23,7 +24,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TsudaKageyu;
-using Ookii.Dialogs.Wpf;
 using Color = System.Windows.Media.Color;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Image = System.Drawing.Image;
@@ -35,7 +35,7 @@ namespace MultiGameLauncher
 {
     public static class Variables //变量集
     {
-        public readonly static string Version = "3.0.0-hotfix.12";
+        public readonly static string Version = "3.0.0-hotfix.260205";
         public static string ApplicationTitle = $"Rocket Launcher {Version}";
         public readonly static string Configpath = Environment.CurrentDirectory + @"\Config.json";
         public static List<Process> GameProcess = new List<Process>();
@@ -59,7 +59,7 @@ namespace MultiGameLauncher
 
     public static class Tools //函数集
     {
-        
+
         public static void Restart()
         {
             Process.Start(Process.GetCurrentProcess().MainModule.FileName);
@@ -482,32 +482,21 @@ namespace MultiGameLauncher
             var proc = Variables.GameProcess[index];
 
 
-            try
-            {
-                await proc.WaitForExitAsync(Variables.LaunchCTS.Token);
-                StopMonitingGameStatus(index);
-            }
-            catch(TaskCanceledException)
-            {
 
-            }
-            catch (InvalidOperationException)
-            {
 
-            }
-            catch (OperationCanceledException)
+            //await proc.WaitForExitAsync(Variables.LaunchCTS.Token);
+            while (!proc.HasExited)
             {
-
+                await Task.Delay(100);
             }
-            catch (Exception ex)
-            {
-                return;
-            }
-                
+            StopMonitingGameStatus(index);
 
-            
-            
-            
+
+
+
+
+
+
 
         }
         private static void StopMonitingGameStatus(int index)
@@ -530,14 +519,14 @@ namespace MultiGameLauncher
             }
             else
             {
-                
+
                 var toast0 = new ToastContentBuilder().AddText("程序已结束").AddText($"程序名：{config.GameInfos[index].ShowName}").AddText($"游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode} (可能为异常退出)").AddAppLogoOverride(new Uri(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[index].HashCode}\\Icon.png"));
                 toast0.Show();
             }
 
-                
 
-            
+
+
 
             Tools.InitializeTaskBarContentMenu();
             Variables.GameProcessStatus[index] = false;
@@ -548,12 +537,18 @@ namespace MultiGameLauncher
             win.WindowState = WindowState.Normal;
             if (currentPage is Launch launchpage)
             {
+                config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                if (launchpage.RootTabControl.SelectedIndex == index)
+                {
+                    launchpage.NewGameTimeBlock.Content = $"游戏总时长：{time}分钟";
+                }
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{config.GameInfos[launchpage.TabIndex].HashCode}\\Background.mp4"))
                 {
                     launchpage.BackgroundImage.Visibility = Visibility.Hidden;
                     launchpage.BackgroundVideo.Visibility = Visibility.Visible;
                     launchpage.BackgroundVideo.Play();
                 }
+
             }
             win.Topmost = true;
             win.Topmost = false;
@@ -776,7 +771,7 @@ namespace MultiGameLauncher
                         }
                         catch (Exception ex)
                         {
-                            if(ShowException)
+                            if (ShowException)
                             {
                                 GetShowingWindow().ShowMessageAsync("检测更新时发现错误", $"{ex.Message}");
                             }
@@ -821,15 +816,15 @@ namespace MultiGameLauncher
                     WindowTitle = "错误",
                     MainIcon = Ookii.Dialogs.Wpf.TaskDialogIcon.Error,
                     MainInstruction = "程序发生错误，您可将下方内容截图并上报错误",
-                    
+
                     Content = $"{e.Exception}",
                     ButtonStyle = TaskDialogButtonStyle.CommandLinks,
-                    
+
 
                 };
                 var mbb1 = new TaskDialogButton
                 {
-                    
+
                     Text = "打开错误报告页面(推荐)",
                     CommandLinkNote = "将会自动复制错误信息到剪贴板,可能需要启动网络代理以进入Github",
 
@@ -867,7 +862,7 @@ namespace MultiGameLauncher
                     KillTaskBar();
                     Environment.Exit(0);
                 }
-                
+
             };
 
             // 捕获非 UI 线程未处理的异常
@@ -1031,7 +1026,7 @@ namespace MultiGameLauncher
                 {
                     if (w is MainWindow mw) return mw;
                     if (w is OOBEWindow oobe) return oobe;
-                    
+
                 }
                 return null;
             });
@@ -1058,15 +1053,23 @@ namespace MultiGameLauncher
 
         public async static Task CopyFileAsync(string source, string dest)
         {
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.Tip.Visibility = Visibility.Visible;
-            win.BackButton.Width = 0;
+            if (GetMainWindow() != null)
+            {
+
+                GetMainWindow().Tip.Visibility = Visibility.Visible;
+                GetMainWindow().BackButton.Width = 0;
+            }
+
             await Task.Run(() => File.Copy(source, dest, overwrite: true));
-            win.Tip.Visibility = Visibility.Hidden;
-            win.BackButton.Width = 40;
+            if (GetMainWindow() != null)
+            {
+                GetMainWindow().Tip.Visibility = Visibility.Hidden;
+                GetMainWindow().BackButton.Width = 40;
+            }
+
         }
 
-        
+
     }
 
     public class LaunchConfig
@@ -1126,6 +1129,7 @@ namespace MultiGameLauncher
 
     }
 
-
+    
 
 }
+

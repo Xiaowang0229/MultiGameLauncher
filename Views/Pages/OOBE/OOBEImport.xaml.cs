@@ -143,7 +143,7 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                 {
                     Backgroundview.Content = "动态背景";
                 }
-                if (Path.GetExtension(DialogFileName) == ".png")
+                else
                 {
                     Backgroundview.Content = "静态背景";
                 }
@@ -216,7 +216,21 @@ namespace MultiGameLauncher.Views.Pages.OOBE
                         File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
                     }
                     this.IsEnabled = false;
-                    await Tools.CopyFileAsync(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(DialogFileName));
+                    try
+                    {
+                        if (Path.GetExtension(DialogFileName) == ".mp4")
+                        {
+                            await Tools.CopyFileAsync(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
+                        }
+                        else
+                        {
+                            await Tools.CopyFileAsync(DialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Tools.GetOOBEWindow().ShowMessageAsync("拷贝背景时发生错误",$"{ex}");
+                    }
 
                 }
                 BackgroundCopyTip.Visibility = Visibility.Hidden;

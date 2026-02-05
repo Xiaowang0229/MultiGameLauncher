@@ -256,7 +256,14 @@ namespace MultiGameLauncher.Views.Pages
                 if(File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png")) File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
                 if (File.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4")) File.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
                 this.IsEnabled = false;
-                await Tools.CopyFileAsync(dialog.FileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background" + Path.GetExtension(dialog.FileName));
+                if (Path.GetExtension(dialogFileName) == ".mp4")
+                {
+                    await Tools.CopyFileAsync(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.mp4");
+                }
+                else
+                {
+                    await Tools.CopyFileAsync(dialogFileName, Environment.CurrentDirectory + $"\\Backgrounds\\{newconfig.HashCode}\\Background.png");
+                }
                 win.Tip.Visibility = Visibility.Hidden;
                 this.IsEnabled = true;
                 Tools.GetShowingWindow().ShowMessageAsync("提示", "背景替换成功");
@@ -364,8 +371,6 @@ namespace MultiGameLauncher.Views.Pages
             }
 
 
-            var win = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            win.RootFrame.Navigate(new Manage());
 
         }
 
