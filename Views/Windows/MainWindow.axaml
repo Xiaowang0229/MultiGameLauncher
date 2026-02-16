@@ -1,0 +1,45 @@
+<wnd:AppWindow xmlns="https://github.com/avaloniaui"
+			   xmlns:wnd="using:FluentAvalonia.UI.Windowing"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RocketLauncherRemake.MainWindow"
+	    
+	    xmlns:ui="using:FluentAvalonia.UI.Controls"
+        Loaded="MainWindow_Loaded"
+			   MinHeight="450" MinWidth="800"
+		xmlns:ic="using:FluentIcons.Avalonia.Fluent"
+			   ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        Title="RocketLauncher">
+	<Grid>
+		
+		<ui:NavigationView x:Name="RootNavi" IsBackButtonVisible="True" SelectionChanged="RootNavi_SelectionChanged"  IsSettingsVisible="False" IsBackEnabled="False" ExpandedModeThresholdWidth="21474836">
+			<ui:NavigationView.FooterMenuItems>
+				<ui:NavigationViewItem Content="设置">
+					<ui:NavigationViewItem.IconSource>
+						<ic:FluentIconSource Icon="Settings" FontSize="32"/>
+					</ui:NavigationViewItem.IconSource>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem Content="关于">
+					<ui:NavigationViewItem.IconSource>
+						<ic:FluentIconSource Icon="Info" FontSize="32"/>
+					</ui:NavigationViewItem.IconSource>
+				</ui:NavigationViewItem>
+			</ui:NavigationView.FooterMenuItems>
+			<ui:NavigationView.Content>
+				<ui:Frame x:Name="RootFrame" Navigated="Frame_Pre_Navigating"/>
+			</ui:NavigationView.Content>
+		</ui:NavigationView>
+		<Grid x:Name="Tip" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsVisible="False">
+			<Border Background="#80FFFFFF"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+				<ui:ProgressRing Height="64" Width="64" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock Text="正在加载,请稍候..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+		</Grid>
+		<ui:InfoBar Margin="60,10,10,10" x:Name="RootInfoBar" Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"  Severity="Informational" Title="提示"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  IsClosable="True" IsVisible="True"/>
+		<Image Height="24" Width="24" Margin="12" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="TitleBarIcon"/>
+	</Grid>
+</wnd:AppWindow>
