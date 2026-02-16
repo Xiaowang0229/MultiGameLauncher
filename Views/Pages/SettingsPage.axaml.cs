@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using RocketLauncherRemake.Utils;
+using System.IO;
+using System.Threading.Tasks;
 using Xiaowang0229.JsonLibrary;
 
 namespace RocketLauncherRemake;
@@ -55,7 +57,9 @@ public partial class SettingsPage : UserControl
         var qdr = await Variables._MainWindow.ShowMessageAsync("警告", "确定要重置所有配置项（包含个性化设置，主题设置和所有已经添加的游戏等）吗？此操作不可逆");
         if (qdr)
         {
+            Variables._MainWindow.Tip.IsVisible = true;
             JsonConfig.InitalizeConfig(true);
+            await Task.Run(() => Directory.Delete(Variables.BackgroundPath, true));
             WindowHelper.Restart();
         }
     }

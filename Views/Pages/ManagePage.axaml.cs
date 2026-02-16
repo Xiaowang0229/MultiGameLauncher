@@ -32,7 +32,6 @@ public partial class ManagePage : UserControl
         var rbsp = new StackPanel { Margin = new Avalonia.Thickness(5) };
 
         DelCostumIcon.IsVisible = true;
-        UseAppIcon.IsVisible = true;
         for(int i = 0;i<config.GameInfos.Count;i++)
         {
             int index = i;
@@ -114,10 +113,6 @@ public partial class ManagePage : UserControl
                 if (CostumIcons.IsVisible)
                 {
                     await FileHelper.CopyFileAsync(CostumIcons.Text.Substring(6), $"{Variables.BackgroundPath}\\{GameConfig.HashCode}\\Icon.png");
-                }
-                else
-                {
-                    ImageIconHelper.ConvertToPngAndSave(AppResource.DefaultGameIcon, $"{Variables.BackgroundPath}\\{GameConfig.HashCode}\\Icon.png");
                 }
                 config.GameInfos[Utils.HashCode.FindHashcodeinGameinfosint(config, GameConfig.HashCode)] = GameConfig;
                 config.WriteConfig();
@@ -280,6 +275,7 @@ public partial class ManagePage : UserControl
         CostumIcons.Text = "";
         BackgroundPath.IsVisible = false;
         BackgroundPath.Text = "";
+        RootImage.Source = null;
         GameConfig = new LaunchConfig();
     }
 
@@ -314,21 +310,11 @@ public partial class ManagePage : UserControl
                 File.Delete($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
             }
             ImageIconHelper.ExtractAndSave256Icon(GameConfig.Launchpath, $"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
+            RootImage.Source =await ImageIconHelper.LoadFromFileAsync($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
             Variables._MainWindow.ShowMessageAsync("提示", "图标已经恢复为默认");
             DelCostumIcon.IsVisible = false;
         }
     }
 
-    private async void UseAppIcon_Click(object sender, RoutedEventArgs e)
-    {
-        if (await Variables._MainWindow.ShowMessageAsync("警告", "确定要使用程序内的图标吗?此操作不可逆"))
-        {
-            if(File.Exists($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png"))
-            {
-                File.Delete($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
-            }
-            ImageIconHelper.ExtractAndSave256Icon(GameConfig.Launchpath, $"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
-            UseAppIcon.IsVisible = false;
-        }
-    }
+    
 }

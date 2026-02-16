@@ -101,7 +101,7 @@ namespace RocketLauncherRemake.Utils
                 System.Windows.Forms.Clipboard.SetText($"{exception}");
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = "https://github.com/Xiaowang0229/RocketLauncherRemake/issues/new",
+                    FileName = "https://github.com/Xiaowang0229/MultiGameLauncher/issues/new",
                     UseShellExecute = true
                 });
                 TaskBar.KillTaskBar();

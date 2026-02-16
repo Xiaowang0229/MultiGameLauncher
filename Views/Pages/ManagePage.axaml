@@ -23,7 +23,6 @@
 						<Grid>
 							<TextBlock Text="启动路径" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 							<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-								<Button x:Name="UseAppIcon" Width="120" Margin="5" Content="使用程序图标" Click="UseAppIcon_Click"/>
 								<Button Margin="5" Click="LaunchPath_Click" Content="浏览..." Width="120" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 								<TextBlock IsVisible="False" x:Name="LaunchPath" Text="已选中文件:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0"/>
 							</StackPanel>
