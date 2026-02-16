@@ -309,9 +309,11 @@ public partial class ManagePage : UserControl
             {
                 File.Delete($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
             }
-            ImageIconHelper.ExtractAndSave256Icon(GameConfig.Launchpath, $"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
-            RootImage.Source =await ImageIconHelper.LoadFromFileAsync($"{Environment.CurrentDirectory}\\{GameConfig.HashCode}\\Icon.png");
-            Variables._MainWindow.ShowMessageAsync("提示", "图标已经恢复为默认");
+            ImageIconHelper.ExtractAndSave256Icon(GameConfig.Launchpath, $"{Environment.CurrentDirectory}\\Backgrounds\\{GameConfig.HashCode}\\Icon.png");
+            RootImage.Source =await ImageIconHelper.LoadFromFileAsync($"{Environment.CurrentDirectory}\\Backgrounds\\{GameConfig.HashCode}\\Icon.png");
+            Variables._MainWindow.RefreshNavigationList();
+            await Variables._MainWindow.ShowMessageAsync("提示", "图标已经恢复为默认");
+            
             DelCostumIcon.IsVisible = false;
         }
     }

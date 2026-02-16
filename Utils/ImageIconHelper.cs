@@ -41,7 +41,6 @@ namespace RocketLauncherRemake.Utils
             if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
             {
                 // 文件不存在，直接用默认
-                System.Windows.MessageBox.Show("TTEWHNAHAIUKKSKJ");
                 return SaveDefaultIcon(defaultIconBytes, outputPngPath);
             }
 
@@ -92,9 +91,10 @@ namespace RocketLauncherRemake.Utils
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"提取图标失败: {ex.Message}，使用默认图标");
-                // 出错时 fallback 到默认
                 return SaveDefaultIcon(defaultIconBytes, outputPngPath);
+                throw new Exception($"提取图标失败: {ex.Message}，使用默认图标");
+                // 出错时 fallback 到默认
+                
             }
         }
 

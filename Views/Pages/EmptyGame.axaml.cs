@@ -36,6 +36,7 @@ public partial class EmptyGame : UserControl
             {
                 Variables._MainWindow.Tip.IsVisible = true;
                 await FileHelper.CopyFileAsync(dialog.FileName, Variables.Configpath);
+                Variables._MainWindow.Tip.IsVisible = true;
                 await FileHelper.CopyDirectoryAsync(dialog2.FolderName,$"{Environment.CurrentDirectory}\\Backgrounds");
                 WindowHelper.Restart();
             }

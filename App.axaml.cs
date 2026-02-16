@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Windowing;
 using Ookii.Dialogs.Wpf;
 using RocketLauncherRemake.Utils;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Xiaowang0229.JsonLibrary;
@@ -144,6 +147,15 @@ namespace RocketLauncherRemake
         private void App_OnClosing(object? sender,ShutdownRequestedEventArgs e)
         {
             TaskBar.KillTaskBar();
+        }
+
+        public static void ChangeThemeColor(Color color)
+        {
+            var faTheme = Application.Current.Styles
+    .OfType<FluentAvaloniaTheme>()
+    .FirstOrDefault();
+
+            faTheme.CustomAccentColor = color;
         }
     }
 }

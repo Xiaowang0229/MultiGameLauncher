@@ -1,5 +1,6 @@
 using Avalonia.Animation;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Navigation;
 using FluentAvalonia.UI.Windowing;
@@ -21,7 +22,18 @@ namespace RocketLauncherRemake
             this.ExtendClientAreaToDecorationsHint = true;
             this.TitleBar.ExtendsContentIntoTitleBar = true;
             TitleBarIcon.Source = ImageIconHelper.ToAvaloniaImageSource(AppResource.ApplicationImage);
-
+            var cmdline = Environment.GetCommandLineArgs();
+            foreach(var item in cmdline)
+            {
+                if(item == "-NewYear2026")
+                {
+                    Variables.Version += " 2026 恭贺新年特别版";
+                    TitleBar.BackgroundColor = new Avalonia.Media.Color(255, 177, 19, 17);
+                    RootNavi.Background = new SolidColorBrush(new Avalonia.Media.Color(255, 177, 19, 17));
+                    App.ChangeThemeColor(Color.FromArgb(255,220,0,0));
+                    break;
+                }
+            }
 
         }
 
