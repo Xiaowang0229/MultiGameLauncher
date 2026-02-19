@@ -15,7 +15,7 @@ namespace RocketLauncherRemake.Utils
     public static partial class Variables
     {
         //必须更改这两个配置项
-        public static string Version = "4.2.2";
+        public static string Version = "4.2.3";
         public static bool IsDevelopmentMode = false;
         //必须更改这两个配置项
 

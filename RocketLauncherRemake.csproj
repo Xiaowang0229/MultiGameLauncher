@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	  <CETCompat>false</CETCompat>
     <Platforms>x64</Platforms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
