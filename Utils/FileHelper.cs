@@ -10,8 +10,6 @@ namespace RocketLauncherRemake.Utils
 {
     public static partial class Variables
     {
-        public static string VersionLog;
-        public static string EULAString;
         public static string BackgroundPath = $"{Environment.CurrentDirectory}\\Backgrounds";
     }
     public static class FileHelper

@@ -45,7 +45,7 @@ namespace RocketLauncherRemake
         private AppWindow OnLaunch()
         {
             RegisterGlobalExceptionHandlers();
-            if (!File.Exists($"{Environment.CurrentDirectory}\\Config.json"))
+            if (!File.Exists(Variables.Configpath))
             {
                 var config2 = new MainConfig
                 {
@@ -54,21 +54,16 @@ namespace RocketLauncherRemake
                     LaunchWithMinize = true,
                     GameInfos = new List<LaunchConfig>()
                 };
-                Json.WriteJson($"{Environment.CurrentDirectory}\\Config.json", config2);
+                config2.WriteConfig();
             }
-            else
-            {
-                Variables.config = Json.ReadJson<MainConfig>(Variables.Configpath);
-            }
+            
 
             
  
 
-            Variables.VersionLog = FileHelper.ReadEmbeddedMarkdown("RocketLauncherRemake.LocalLog.md");
-            Variables.EULAString = FileHelper.ReadEmbeddedMarkdown("RocketLauncherRemake.EULA.md");
 
 
-            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var config = JsonConfig.ReadConfig();
 
             //¶ÁÈ¡Âß¼­
 

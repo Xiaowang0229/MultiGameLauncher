@@ -15,7 +15,8 @@ namespace RocketLauncherRemake.Utils
     public static partial class Variables
     {
         //必须更改这两个配置项
-        public static string Version = "4.2.3";
+        public static string Version = "4.3.0";
+        public static string VersionLog = "# Release 4.3.0 版本日志\r\n---\r\n- 修复了已知问题\r\n- 使用 Bson 存储配置文件,安全性提升\r\n";
         public static bool IsDevelopmentMode = false;
         //必须更改这两个配置项
 

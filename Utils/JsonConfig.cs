@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Media;
 using Xiaowang0229.JsonLibrary;
 
@@ -7,9 +8,9 @@ namespace RocketLauncherRemake.Utils
 {
     public static partial class Variables
     {
-        public readonly static string Configpath = $"{Environment.CurrentDirectory}\\Config.json";
+        public readonly static string Configpath = $"{Environment.CurrentDirectory}\\Config.bson";
 
-        public static MainConfig config ;
+
     }
     public static class JsonConfig
     {
@@ -22,19 +23,38 @@ namespace RocketLauncherRemake.Utils
                 LaunchWithMinize = true,
                 GameInfos = new List<LaunchConfig>()
             };
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
             //ConvertToPngAndSave(ApplicationResources.UserIcon, Environment.CurrentDirectory+@"\Head.png");
         }
 
         public static MainConfig ReadConfig()
         {
-            return Json.ReadJson<MainConfig>(Variables.Configpath);
+            try
+            {
+                var b = BsonHelper.ReadBson<MainConfig>(Variables.Configpath);
+                return b;
+            }
+            catch(FileNotFoundException)
+            {
+                var config2 = new MainConfig
+                {
+                    Username = "Administrator",
+                    StartUpCheckUpdate = true,
+                    LaunchWithMinize = true,
+                    GameInfos = new List<LaunchConfig>()
+                };
+                config2.WriteConfig();
+                var b = BsonHelper.ReadBson<MainConfig>(Variables.Configpath);
+                return b;
+            }
         }
 
         public static void WriteConfig(this MainConfig config)
         {
-            Json.WriteJson(Variables.Configpath, config);
+            BsonHelper.WriteBson<MainConfig>(config,Variables.Configpath);
         }
+
+        
     }
 
     public class LaunchConfig

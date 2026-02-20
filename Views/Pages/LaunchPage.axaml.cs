@@ -71,7 +71,7 @@ public partial class LaunchPage : UserControl
 
 
             ChangeStartStopStatus(false);
-            config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config = JsonConfig.ReadConfig();
 
         }
 
@@ -131,7 +131,7 @@ public partial class LaunchPage : UserControl
             var proc = Variables.GameProcess[GameIndex];
             proc.Kill();
             ChangeStartStopStatus(false);
-            config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config = JsonConfig.ReadConfig();
         }
         else if (LaunchTile.Tag == "false")//处理开始逻辑
         {
@@ -169,7 +169,7 @@ public partial class LaunchPage : UserControl
 
     private async void ChangeStartStopStatus(bool ChangeMode)
     {
-        config = Json.ReadJson<MainConfig>(Variables.Configpath);
+        config = JsonConfig.ReadConfig();
         if (ChangeMode)
         {
 

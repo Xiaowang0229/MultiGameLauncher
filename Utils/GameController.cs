@@ -23,7 +23,7 @@ namespace RocketLauncherRemake.Utils
         public async static void StartMonitingGameStatus(int index)
         {
             
-            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var config = JsonConfig.ReadConfig();
             var proc = Variables.GameProcess[index];
             proc.Start();
             Variables.GameProcessStatus[index] = true;
@@ -45,7 +45,7 @@ namespace RocketLauncherRemake.Utils
         {
             Variables.LaunchCTS.Cancel();
             Variables.LaunchCTS = new CancellationTokenSource();
-            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var config = JsonConfig.ReadConfig();
             var proc = Variables.GameProcess[index];
 
 
@@ -70,12 +70,12 @@ namespace RocketLauncherRemake.Utils
         {
             Variables._MainWindow.RootNavi.SelectedItem = Variables._MainWindow.RootNavi.MenuItems[index];
             var win = Variables._MainWindow;
-            var config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            var config = JsonConfig.ReadConfig();
             Variables.PlayingTimeRecorder[index].Stop();
             var time = Variables.PlayingTimeintList[index];
             var totaltime = config.GameInfos[index].GamePlayedMinutes + time;
             config.GameInfos[index].GamePlayedMinutes = totaltime;
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
             
                 
             Variables._MainWindow.ShowInfoBar("游戏已结束",$"程序名：{config.GameInfos[index].ShowName}\r\n游戏时长：{time} 分钟,退出码：{Variables.GameProcess[index].ExitCode}");
@@ -95,7 +95,7 @@ namespace RocketLauncherRemake.Utils
             win.WindowState = Avalonia.Controls.WindowState.Normal;
             if (currentPage is LaunchPage launchpage)
             {
-                config = Json.ReadJson<MainConfig>(Variables.Configpath);
+                config = JsonConfig.ReadConfig();
                 if (win.RootNavi.MenuItems[index] == win.RootNavi.SelectedItem)
                 {
                     launchpage.ChangePlayedTime($"{totaltime}");

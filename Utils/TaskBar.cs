@@ -18,7 +18,7 @@ namespace RocketLauncherRemake.Utils
         public static void IntializeTaskbar()
         {
             MainConfig config = new MainConfig();
-            config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config = JsonConfig.ReadConfig();
             //本体初始化
             Variables.RootTaskBarIcon = new TaskbarIcon();
 
@@ -136,7 +136,7 @@ namespace RocketLauncherRemake.Utils
         {
             //列表项初始化
             MainConfig config = new MainConfig();
-            config = Json.ReadJson<MainConfig>(Variables.Configpath);
+            config = JsonConfig.ReadConfig();
             var tbcm = new ContextMenu();
             var OpenMainWindowItem = new MenuItem { Header = "显示主窗口" };
             var ControlGameProcess = new MenuItem { Header = "快捷管理游戏" };

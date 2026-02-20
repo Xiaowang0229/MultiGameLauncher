@@ -121,7 +121,7 @@ namespace RocketLauncherRemake.Utils
                     LaunchWithMinize = true,
                     GameInfos = new List<LaunchConfig>()
                 };
-                Json.WriteJson($"{Environment.CurrentDirectory}\\Config.json", config2);
+                config2.WriteConfig();
                 TaskBar.KillTaskBar();
                 Restart();
             }

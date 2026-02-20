@@ -151,9 +151,7 @@
 
 			</ui:SettingsExpander.Header>
 			<StackPanel Margin="5" Orientation="Horizontal">
-				<ScrollViewer>
-					<md:MarkdownScrollViewer x:Name="EULA" xml:space="preserve" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-				</ScrollViewer>
+				<TextBox x:Name="EULABox" IsReadOnly="True"/>
 				
 			</StackPanel>
 		</ui:SettingsExpander>

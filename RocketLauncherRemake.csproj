@@ -16,9 +16,6 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="EULA.md" />
-
-    <None Remove="LocalLog.md" />
     <None Remove="UpdateAPI.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -27,10 +24,6 @@
     <Content Include="UpdateAPI.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EULA.md" />
-    <EmbeddedResource Include="LocalLog.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +42,7 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
     <PackageReference Include="HotAvalonia" Version="3.1.0" />
     <PackageReference Include="Markdown.Avalonia" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.3" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.2" />
     <PackageReference Include="Xiaowang0229sImageLibraryWPF" Version="1.1.0" />

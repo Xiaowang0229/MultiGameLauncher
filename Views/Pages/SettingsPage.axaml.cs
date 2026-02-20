@@ -28,13 +28,13 @@ public partial class SettingsPage : UserControl
         if (StartUpCheckUpdate.IsChecked == true)
         {
             config.StartUpCheckUpdate = true;
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
 
         }
         else
         {
             config.StartUpCheckUpdate = false;
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
 
         }
     }
@@ -44,12 +44,12 @@ public partial class SettingsPage : UserControl
         if (LaunchWithMinize.IsChecked == true)
         {
             config.LaunchWithMinize = true;
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
         }
         else
         {
             config.LaunchWithMinize = false;
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
         }
     }
 
@@ -87,11 +87,17 @@ public partial class SettingsPage : UserControl
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
             Title = "选择已有配置项",
-            Filter = "Json 配置项文件(*.json)|*.json",
+            Filter = "Json 旧配置项文件|Config.json|Bson 新配置项文件|Config.Bson",
             Multiselect = false
         };
         if (dialog.ShowDialog() == true)
         {
+            if (dialog.FileName == Variables.Configpath)
+            {
+                await Variables._MainWindow.ShowMessageAsync("错误!", "不能选择现存配置文件");
+                Variables._MainWindow.Tip.IsVisible = false;
+                return;
+            }
             var dialog2 = new Microsoft.Win32.OpenFolderDialog
             {
                 Title = "选择配置项所对应的 Backgrounds 文件夹",
@@ -100,7 +106,23 @@ public partial class SettingsPage : UserControl
             if (dialog2.ShowDialog() == true)
             {
                 Variables._MainWindow.Tip.IsVisible = true;
-                await FileHelper.CopyFileAsync(dialog.FileName, Variables.Configpath);
+                //await FileHelper.CopyFileAsync(dialog.FileName, Variables.Configpath);
+                if (Path.GetExtension(dialog.FileName) == ".json")
+                {
+                    var j = Json.ReadJson<MainConfig>(dialog.FileName);
+                    j.WriteConfig();
+                }
+                else if (Path.GetExtension(dialog.FileName) == ".Bson")
+                {
+                    File.Copy(dialog.FileName, Variables.Configpath);
+                }
+                else
+                {
+                    await Variables._MainWindow.ShowMessageAsync("错误!", "文件格式不正确");
+                    Variables._MainWindow.Tip.IsVisible = false;
+                    return;
+                }
+                Variables._MainWindow.Tip.IsVisible = true;
                 await FileHelper.CopyDirectoryAsync(dialog2.FolderName, $"{Environment.CurrentDirectory}\\Backgrounds");
                 WindowHelper.Restart();
             }

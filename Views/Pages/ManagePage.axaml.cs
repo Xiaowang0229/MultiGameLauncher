@@ -289,7 +289,7 @@ public partial class ManagePage : UserControl
             Variables.GameProcessStatus.RemoveAt(HashCode.FindHashcodeinGameinfosint(config, deleteitemindex));
             Variables.PlayingTimeintList.RemoveAt(HashCode.FindHashcodeinGameinfosint(config, deleteitemindex));
             Variables.PlayingTimeRecorder.RemoveAt(HashCode.FindHashcodeinGameinfosint(config, deleteitemindex));
-            Json.WriteJson(Variables.Configpath, config);
+            config.WriteConfig();
             if(Directory.Exists(Environment.CurrentDirectory + $"\\Backgrounds\\{GameConfig.HashCode}\\"))
             {
                 Directory.Delete(Environment.CurrentDirectory + $"\\Backgrounds\\{GameConfig.HashCode}\\", true);
