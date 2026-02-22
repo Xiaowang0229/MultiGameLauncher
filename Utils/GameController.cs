@@ -17,6 +17,7 @@ namespace RocketLauncherRemake.Utils
         public static List<long> PlayingTimeintList = new List<long>();
         public static bool MainWindowHideStatus = false;
         public static CancellationTokenSource LaunchCTS = new CancellationTokenSource();
+        public static int GameIndex;
     }
     public static class GameController
     {

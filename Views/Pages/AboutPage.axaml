@@ -70,7 +70,10 @@
 
 				<StackPanel Margin="5">
 					<Grid Margin="0,0,0,5">
-						<TextBlock Text="{x:Static local:Variables.ShowVersion}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="版本:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+							<TextBlock Text="{x:Static local:Variables.Version}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+						</StackPanel>
 						<Button Width="120" Click="ChkUpd_Click" Content="检测更新" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 
 					</Grid>

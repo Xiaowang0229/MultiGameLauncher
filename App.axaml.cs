@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Xiaowang0229.JsonLibrary;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 
@@ -55,6 +56,13 @@ namespace RocketLauncherRemake
                     GameInfos = new List<LaunchConfig>()
                 };
                 config2.WriteConfig();
+            }
+            if(File.Exists($"{Environment.CurrentDirectory}\\Config.json"))
+            {
+                var j = Json.ReadJson<MainConfig>($"{Environment.CurrentDirectory}\\Config.json");
+                j.WriteConfig();
+                File.Delete($"{Environment.CurrentDirectory}\\Config.json");
+                WindowHelper.Restart();
             }
             
 
