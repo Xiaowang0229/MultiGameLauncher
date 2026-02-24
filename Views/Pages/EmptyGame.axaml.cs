@@ -51,6 +51,7 @@ public partial class EmptyGame : UserControl
                 }
                 else if (Path.GetExtension(dialog.FileName) == ".bson")
                 {
+                    File.Delete(Variables.Configpath);
                     File.Copy(dialog.FileName, Variables.Configpath);
                 }
                 else

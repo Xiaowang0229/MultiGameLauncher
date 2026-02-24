@@ -114,6 +114,7 @@ public partial class SettingsPage : UserControl
                 }
                 else if (Path.GetExtension(dialog.FileName) == ".bson")
                 {
+                    File.Delete(Variables.Configpath);
                     File.Copy(dialog.FileName, Variables.Configpath);
                 }
                 else
