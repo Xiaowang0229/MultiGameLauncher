@@ -66,7 +66,7 @@ namespace RocketLauncherRemake
             }
 
 
-            Update.DownloadUpdatePackage();
+ 
  
 
 

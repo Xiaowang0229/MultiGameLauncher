@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using FluentAvalonia.UI.Controls;
 using Markdown.Avalonia;
 using System;
 using System.Data;
@@ -47,8 +48,8 @@ namespace RocketLauncherRemake.Utils
 
 
 
-                    if (Variables.UpdatePackageDownloadStatus == true)
-                    {
+                   
+                    
                         var filname = HashCode.RandomHashGenerate();
                         var win = Variables._MainWindow;
 
@@ -59,62 +60,92 @@ namespace RocketLauncherRemake.Utils
                         {
                             Markdown = updcfg.UpdateLog
                         });
+                    var pgb = new ProgressBar { Value = 0, Margin = new Thickness(0,5,0,0), HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch, IsVisible = false };
+                    sp.Children.Add(pgb);
                         Variables._MainWindow.Tip.IsVisible = false;
-                        var results = await win.ShowMessageAsync("更新可用", sp);
-
-                        if (results == true)
-                        {
-                            if (File.Exists(Path.GetTempPath() + "\\" + filname + ".exe"))
-                            {
-                                File.Delete(Path.GetTempPath() + "\\" + filname + ".exe");
-                            }
-                            try
-                            {
-
-                                File.Copy($"{Environment.CurrentDirectory}\\UpdateAPI.exe", Path.GetTempPath() + "\\" + filname + ".exe");
-                                Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = $"{Path.GetTempPath()}\\{filname}.exe",
-                                    Arguments = $"\"{updcfg.UpdateLink}\" \"{Environment.ProcessPath}\"",
-                                    UseShellExecute = true
-                                });
-                                TaskBar.KillTaskBar();
-                                Environment.Exit(0);
-                            }
-                            catch (Exception ex)
-                            {
-                                if (ShowMessages)
-                                {
-                                    await Variables._MainWindow.ShowMessageAsync("更新时发现错误", $"{ex.Message}");
-                                }
-                                Variables._MainWindow.Tip.IsVisible = false;
-                                Environment.Exit(0);
-                            }
-
-                        }
-                    }
-                    else if (Variables.UpdatePackageDownloadStatus == false)
+                    //var results = await win.ShowMessageAsync("更新可用", sp);
+                    var dialog = new ContentDialog
                     {
-                        if (ShowMessages)
-                        {
-                            var win = Variables._MainWindow;
-                            await win.ShowMessageAsync("请稍候", "资源包正在下载中......");
-                            return;
-                        }
-                    }
-                    else if (Variables.UpdatePackageDownloadStatus == null)
+                        Title = "新版本可用,是否更新?",
+                        Content = sp,
+                        PrimaryButtonText = "现在更新",
+                        SecondaryButtonText = "推迟",
+                        DefaultButton = ContentDialogButton.Primary,
+                        
+                    };
+                    
+                    dialog.PrimaryButtonClick += async (s, e) =>
                     {
-                        if (ShowMessages)
+                        dialog.IsPrimaryButtonEnabled = false;
+                        dialog.IsSecondaryButtonEnabled = false;
+                        e.Cancel = true;
+                        pgb.IsVisible = true;
+                        var DownloadStatus = false;
+                        try
                         {
-                            var win = Variables._MainWindow;
-                            var result = await win.ShowMessageAsync("错误", "资源包下载失败,是否重新下载?");
-                            if(result)
+
+                            if (File.Exists($"{Environment.CurrentDirectory}\\Temp\\Update.zip"))
                             {
-                                DownloadUpdatePackage();
-                                return;
+                                File.Delete($"{Environment.CurrentDirectory}\\Temp\\Update.zip");
                             }
+                            var downloader = new Downloader
+                            {
+                                Url = updcfg.UpdateLink,
+                                SavePath = $"{Environment.CurrentDirectory}\\Temp\\Update.zip",
+                                Completed = (async (s, e) =>
+                                {
+                                    if (s)
+                                    {
+                                        DownloadStatus = true;
+                                    }
+                                    else
+                                    {
+                                        if (ShowMessages)
+                                        {
+                                            dialog.Hide();
+                                            Variables._MainWindow.ShowMessageAsync("下载错误", $"错误为:{e}");
+                                            Variables._MainWindow.Tip.IsVisible = false;
+                                            return;
+                                        }
+                                    }
+                                }),
+                                Progress = ((p, s) =>
+                                {
+                                    pgb.Value = Convert.ToInt32(p);
+
+                                })
+                            };
+                            downloader.StartDownload();
+                            while (DownloadStatus == false)
+                            {
+                                await Task.Delay(TimeSpan.FromSeconds(2));
+                            }
+
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = $"{Environment.CurrentDirectory}\\UpdateAPI.exe",
+                                WorkingDirectory = Environment.CurrentDirectory,
+                                UseShellExecute = true
+                            });
+                            TaskBar.KillTaskBar();
+                            Environment.Exit(0);
                         }
-                    }
+                        catch (Exception ex)
+                        {
+                            dialog.Hide();
+                            if (ShowMessages)
+                            {
+                                await Variables._MainWindow.ShowMessageAsync("更新时发现错误", $"{ex.Message}");
+                            }
+                            Variables._MainWindow.Tip.IsVisible = false;
+                            Environment.Exit(0);
+                        }
+
+                    };
+
+                    await dialog.ShowAsync();
+
+
 
 
 
@@ -151,53 +182,6 @@ namespace RocketLauncherRemake.Utils
             }); return;
         }
 
-        public static async Task DownloadUpdatePackage()
-        {
-            Variables.UpdatePackageDownloadStatus = false;
-            var client = new HttpClient();
-            try
-            {
-                var content = await client.GetStringAsync("https://gitee.com/xiaowangupdate/update-service/raw/master/MultiGameLauncher", Variables.UpdateCTS.Token);
-                var updcfg = Json.ReadJson<UpdateConfig>(content);
-                if (updcfg.UpdateVersion != Variables.Version)
-                {
-                    if(File.Exists($"{Environment.CurrentDirectory}\\Temp\\Update.zip"))
-                    {
-                        File.Delete($"{Environment.CurrentDirectory}\\Temp\\Update.zip");
-                    }
-                    var downloader = new Downloader
-                    {
-                        Url = updcfg.UpdateLink,
-                        SavePath = $"{Environment.CurrentDirectory}\\Temp\\Update.zip",
-                        Completed = (async (s, e) =>
-                        {
-                            if (s)
-                            {
-                                var cfg = JsonConfig.ReadConfig();
-                                Variables.UpdatePackageDownloadStatus = true;
-                                if (cfg.StartUpCheckUpdate == true)
-                                {
-                                    await CheckUpdate(true);
-                                }
-                            }
-                            else
-                            {
-                                Variables.UpdatePackageDownloadStatus = null;
-                                return;
-                            }
-                        })
-                    };
-                    downloader.StartDownload();
-                }
-                else
-                {
-                    Variables.UpdatePackageDownloadStatus = true;
-                }
-            }
-            catch
-            {
-                return;
-            }
-        }
+        
     }
 }
