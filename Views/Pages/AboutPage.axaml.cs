@@ -35,7 +35,7 @@ public partial class AboutPage : UserControl
         if(sender is Button btn)
         {
             btn.IsEnabled = false;
-            await Update.CheckUpdate(true, true);
+            await Update.CheckUpdate(true);
             btn.IsEnabled = true;
         }
         

@@ -49,7 +49,7 @@ public partial class EmptyGame : UserControl
                     var j = Json.ReadJson<MainConfig>(dialog.FileName);
                     j.WriteConfig();
                 }
-                else if (Path.GetExtension(dialog.FileName) == ".Bson")
+                else if (Path.GetExtension(dialog.FileName) == ".bson")
                 {
                     File.Copy(dialog.FileName, Variables.Configpath);
                 }

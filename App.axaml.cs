@@ -64,9 +64,9 @@ namespace RocketLauncherRemake
                 File.Delete($"{Environment.CurrentDirectory}\\Config.json");
                 WindowHelper.Restart();
             }
-            
 
-            
+
+            Update.DownloadUpdatePackage();
  
 
 
