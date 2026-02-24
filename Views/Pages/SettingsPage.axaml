@@ -68,7 +68,7 @@
 							<TextBlock Text="配置项操作" VerticalAlignment="Center" Margin="10,0,0,0" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-							<Button Click="Import_Click" HorizontalAlignment="Center" Content="导入已有配置项" Width="140" Margin="5,7.5,0,7.5"/>
+							<Button Click="Import_Click" HorizontalAlignment="Center" Content="覆盖现有配置文件" Width="140" Margin="5,7.5,0,7.5"/>
 							<Button Click="ResetConfig_Click" Content="恢复默认配置" Foreground="Red" Width="120" Margin="5,7.5,0,7.5"/>
 						</StackPanel>
 

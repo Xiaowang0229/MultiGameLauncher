@@ -122,7 +122,7 @@ namespace RocketLauncherRemake
             {
 
 
-                WindowHelper.ShowExceptionDialog($"{e.Exception}");
+                WindowHelper.ShowExceptionDialog(e.Exception);
                 
 
             };
@@ -131,8 +131,8 @@ namespace RocketLauncherRemake
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
 
+                if(e.ExceptionObject is Exception ec) WindowHelper.ShowExceptionDialog(ec);
 
-                WindowHelper.ShowExceptionDialog($"{e.ExceptionObject}");
 
             };
 
@@ -140,7 +140,7 @@ namespace RocketLauncherRemake
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
 
-                WindowHelper.ShowExceptionDialog($"{e.Exception}");
+                WindowHelper.ShowExceptionDialog(e.Exception);
 
             };
         }

@@ -24,7 +24,7 @@ public partial class EmptyGame : UserControl
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
             Title = "选择已有配置项",
-            Filter = "Json 旧配置项文件|Config.json|Bson 新配置项文件|Config.Bson",
+            Filter = "Json 旧版配置文件|Config.json|Bson 新版配置文件|Config.bson",
             Multiselect = false
         };
         if (dialog.ShowDialog() == true)

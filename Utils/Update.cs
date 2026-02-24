@@ -124,6 +124,7 @@ namespace RocketLauncherRemake.Utils
                             Process.Start(new ProcessStartInfo
                             {
                                 FileName = $"{Environment.CurrentDirectory}\\UpdateAPI.exe",
+                                Arguments=$"\"{Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName)}\"",
                                 WorkingDirectory = Environment.CurrentDirectory,
                                 UseShellExecute = true
                             });

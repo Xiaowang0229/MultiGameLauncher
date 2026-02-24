@@ -48,7 +48,7 @@ namespace RocketLauncherRemake.Utils
 
         }
 
-        public static void ShowExceptionDialog(object exception)
+        public static void ShowExceptionDialog(Exception e)
         {
             var mb = new Ookii.Dialogs.Wpf.TaskDialog
             {
@@ -56,7 +56,9 @@ namespace RocketLauncherRemake.Utils
                 MainIcon = Ookii.Dialogs.Wpf.TaskDialogIcon.Error,
                 MainInstruction = "程序发生错误，您可将下方内容截图并上报错误",
 
-                Content = $"{exception}",
+                Content = $"{e.Message}",
+                ExpandedInformation = $"{e}",
+                ExpandedControlText = "展开以查看错误详细信息",
                 ButtonStyle = TaskDialogButtonStyle.CommandLinks,
 
 
@@ -98,7 +100,7 @@ namespace RocketLauncherRemake.Utils
             var res = mb.ShowDialog();
             if (res == mbb1)
             {
-                System.Windows.Forms.Clipboard.SetText($"{exception}");
+                System.Windows.Forms.Clipboard.SetText($"{e}");
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = "https://github.com/Xiaowang0229/MultiGameLauncher/issues/new",

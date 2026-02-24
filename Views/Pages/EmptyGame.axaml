@@ -8,7 +8,7 @@
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 			<TextBlock Text="您还没有导入任何一个游戏,请先导入一个游戏再进行操作!"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-				<Button Click="Import_Click" Margin="0,5,0,0" HorizontalAlignment="Center" Content="导入已有配置项" Width="140"/>
+				<Button Click="Import_Click" Margin="0,5,0,0" HorizontalAlignment="Center" Content="导入配置文件" Width="140"/>
 				<Button Click="Create_Click" Margin="10,5,0,0" HorizontalAlignment="Center" Content="新建" Width="140"/>
 			</StackPanel>
 		</StackPanel>
