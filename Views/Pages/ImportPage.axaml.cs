@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Windows.Threading;
-using Windows.Media.Capture;
 using Xiaowang0229.JsonLibrary;
 using HashCode = RocketLauncherRemake.Utils.HashCode;
 
